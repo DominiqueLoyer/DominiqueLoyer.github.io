@@ -54,27 +54,7 @@
   </ul>
 </section>
 
-<section>
-<script>
-  const username = "DominiqueLoyer"; // Replace with your GitHub username
-  const projectList = document.getElementById("project-list");
 
-  fetch(`https://api.github.com/users/${DominiqueLoyer}/repos`)
-    .then(response => response.json())
-    .then(data => {
-      projectList.innerHTML = ""; // Clear the loading text
-      data.forEach(repo => {
-        const listItem = document.createElement("li");
-        listItem.innerHTML = `<a href="${repo.html_url}" target="_blank">${repo.name}</a> - ${repo.description || "No description available."}`;
-        projectList.appendChild(listItem);
-      });
-    })
-    .catch(error => {
-      projectList.innerHTML = "<li>Failed to load projects.</li>";
-      console.error("Error fetching repositories:", error);
-    });
-</script>
-</section>
 
   
   <section>
