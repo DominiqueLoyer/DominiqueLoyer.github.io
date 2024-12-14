@@ -42,24 +42,41 @@
     <h2>About Me</h2>
     <p>Hello! I'm <strong>Dominique Loyer</strong>, a passionate AI researcher and canditate to a PhD.</p>
   </section>
-  <style>
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  li {
-    margin: 1rem 0;
-    font-size: 1.1rem;
-  }
-  a {
-    color: #007acc;
-    text-decoration: none;
-  }
-  a:hover {
-    text-decoration: underline;
-  }
-</style>
 
+
+
+<section>
+
+  
+  <h2>Projects</h2>
+  <ul id="project-list">
+    <li>Loading projects...</li>
+  </ul>
+</section>
+
+<section>
+<script>
+  const username = "DominiqueLoyer"; // Replace with your GitHub username
+  const projectList = document.getElementById("project-list");
+
+  fetch(`https://api.github.com/users/${DominiqueLoyer}/repos`)
+    .then(response => response.json())
+    .then(data => {
+      projectList.innerHTML = ""; // Clear the loading text
+      data.forEach(repo => {
+        const listItem = document.createElement("li");
+        listItem.innerHTML = `<a href="${repo.html_url}" target="_blank">${repo.name}</a> - ${repo.description || "No description available."}`;
+        projectList.appendChild(listItem);
+      });
+    })
+    .catch(error => {
+      projectList.innerHTML = "<li>Failed to load projects.</li>";
+      console.error("Error fetching repositories:", error);
+    });
+</script>
+</section>
+
+  
   <section>
     <h2>Some Projects</h2>
     <ul>
@@ -78,9 +95,29 @@
       <li><a href="https://github.com/DominiqueLoyer/project2">Project 13</a></li>
       
     </ul>
+
+  <style>
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  li {
+    margin: 1rem 0;
+    font-size: 1.1rem;
+  }
+  a {
+    color: #007acc;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+    
   </section>
   <footer>
-    <p>&copy; 2025 DominiqueLoyer</p>
+    <p>&copy; MMXXV DominiqueLoyer</p>
   </footer>
 </body>
 </html>
