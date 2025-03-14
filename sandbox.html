@@ -129,6 +129,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <section>
     <h2><fontsize:8><strong>S a И D b Ф X</strong></h2>
 
+{
+  initialEndpoint: 'http://localhost:4000',
+  handleRequest: (endpointUrl, options) => {
+    return fetch(endpointUrl, {
+      ...options,
+      headers: {
+          ...options.headers,
+          authorization: `token ${token}`
+      },
+    })
+  },
+  hideCookieToggle: true,
+}
+
+    
  <!-- mon orcid -->
     
     <a
