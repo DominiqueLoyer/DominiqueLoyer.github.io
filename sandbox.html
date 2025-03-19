@@ -140,10 +140,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div style="width: 100%; height: 100%;" id='embedded-sandbox'></div>
 <script src="https://embeddable-sandbox.cdn.apollographql.com/_latest/embeddable-sandbox.umd.production.min.js"></script> 
 <script>
-  new window.EmbeddedSandbox({
-    target: '#embedded-sandbox',
-    initialEndpoint: 'http://localhost:4000',
-  });
+  {
+  initialEndpoint: 'http://localhost:4000',
+  handleRequest: (endpointUrl, options) => {
+    return fetch(endpointUrl, {
+      ...options,
+      headers: {
+          ...options.headers,
+          authorization: `token ${token}`
+      },
+    })
+  },
+  hideCookieToggle: true,
+}
 </script>
   
     
