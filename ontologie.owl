@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Ontologie générée à partir du site https://dominiqueloyer.github.io/ en s'inspirant des balises de code Linked Data de Jason -->
 <rdf:RDF
-    xmlns="http://dominiqueloyer.github.io/ontology#"
+    xmlns="http://dominiqueloyer.github.io/ontologie#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
