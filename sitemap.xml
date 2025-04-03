@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Ontologie générée à partir du site https://dominiqueloyer.github.io/ en s'inspirant des balises de code Linked Data de Jason -->
+<rdf:RDF
+    xmlns="http://dominiqueloyer.github.io/ontologie#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+
+  <!-- Définition de l'ontologie -->
+  <owl:Ontology rdf:about="http://dominiqueloyer.github.io/ontologie"/>
+
+  <!-- Déclaration des classes principales -->
+  <owl:Class rdf:ID="Personne"/>
+  <owl:Class rdf:ID="Organisation"/>
+  <owl:Class rdf:ID="Projet"/>
+  <owl:Class rdf:ID="Publication"/>
+  <owl:Class rdf:ID="Conference"/>
+  <owl:Class rdf:ID="Lecture"/>
+
+  <!-- Déclaration des propriétés -->
+  <!-- Propriété pour le nom (domaine Personne et Organisation) -->
+  <owl:DatatypeProperty rdf:ID="nom">
+    <rdfs:domain rdf:resource="#Personne"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+
+  <!-- Propriété pour l'email -->
+  <owl:DatatypeProperty rdf:ID="email">
+    <rdfs:domain rdf:resource="#Personne"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+
+  <!-- Propriété pour l'identifiant ORCID -->
+  <owl:DatatypeProperty rdf:ID="orcid">
+    <rdfs:domain rdf:resource="#Personne"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+  </owl:DatatypeProperty>
+
+  <!-- Propriété object pour l'affiliation -->
+  <owl:ObjectProperty rdf:ID="affilieA">
+    <rdfs:domain rdf:resource="#Personne"/>
+    <rdfs:range rdf:resource="#Organisation"/>
+  </owl:ObjectProperty>
+
+  <!-- Propriétés liant une personne à ses projets, publications, conférences et lectures -->
+  <owl:ObjectProperty rdf:ID="aProjet">
+    <rdfs:domain rdf:resource="#Personne"/>
+    <rdfs:range rdf:resource="#Projet"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="aPublication">
+    <rdfs:domain rdf:resource="#Personne"/>
+    <rdfs:range rdf:resource="#Publication"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="aConference">
+    <rdfs:domain rdf:resource="#Personne"/>
+    <rdfs:range rdf:resource="#Conference"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="aLecture">
+    <rdfs:domain rdf:resource="#Personne"/>
+    <rdfs:range rdf:resource="#Lecture"/>
+  </owl:ObjectProperty>
+
+  <!-- Individu : Dominique S. Loyer -->
+  <owl:NamedIndividual rdf:ID="DominiqueS_Loyer">
+    <rdf:type rdf:resource="#Personne"/>
+    <nom>Dominique S. Loyer</nom>
+    <!-- L'email est donné sur le site par "email me!" -->
+    <email>votreconsultant@gmail.com</email>
+    <orcid>0009-0003-9713-7109</orcid>
+    <affilieA rdf:resource="#SherbrookeInformatiqueInc"/>
+  </owl:NamedIndividual>
+
+  <!-- Individu : Organisation (Sherbrooke Informatique Inc.) -->
+  <owl:NamedIndividual rdf:ID="SherbrookeInformatiqueInc">
+    <rdf:type rdf:resource="#Organisation"/>
+    <nom>Sherbrooke Informatique Inc.</nom>
+  </owl:NamedIndividual>
+
+  <!-- Individus : Projets (liste basée sur les liens GitHub affichés) -->
+  <owl:NamedIndividual rdf:ID="Projet1">
+    <rdf:type rdf:resource="#Projet"/>
+    <nom>Project 1</nom>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:ID="Projet2">
+    <rdf:type rdf:resource="#Projet"/>
+    <nom>Project 2</nom>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:ID="Projet3">
+    <rdf:type rdf:resource="#Projet"/>
+    <nom>Project 3</nom>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:ID="Projet4">
+    <rdf:type rdf:resource="#Projet"/>
+    <nom>Project 4</nom>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:ID="Projet5">
+    <rdf:type rdf:resource="#Projet"/>
+    <nom>Project 5</nom>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:ID="Projet6">
+    <rdf:type rdf:resource="#Projet"/>
+    <nom>Project 6</nom>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:ID="Projet7">
+    <rdf:type rdf:resource="#Projet"/>
+    <nom>Project 7</nom>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:ID="Projet8">
+    <rdf:type rdf:resource="#Projet"/>
+    <nom>Project 8</nom>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:ID="Projet9">
+    <rdf:type rdf:resource="#Projet"/>
+    <nom>Project 9</nom>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:ID="Projet10">
+    <rdf:type rdf:resource="#Projet"/>
+    <nom>Project 10</nom>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:ID="Projet11">
+    <rdf:type rdf:resource="#Projet"/>
+    <nom>Project 11</nom>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:ID="Projet12">
+    <rdf:type rdf:resource="#Projet"/>
+    <nom>Project 12</nom>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:ID="Projet13">
+    <rdf:type rdf:resource="#Projet"/>
+    <nom>Project 13</nom>
+  </owl:NamedIndividual>
+
+  <!-- Association des projets à Dominique S. Loyer -->
+  <rdf:Description rdf:about="#DominiqueS_Loyer">
+    <aProjet rdf:resource="#Projet1"/>
+    <aProjet rdf:resource="#Projet2"/>
+    <aProjet rdf:resource="#Projet3"/>
+    <aProjet rdf:resource="#Projet4"/>
+    <aProjet rdf:resource="#Projet5"/>
+    <aProjet rdf:resource="#Projet6"/>
+    <aProjet rdf:resource="#Projet7"/>
+    <aProjet rdf:resource="#Projet8"/>
+    <aProjet rdf:resource="#Projet9"/>
+    <aProjet rdf:resource="#Projet10"/>
+    <aProjet rdf:resource="#Projet11"/>
+    <aProjet rdf:resource="#Projet12"/>
+    <aProjet rdf:resource="#Projet13"/>
+  </rdf:Description>
+
+  <!-- Vous pouvez étendre l'ontologie en ajoutant des individus pour Publications, Conferences et Lectures
+       selon les informations détaillées disponibles sur le site. -->
+
+</rdf:RDF>
