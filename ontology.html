@@ -7,8 +7,8 @@
   <style>
     .node { cursor: pointer; }
     .node circle { fill: #fff; stroke: steelblue; stroke-width: 2px; }
-    .node text { font: 11px sans-serif; }
-    .link { fill: none; stroke: #ccc; stroke-width: 2px; }
+    .node text { font: 8px sans-serif; }
+    .link { fill: none; stroke: #ccc; stroke-width: 1px; }
   </style>
 </head>
 <body>
@@ -341,7 +341,7 @@
 
       // Add labels for the nodes.
       nodeEnter.append('text')
-          .attr("dy", ".20em")
+          .attr("dy", ".10em")
           .attr("x", function(d) {
               return d.children || d._children ? -13 : 13;
           })
@@ -357,7 +357,7 @@
           .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
 
       nodeUpdate.select('circle.node')
-          .attr('r', 10)
+          .attr('r', 8)
           .style("fill", function(d) {
               return d._children ? "lightsteelblue" : "#fff";
           })
