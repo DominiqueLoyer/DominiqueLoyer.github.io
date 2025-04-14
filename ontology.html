@@ -46,7 +46,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <!-- début structure JSON de l'ontologie -->
   <script>
     var treeData = {
-      "name": "Researcher ontology",
+      "name": "Researcher",
       "children": [
         {
           "name": "Classes",
@@ -346,7 +346,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           links = treeData.descendants().slice(1);
 
       // Normalize for fixed-depth.
-      nodes.forEach(function(d){ d.y = d.depth * 180; });
+      nodes.forEach(function(d){ d.y = d.depth * 100; });
 
       // ****************** Nodes section ***************************
       var node = svg.selectAll('g.node')
@@ -370,7 +370,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
       // Add labels for the nodes.
       nodeEnter.append('text')
-          .attr("dy", ".8em")
+          .attr("dy", ".6em")
           .attr("x", function(d) {
               return d.children || d._children ? -13 : 13;
           })
@@ -386,7 +386,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
 
       nodeUpdate.select('circle.node')
-          .attr('r', 8)
+          .attr('r', 6)
           .style("fill", function(d) {
               return d._children ? "lightsteelblue" : "#fff";
           })
