@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Graphe Animé de l'Ontologie</title>
-  <!-- Chargement de D3.js via CDN -->
+  <title>Dominique Loyer researcher's ontology</title>
+  <!-- Load D3.js from CDN -->
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <style>
     .node {
@@ -25,72 +25,280 @@
   </style>
 </head>
 <body>
-  <h2>Graphe Animé de l'Ontologie</h2>
+  <h2>Animated Ontology Tree</h2>
   <div id="tree-container"></div>
   <script>
-    // Simulation de la hiérarchie obtenue depuis votre fichier Turtle (à adapter)
+    // JSON structure based on the actual Turtle ontology.
     var treeData = {
-      "name": "Ontologie",
+      "name": "Ontologie Dominique Loyer",
       "children": [
         {
-          "name": "Lectures",
+          "name": "Classes",
           "children": [
-            {"name": "Lecture 1"},
-            {"name": "Lecture 2"},
-            {"name": "Lecture 3"},
-            {"name": "Lecture 4"},
-            {"name": "Lecture 5"},
-            {"name": "Lecture 6"},
-            {"name": "Lecture 7"},
-            {"name": "Lecture 8"},
-            {"name": "Lecture 9"},
-            {"name": "Lecture 10"},
-            {"name": "Lecture 11"},
-            {"name": "Lecture 12"}
+            {
+              "name": ":Personne",
+              "children": [
+                {"name": "Individual: DominiqueS_Loyer"}
+              ]
+            },
+            {
+              "name": ":Organisation",
+              "children": [
+                {"name": "Individual: SherbrookeInformatiqueInc"}
+              ]
+            },
+            {
+              "name": ":Projet",
+              "children": [
+                {"name": "Individual: Projet1"},
+                {"name": "Individual: Projet2"},
+                {"name": "Individual: Projet3"},
+                {"name": "Individual: Projet4"},
+                {"name": "Individual: Projet5"},
+                {"name": "Individual: Projet6"},
+                {"name": "Individual: Projet7"},
+                {"name": "Individual: Projet8"},
+                {"name": "Individual: Projet9"},
+                {"name": "Individual: Projet10"},
+                {"name": "Individual: Projet11"},
+                {"name": "Individual: Projet12"},
+                {"name": "Individual: Projet13"}
+              ]
+            },
+            {
+              "name": ":Publication",
+              "children": [
+                {
+                  "name": ":ArticleDeRevue",
+                  "children": [
+                    {"name": "Axiom: rdfs:label \"Article de Revue\""},
+                    {"name": "Axiom: rdfs:comment \"Une publication évaluée par les pairs dans une revue scientifique ou académique.\""}
+                  ]
+                },
+                {"name": "Individual: Publication1"}
+              ]
+            },
+            {
+              "name": ":Conference",
+              "children": [
+                {
+                  "name": ":ConferenceNationale",
+                  "children": [
+                    {"name": "Axiom: rdfs:label \"Conférence Nationale\""},
+                    {"name": "Axiom: rdfs:comment \"Une conférence dont la portée et l'audience sont principalement nationales.\""}
+                  ]
+                },
+                {
+                  "name": ":ConferenceInternationale",
+                  "children": [
+                    {"name": "Axiom: rdfs:label \"Conférence Internationale\""},
+                    {"name": "Axiom: rdfs:comment \"Une conférence dont la portée et l'audience sont internationales.\""}
+                  ]
+                },
+                {
+                  "name": ":Atelier",
+                  "children": [
+                    {"name": "Axiom: rdfs:label \"Atelier\""},
+                    {"name": "Axiom: rdfs:comment \"Un événement plus petit et souvent plus interactif qu'une conférence formelle, parfois rattaché à une conférence plus grande.\""}
+                  ]
+                },
+                {"name": "Individual: Conference1"},
+                {"name": "Individual: Conference2"},
+                {"name": "Individual: Conference3"}
+              ]
+            },
+            {
+              "name": ":Lecture",
+              "children": [
+                {
+                  "name": ":SousClasseLecture1",
+                  "children": [
+                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 1\""}
+                  ]
+                },
+                {
+                  "name": ":SousClasseLecture2",
+                  "children": [
+                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 2\""}
+                  ]
+                },
+                {
+                  "name": ":SousClasseLecture3",
+                  "children": [
+                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 3\""}
+                  ]
+                },
+                {
+                  "name": ":SousClasseLecture4",
+                  "children": [
+                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 4\""}
+                  ]
+                },
+                {
+                  "name": ":SousClasseLecture5",
+                  "children": [
+                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 5\""}
+                  ]
+                },
+                {
+                  "name": ":SousClasseLecture6",
+                  "children": [
+                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 6\""}
+                  ]
+                },
+                {
+                  "name": ":SousClasseLecture7",
+                  "children": [
+                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 7\""}
+                  ]
+                },
+                {
+                  "name": ":SousClasseLecture8",
+                  "children": [
+                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 8\""}
+                  ]
+                },
+                {
+                  "name": ":SousClasseLecture9",
+                  "children": [
+                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 9\""}
+                  ]
+                },
+                {
+                  "name": ":SousClasseLecture10",
+                  "children": [
+                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 10\""}
+                  ]
+                },
+                {
+                  "name": ":SousClasseLecture11",
+                  "children": [
+                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 11\""}
+                  ]
+                },
+                {
+                  "name": ":SousClasseLecture12",
+                  "children": [
+                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 12\""}
+                  ]
+                },
+                {"name": "Individual: Lecture1"},
+                {"name": "Individual: Lecture2"},
+                {"name": "Individual: Lecture3"},
+                {"name": "Individual: Lecture4"},
+                {"name": "Individual: Lecture5"},
+                {"name": "Individual: Lecture6"},
+                {"name": "Individual: Lecture7"},
+                {"name": "Individual: Lecture8"},
+                {"name": "Individual: Lecture9"},
+                {"name": "Individual: Lecture10"},
+                {"name": "Individual: Lecture11"},
+                {"name": "Individual: Lecture12"}
+              ]
+            }
           ]
         },
         {
-          "name": "Conférences",
+          "name": "Properties",
           "children": [
-            {"name": "Conférence 1"},
-            {"name": "Conférence 2"},
-            {"name": "Conférence 3"},
-            {"name": "Conférence 4"},
-            {"name": "Conférence 5"},
-            {"name": "Conférence 6"},
-            {"name": "Conférence 7"},
-            {"name": "Conférence 8"},
-            {"name": "Conférence 9"},
-            {"name": "Conférence 10"},
-            {"name": "Conférence 11"},
-            {"name": "Conférence 12"}
-          ]
-        },
-        {
-          "name": "Paper",
-          "children": [
-            {"name": "Paper 1"},
-            {"name": "Paper 2"},
-            {"name": "Paper 3"},
-            {"name": "Paper 4"},
-            {"name": "Paper 5"},
-            {"name": "Paper 6"},
-            {"name": "Paper 7"},
-            {"name": "Paper 8"},
-            {"name": "Paper 9"},
-            {"name": "Paper 10"},
-            {"name": "Paper 11"},
-            {"name": "Paper 12"}
+            {
+              "name": ":nom",
+              "children": [
+                {"name": "Domain: Personne, Organisation, Projet, Publication, Conference, Lecture"},
+                {"name": "Range: xsd:string"}
+              ]
+            },
+            {
+              "name": ":email",
+              "children": [
+                {"name": "Domain: Personne"},
+                {"name": "Range: xsd:string"}
+              ]
+            },
+            {
+              "name": ":orcid",
+              "children": [
+                {"name": "Domain: Personne"},
+                {"name": "Range: xsd:string"}
+              ]
+            },
+            {
+              "name": ":telephone",
+              "children": [
+                {"name": "Domain: Personne, Organisation"},
+                {"name": "Range: xsd:string"}
+              ]
+            },
+            {
+              "name": ":affilieA",
+              "children": [
+                {"name": "Domain: Personne"},
+                {"name": "Range: Organisation"}
+              ]
+            },
+            {
+              "name": ":aProjet",
+              "children": [
+                {"name": "Domain: Personne"},
+                {"name": "Range: Projet"}
+              ]
+            },
+            {
+              "name": ":estAuteurDePublication",
+              "children": [
+                {"name": "Domain: Personne"},
+                {"name": "Range: Publication"}
+              ]
+            },
+            {
+              "name": ":publicationParAuteur",
+              "children": [
+                {"name": "Inverse of: :estAuteurDePublication"},
+                {"name": "Domain: Publication"},
+                {"name": "Range: Personne"}
+              ]
+            },
+            {
+              "name": ":aPresenteAConference",
+              "children": [
+                {"name": "Domain: Personne"},
+                {"name": "Range: Conference"}
+              ]
+            },
+            {
+              "name": ":conferenceAvecPresentationDe",
+              "children": [
+                {"name": "Inverse of: :aPresenteAConference"},
+                {"name": "Domain: Conference"},
+                {"name": "Range: Personne"}
+              ]
+            },
+            {
+              "name": ":aDonneLecture",
+              "children": [
+                {"name": "Domain: Personne"},
+                {"name": "Range: Lecture"}
+              ]
+            },
+            {
+              "name": ":lectureDonneePar",
+              "children": [
+                {"name": "Inverse of: :aDonneLecture"},
+                {"name": "Domain: Lecture"},
+                {"name": "Range: Personne"}
+              ]
+            }
           ]
         }
       ]
     };
 
-    // Définition des marges et dimensions du SVG
+    // Dimensions and margins for the diagram
     var margin = {top: 20, right: 90, bottom: 30, left: 90},
-        width = 960 - margin.left - margin.right,
-        height = 600 - margin.top - margin.bottom;
+        width = 1200 - margin.left - margin.right,
+        height = 800 - margin.top - margin.bottom;
 
+    // Append the SVG object to the container div.
     var svg = d3.select("#tree-container").append("svg")
         .attr("width", width + margin.right + margin.left)
         .attr("height", height + margin.top + margin.bottom)
@@ -101,42 +309,44 @@
         duration = 750,
         root;
 
-    // Création de la fonction de mise en page de l'arbre
+    // Create a tree layout and set its size.
     var treemap = d3.tree().size([height, width]);
 
-    // Création d'une hiérarchie à partir des données
+    // Convert the JSON hierarchy into a D3 hierarchy.
     root = d3.hierarchy(treeData, function(d) { return d.children; });
     root.x0 = height / 2;
     root.y0 = 0;
 
-    // Collapse initial : on masque les sous-niveaux de chaque classe
-    root.children.forEach(collapse);
+    // Collapse all children of the root except the top-level.
+    if(root.children) {
+      root.children.forEach(collapse);
+    }
 
     update(root);
 
-    // Fonction de collapse pour masquer les noeuds enfants
+    // Collapse the node and all its children.
     function collapse(d) {
-      if (d.children) {
+      if(d.children) {
         d._children = d.children;
         d._children.forEach(collapse);
         d.children = null;
       }
     }
 
+    // Update the tree whenever nodes are toggled.
     function update(source) {
-      // Génère la nouvelle mise en page de l'arbre à partir de la racine
       var treeData = treemap(root);
       var nodes = treeData.descendants(),
           links = treeData.descendants().slice(1);
 
-      // Espacement horizontal en fonction de la profondeur
-      nodes.forEach(function(d) { d.y = d.depth * 180; });
+      // Normalize for fixed-depth.
+      nodes.forEach(function(d){ d.y = d.depth * 180; });
 
-      // Gestion des nœuds
+      // ****************** Nodes section ***************************
       var node = svg.selectAll('g.node')
           .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
-      // Ajout des nouveaux nœuds
+      // Enter any new nodes at the parent's previous position.
       var nodeEnter = node.enter().append('g')
           .attr('class', 'node')
           .attr("transform", function(d) {
@@ -144,7 +354,7 @@
           })
           .on('click', click);
 
-      // Cercles pour chaque nœud
+      // Add circle for the nodes.
       nodeEnter.append('circle')
           .attr('class', 'node')
           .attr('r', 1e-6)
@@ -152,7 +362,7 @@
               return d._children ? "lightsteelblue" : "#fff";
           });
 
-      // Texte pour chaque nœud
+      // Add labels for the nodes.
       nodeEnter.append('text')
           .attr("dy", ".35em")
           .attr("x", function(d) {
@@ -165,12 +375,10 @@
 
       var nodeUpdate = nodeEnter.merge(node);
 
-      // Transition pour la mise à jour de la position des nœuds
       nodeUpdate.transition()
           .duration(duration)
           .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
 
-      // Mise à jour du cercle du nœud
       nodeUpdate.select('circle.node')
           .attr('r', 10)
           .style("fill", function(d) {
@@ -178,7 +386,6 @@
           })
           .attr('cursor', 'pointer');
 
-      // Suppression des nœuds obsolètes
       var nodeExit = node.exit().transition()
           .duration(duration)
           .attr("transform", function(d) {
@@ -192,15 +399,15 @@
       nodeExit.select('text')
           .style('fill-opacity', 1e-6);
 
-      // Gestion des liens entre les nœuds
+      // ****************** Links section ***************************
       var link = svg.selectAll('path.link')
           .data(links, function(d) { return d.id; });
 
       var linkEnter = link.enter().insert('path', "g")
           .attr("class", "link")
-          .attr('d', function(d) {
-              var o = {x: source.x0, y: source.y0};
-              return diagonal(o, o);
+          .attr('d', function(d){
+            var o = {x: source.x0, y: source.y0};
+            return diagonal(o, o);
           });
 
       var linkUpdate = linkEnter.merge(link);
@@ -212,35 +419,35 @@
       var linkExit = link.exit().transition()
           .duration(duration)
           .attr('d', function(d) {
-              var o = {x: source.x, y: source.y};
-              return diagonal(o, o);
+            var o = {x: source.x, y: source.y};
+            return diagonal(o, o);
           })
           .remove();
 
-      // Enregistrement de la position des nœuds pour la prochaine transition
+      // Store the old positions for transition.
       nodes.forEach(function(d){
-          d.x0 = d.x;
-          d.y0 = d.y;
+        d.x0 = d.x;
+        d.y0 = d.y;
       });
 
-      // Fonction pour générer les courbes liant les nœuds
+      // Creates a curved (diagonal) path from parent to the child nodes.
       function diagonal(s, d) {
-          var path = `M ${s.y} ${s.x}
-                      C ${(s.y + d.y) / 2} ${s.x},
-                        ${(s.y + d.y) / 2} ${d.x},
-                        ${d.y} ${d.x}`;
-          return path;
+        var path = `M ${s.y} ${s.x}
+                    C ${(s.y + d.y) / 2} ${s.x},
+                      ${(s.y + d.y) / 2} ${d.x},
+                      ${d.y} ${d.x}`;
+        return path;
       }
     }
 
-    // Fonction de gestion du clic sur un nœud : bascule l'affichage de ses enfants
+    // Toggle children on click.
     function click(event, d) {
       if (d.children) {
-          d._children = d.children;
-          d.children = null;
+        d._children = d.children;
+        d.children = null;
       } else {
-          d.children = d._children;
-          d._children = null;
+        d.children = d._children;
+        d._children = null;
       }
       update(d);
     }
