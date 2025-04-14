@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Graphe Animé de l'Ontologie</title>
+  <!-- Chargement de D3.js via CDN -->
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <style>
+    .node {
+      cursor: pointer;
+    }
+    .node circle {
+      fill: #fff;
+      stroke: steelblue;
+      stroke-width: 3px;
+    }
+    .node text {
+      font: 14px sans-serif;
+    }
+    .link {
+      fill: none;
+      stroke: #ccc;
+      stroke-width: 2px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Graphe Animé de l'Ontologie</h2>
+  <div id="tree-container"></div>
+  <script>
+    // Simulation de la hiérarchie obtenue depuis votre fichier Turtle (à adapter)
+    var treeData = {
+      "name": "Ontologie",
+      "children": [
+        {
+          "name": "Lectures",
+          "children": [
+            {"name": "Lecture 1"},
+            {"name": "Lecture 2"},
+            {"name": "Lecture 3"},
+            {"name": "Lecture 4"},
+            {"name": "Lecture 5"},
+            {"name": "Lecture 6"},
+            {"name": "Lecture 7"},
+            {"name": "Lecture 8"},
+            {"name": "Lecture 9"},
+            {"name": "Lecture 10"},
+            {"name": "Lecture 11"},
+            {"name": "Lecture 12"}
+          ]
+        },
+        {
+          "name": "Conférences",
+          "children": [
+            {"name": "Conférence 1"},
+            {"name": "Conférence 2"},
+            {"name": "Conférence 3"},
+            {"name": "Conférence 4"},
+            {"name": "Conférence 5"},
+            {"name": "Conférence 6"},
+            {"name": "Conférence 7"},
+            {"name": "Conférence 8"},
+            {"name": "Conférence 9"},
+            {"name": "Conférence 10"},
+            {"name": "Conférence 11"},
+            {"name": "Conférence 12"}
+          ]
+        },
+        {
+          "name": "Paper",
+          "children": [
+            {"name": "Paper 1"},
+            {"name": "Paper 2"},
+            {"name": "Paper 3"},
+            {"name": "Paper 4"},
+            {"name": "Paper 5"},
+            {"name": "Paper 6"},
+            {"name": "Paper 7"},
+            {"name": "Paper 8"},
+            {"name": "Paper 9"},
+            {"name": "Paper 10"},
+            {"name": "Paper 11"},
+            {"name": "Paper 12"}
+          ]
+        }
+      ]
+    };
+
+    // Définition des marges et dimensions du SVG
+    var margin = {top: 20, right: 90, bottom: 30, left: 90},
+        width = 960 - margin.left - margin.right,
+        height = 600 - margin.top - margin.bottom;
+
+    var svg = d3.select("#tree-container").append("svg")
+        .attr("width", width + margin.right + margin.left)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var i = 0,
+        duration = 750,
+        root;
+
+    // Création de la fonction de mise en page de l'arbre
+    var treemap = d3.tree().size([height, width]);
+
+    // Création d'une hiérarchie à partir des données
+    root = d3.hierarchy(treeData, function(d) { return d.children; });
+    root.x0 = height / 2;
+    root.y0 = 0;
+
+    // Collapse initial : on masque les sous-niveaux de chaque classe
+    root.children.forEach(collapse);
+
+    update(root);
+
+    // Fonction de collapse pour masquer les noeuds enfants
+    function collapse(d) {
+      if (d.children) {
+        d._children = d.children;
+        d._children.forEach(collapse);
+        d.children = null;
+      }
+    }
+
+    function update(source) {
+      // Génère la nouvelle mise en page de l'arbre à partir de la racine
+      var treeData = treemap(root);
+      var nodes = treeData.descendants(),
+          links = treeData.descendants().slice(1);
+
+      // Espacement horizontal en fonction de la profondeur
+      nodes.forEach(function(d) { d.y = d.depth * 180; });
+
+      // Gestion des nœuds
+      var node = svg.selectAll('g.node')
+          .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+      // Ajout des nouveaux nœuds
+      var nodeEnter = node.enter().append('g')
+          .attr('class', 'node')
+          .attr("transform", function(d) {
+              return "translate(" + source.y0 + "," + source.x0 + ")";
+          })
+          .on('click', click);
+
+      // Cercles pour chaque nœud
+      nodeEnter.append('circle')
+          .attr('class', 'node')
+          .attr('r', 1e-6)
+          .style("fill", function(d) {
+              return d._children ? "lightsteelblue" : "#fff";
+          });
+
+      // Texte pour chaque nœud
+      nodeEnter.append('text')
+          .attr("dy", ".35em")
+          .attr("x", function(d) {
+              return d.children || d._children ? -13 : 13;
+          })
+          .attr("text-anchor", function(d) {
+              return d.children || d._children ? "end" : "start";
+          })
+          .text(function(d) { return d.data.name; });
+
+      var nodeUpdate = nodeEnter.merge(node);
+
+      // Transition pour la mise à jour de la position des nœuds
+      nodeUpdate.transition()
+          .duration(duration)
+          .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+
+      // Mise à jour du cercle du nœud
+      nodeUpdate.select('circle.node')
+          .attr('r', 10)
+          .style("fill", function(d) {
+              return d._children ? "lightsteelblue" : "#fff";
+          })
+          .attr('cursor', 'pointer');
+
+      // Suppression des nœuds obsolètes
+      var nodeExit = node.exit().transition()
+          .duration(duration)
+          .attr("transform", function(d) {
+              return "translate(" + source.y + "," + source.x + ")";
+          })
+          .remove();
+
+      nodeExit.select('circle')
+          .attr('r', 1e-6);
+
+      nodeExit.select('text')
+          .style('fill-opacity', 1e-6);
+
+      // Gestion des liens entre les nœuds
+      var link = svg.selectAll('path.link')
+          .data(links, function(d) { return d.id; });
+
+      var linkEnter = link.enter().insert('path', "g")
+          .attr("class", "link")
+          .attr('d', function(d) {
+              var o = {x: source.x0, y: source.y0};
+              return diagonal(o, o);
+          });
+
+      var linkUpdate = linkEnter.merge(link);
+
+      linkUpdate.transition()
+          .duration(duration)
+          .attr('d', function(d){ return diagonal(d, d.parent); });
+
+      var linkExit = link.exit().transition()
+          .duration(duration)
+          .attr('d', function(d) {
+              var o = {x: source.x, y: source.y};
+              return diagonal(o, o);
+          })
+          .remove();
+
+      // Enregistrement de la position des nœuds pour la prochaine transition
+      nodes.forEach(function(d){
+          d.x0 = d.x;
+          d.y0 = d.y;
+      });
+
+      // Fonction pour générer les courbes liant les nœuds
+      function diagonal(s, d) {
+          var path = `M ${s.y} ${s.x}
+                      C ${(s.y + d.y) / 2} ${s.x},
+                        ${(s.y + d.y) / 2} ${d.x},
+                        ${d.y} ${d.x}`;
+          return path;
+      }
+    }
+
+    // Fonction de gestion du clic sur un nœud : bascule l'affichage de ses enfants
+    function click(event, d) {
+      if (d.children) {
+          d._children = d.children;
+          d.children = null;
+      } else {
+          d.children = d._children;
+          d._children = null;
+      }
+      update(d);
+    }
+  </script>
+</body>
+</html>
