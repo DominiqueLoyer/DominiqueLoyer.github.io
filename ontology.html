@@ -3,32 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <title>Dominique Loyer researcher's ontology</title>
-  <!-- Load D3.js from CDN -->
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <style>
-    .node {
-      cursor: pointer;
-    }
-    .node circle {
-      fill: #fff;
-      stroke: steelblue;
-      stroke-width: 3px;
-    }
-    .node text {
-      font: 14px sans-serif;
-    }
-    .link {
-      fill: none;
-      stroke: #ccc;
-      stroke-width: 2px;
-    }
+    .node { cursor: pointer; }
+    .node circle { fill: #fff; stroke: steelblue; stroke-width: 3px; }
+    .node text { font: 14px sans-serif; }
+    .link { fill: none; stroke: #ccc; stroke-width: 2px; }
   </style>
 </head>
 <body>
-  <h2>Dominique S. Loyer researcher's ontology/h2>
+  <h2>Dominique Loyer researcher's ontology</h2>
   <div id="tree-container"></div>
+  <!-- début structure JSON de l'ontologie -->
   <script>
-    // JSON structure based on the actual Turtle ontology.
     var treeData = {
       "name": "Ontologie Dominique Loyer",
       "children": [
@@ -38,31 +25,31 @@
             {
               "name": ":Personne",
               "children": [
-                {"name": "Individual: DominiqueS_Loyer"}
+                { "name": "Individual: DominiqueS_Loyer" }
               ]
             },
             {
               "name": ":Organisation",
               "children": [
-                {"name": "Individual: SherbrookeInformatiqueInc"}
+                { "name": "Individual: SherbrookeInformatiqueInc" }
               ]
             },
             {
               "name": ":Projet",
               "children": [
-                {"name": "Individual: Projet1"},
-                {"name": "Individual: Projet2"},
-                {"name": "Individual: Projet3"},
-                {"name": "Individual: Projet4"},
-                {"name": "Individual: Projet5"},
-                {"name": "Individual: Projet6"},
-                {"name": "Individual: Projet7"},
-                {"name": "Individual: Projet8"},
-                {"name": "Individual: Projet9"},
-                {"name": "Individual: Projet10"},
-                {"name": "Individual: Projet11"},
-                {"name": "Individual: Projet12"},
-                {"name": "Individual: Projet13"}
+                { "name": "Individual: Projet1" },
+                { "name": "Individual: Projet2" },
+                { "name": "Individual: Projet3" },
+                { "name": "Individual: Projet4" },
+                { "name": "Individual: Projet5" },
+                { "name": "Individual: Projet6" },
+                { "name": "Individual: Projet7" },
+                { "name": "Individual: Projet8" },
+                { "name": "Individual: Projet9" },
+                { "name": "Individual: Projet10" },
+                { "name": "Individual: Projet11" },
+                { "name": "Individual: Projet12" },
+                { "name": "Individual: Projet13" }
               ]
             },
             {
@@ -71,11 +58,11 @@
                 {
                   "name": ":ArticleDeRevue",
                   "children": [
-                    {"name": "Axiom: rdfs:label \"Article de Revue\""},
-                    {"name": "Axiom: rdfs:comment \"Une publication évaluée par les pairs dans une revue scientifique ou académique.\""}
+                    { "name": "Axiom: rdfs:label \"Article de Revue\"" },
+                    { "name": "Axiom: rdfs:comment \"Une publication évaluée par les pairs dans une revue scientifique ou académique.\"" }
                   ]
                 },
-                {"name": "Individual: Publication1"}
+                { "name": "Individual: Publication1" }
               ]
             },
             {
@@ -84,27 +71,27 @@
                 {
                   "name": ":ConferenceNationale",
                   "children": [
-                    {"name": "Axiom: rdfs:label \"Conférence Nationale\""},
-                    {"name": "Axiom: rdfs:comment \"Une conférence dont la portée et l'audience sont principalement nationales.\""}
+                    { "name": "Axiom: rdfs:label \"Conférence Nationale\"" },
+                    { "name": "Axiom: rdfs:comment \"Une conférence dont la portée et l'audience sont principalement nationales.\"" }
                   ]
                 },
                 {
                   "name": ":ConferenceInternationale",
                   "children": [
-                    {"name": "Axiom: rdfs:label \"Conférence Internationale\""},
-                    {"name": "Axiom: rdfs:comment \"Une conférence dont la portée et l'audience sont internationales.\""}
+                    { "name": "Axiom: rdfs:label \"Conférence Internationale\"" },
+                    { "name": "Axiom: rdfs:comment \"Une conférence dont la portée et l'audience sont internationales.\"" }
                   ]
                 },
                 {
                   "name": ":Atelier",
                   "children": [
-                    {"name": "Axiom: rdfs:label \"Atelier\""},
-                    {"name": "Axiom: rdfs:comment \"Un événement plus petit et souvent plus interactif qu'une conférence formelle, parfois rattaché à une conférence plus grande.\""}
+                    { "name": "Axiom: rdfs:label \"Atelier\"" },
+                    { "name": "Axiom: rdfs:comment \"Un événement plus petit et souvent plus interactif qu'une conférence formelle, parfois rattaché à une conférence plus grande.\"" }
                   ]
                 },
-                {"name": "Individual: Conference1"},
-                {"name": "Individual: Conference2"},
-                {"name": "Individual: Conference3"}
+                { "name": "Individual: Conference1" },
+                { "name": "Individual: Conference2" },
+                { "name": "Individual: Conference3" }
               ]
             },
             {
@@ -113,87 +100,87 @@
                 {
                   "name": ":SousClasseLecture1",
                   "children": [
-                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 1\""}
+                    { "name": "Axiom: rdfs:label \"Sous-classe de Lecture 1\"" }
                   ]
                 },
                 {
                   "name": ":SousClasseLecture2",
                   "children": [
-                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 2\""}
+                    { "name": "Axiom: rdfs:label \"Sous-classe de Lecture 2\"" }
                   ]
                 },
                 {
                   "name": ":SousClasseLecture3",
                   "children": [
-                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 3\""}
+                    { "name": "Axiom: rdfs:label \"Sous-classe de Lecture 3\"" }
                   ]
                 },
                 {
                   "name": ":SousClasseLecture4",
                   "children": [
-                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 4\""}
+                    { "name": "Axiom: rdfs:label \"Sous-classe de Lecture 4\"" }
                   ]
                 },
                 {
                   "name": ":SousClasseLecture5",
                   "children": [
-                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 5\""}
+                    { "name": "Axiom: rdfs:label \"Sous-classe de Lecture 5\"" }
                   ]
                 },
                 {
                   "name": ":SousClasseLecture6",
                   "children": [
-                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 6\""}
+                    { "name": "Axiom: rdfs:label \"Sous-classe de Lecture 6\"" }
                   ]
                 },
                 {
                   "name": ":SousClasseLecture7",
                   "children": [
-                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 7\""}
+                    { "name": "Axiom: rdfs:label \"Sous-classe de Lecture 7\"" }
                   ]
                 },
                 {
                   "name": ":SousClasseLecture8",
                   "children": [
-                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 8\""}
+                    { "name": "Axiom: rdfs:label \"Sous-classe de Lecture 8\"" }
                   ]
                 },
                 {
                   "name": ":SousClasseLecture9",
                   "children": [
-                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 9\""}
+                    { "name": "Axiom: rdfs:label \"Sous-classe de Lecture 9\"" }
                   ]
                 },
                 {
                   "name": ":SousClasseLecture10",
                   "children": [
-                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 10\""}
+                    { "name": "Axiom: rdfs:label \"Sous-classe de Lecture 10\"" }
                   ]
                 },
                 {
                   "name": ":SousClasseLecture11",
                   "children": [
-                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 11\""}
+                    { "name": "Axiom: rdfs:label \"Sous-classe de Lecture 11\"" }
                   ]
                 },
                 {
                   "name": ":SousClasseLecture12",
                   "children": [
-                    {"name": "Axiom: rdfs:label \"Sous-classe de Lecture 12\""}
+                    { "name": "Axiom: rdfs:label \"Sous-classe de Lecture 12\"" }
                   ]
                 },
-                {"name": "Individual: Lecture1"},
-                {"name": "Individual: Lecture2"},
-                {"name": "Individual: Lecture3"},
-                {"name": "Individual: Lecture4"},
-                {"name": "Individual: Lecture5"},
-                {"name": "Individual: Lecture6"},
-                {"name": "Individual: Lecture7"},
-                {"name": "Individual: Lecture8"},
-                {"name": "Individual: Lecture9"},
-                {"name": "Individual: Lecture10"},
-                {"name": "Individual: Lecture11"},
-                {"name": "Individual: Lecture12"}
+                { "name": "Individual: Lecture1" },
+                { "name": "Individual: Lecture2" },
+                { "name": "Individual: Lecture3" },
+                { "name": "Individual: Lecture4" },
+                { "name": "Individual: Lecture5" },
+                { "name": "Individual: Lecture6" },
+                { "name": "Individual: Lecture7" },
+                { "name": "Individual: Lecture8" },
+                { "name": "Individual: Lecture9" },
+                { "name": "Individual: Lecture10" },
+                { "name": "Individual: Lecture11" },
+                { "name": "Individual: Lecture12" }
               ]
             }
           ]
@@ -204,95 +191,98 @@
             {
               "name": ":nom",
               "children": [
-                {"name": "Domain: Personne, Organisation, Projet, Publication, Conference, Lecture"},
-                {"name": "Range: xsd:string"}
+                { "name": "Domain: Personne, Organisation, Projet, Publication, Conference, Lecture" },
+                { "name": "Range: xsd:string" }
               ]
             },
             {
               "name": ":email",
               "children": [
-                {"name": "Domain: Personne"},
-                {"name": "Range: xsd:string"}
+                { "name": "Domain: Personne" },
+                { "name": "Range: xsd:string" }
               ]
             },
             {
               "name": ":orcid",
               "children": [
-                {"name": "Domain: Personne"},
-                {"name": "Range: xsd:string"}
+                { "name": "Domain: Personne" },
+                { "name": "Range: xsd:string" }
               ]
             },
             {
               "name": ":telephone",
               "children": [
-                {"name": "Domain: Personne, Organisation"},
-                {"name": "Range: xsd:string"}
+                { "name": "Domain: Personne, Organisation" },
+                { "name": "Range: xsd:string" }
               ]
             },
             {
               "name": ":affilieA",
               "children": [
-                {"name": "Domain: Personne"},
-                {"name": "Range: Organisation"}
+                { "name": "Domain: Personne" },
+                { "name": "Range: Organisation" }
               ]
             },
             {
               "name": ":aProjet",
               "children": [
-                {"name": "Domain: Personne"},
-                {"name": "Range: Projet"}
+                { "name": "Domain: Personne" },
+                { "name": "Range: Projet" }
               ]
             },
             {
               "name": ":estAuteurDePublication",
               "children": [
-                {"name": "Domain: Personne"},
-                {"name": "Range: Publication"}
+                { "name": "Domain: Personne" },
+                { "name": "Range: Publication" }
               ]
             },
             {
               "name": ":publicationParAuteur",
               "children": [
-                {"name": "Inverse of: :estAuteurDePublication"},
-                {"name": "Domain: Publication"},
-                {"name": "Range: Personne"}
+                { "name": "Inverse of: :estAuteurDePublication" },
+                { "name": "Domain: Publication" },
+                { "name": "Range: Personne" }
               ]
             },
             {
               "name": ":aPresenteAConference",
               "children": [
-                {"name": "Domain: Personne"},
-                {"name": "Range: Conference"}
+                { "name": "Domain: Personne" },
+                { "name": "Range: Conference" }
               ]
             },
             {
               "name": ":conferenceAvecPresentationDe",
               "children": [
-                {"name": "Inverse of: :aPresenteAConference"},
-                {"name": "Domain: Conference"},
-                {"name": "Range: Personne"}
+                { "name": "Inverse of: :aPresenteAConference" },
+                { "name": "Domain: Conference" },
+                { "name": "Range: Personne" }
               ]
             },
             {
               "name": ":aDonneLecture",
               "children": [
-                {"name": "Domain: Personne"},
-                {"name": "Range: Lecture"}
+                { "name": "Domain: Personne" },
+                { "name": "Range: Lecture" }
               ]
             },
             {
               "name": ":lectureDonneePar",
               "children": [
-                {"name": "Inverse of: :aDonneLecture"},
-                {"name": "Domain: Lecture"},
-                {"name": "Range: Personne"}
+                { "name": "Inverse of: :aDonneLecture" },
+                { "name": "Domain: Lecture" },
+                { "name": "Range: Personne" }
               ]
             }
           ]
         }
       ]
     };
-
+  </script>
+  
+  <!-- Place the D3.js code that uses treeData here -->
+  <script>
     // Dimensions and margins for the diagram
     var margin = {top: 20, right: 90, bottom: 30, left: 90},
         width = 1200 - margin.left - margin.right,
@@ -317,21 +307,8 @@
     root.x0 = height / 2;
     root.y0 = 0;
 
-    // Collapse all children of the root except the top-level.
-    if(root.children) {
-      root.children.forEach(collapse);
-    }
-
+    // No collapse at startup so all branches are visible.
     update(root);
-
-    // Collapse the node and all its children.
-    function collapse(d) {
-      if(d.children) {
-        d._children = d.children;
-        d._children.forEach(collapse);
-        d.children = null;
-      }
-    }
 
     // Update the tree whenever nodes are toggled.
     function update(source) {
