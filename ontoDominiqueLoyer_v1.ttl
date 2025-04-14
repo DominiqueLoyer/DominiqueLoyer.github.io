@@ -1,0 +1,312 @@
+#################################################################
+#    Ontologie "Dominique Loyer"
+#    Basée sur les données RDF/XML fournies par l'utilisateur.
+#    Formatage adapté selon le style fonctionnel précédent.
+#    Syntaxe: Turtle (TTL) - Ajout de sous-classes
+#################################################################
+
+#################################################################
+#    Préfixes et Base IRI
+#################################################################
+
+@prefix : <https://dominiqueloyer.github.io/ontologie#> .
+@base <https://dominiqueloyer.github.io/ontologie> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+#################################################################
+#    Métadonnées de l'Ontologie
+#################################################################
+
+<https://dominiqueloyer.github.io/ontologie> rdf:type owl:Ontology ;
+  rdfs:comment "Ontologie générée à partir des données RDF/XML fournies, modélisant les informations relatives à Dominique Loyer."@fr ;
+  rdfs:label "Ontologie Dominique Loyer"@fr .
+
+#################################################################
+#    Déclaration des Classes
+#################################################################
+
+:Personne rdf:type owl:Class .
+:Organisation rdf:type owl:Class .
+:Projet rdf:type owl:Class .
+
+:Publication rdf:type owl:Class .
+# --- Sous-classe ajoutée pour Publication ---
+:ArticleDeRevue rdf:type owl:Class ;
+  rdfs:subClassOf :Publication ;
+  rdfs:label "Article de Revue"@fr ;
+  rdfs:comment "Une publication évaluée par les pairs dans une revue scientifique ou académique."@fr .
+
+:Conference rdf:type owl:Class .
+# --- Sous-classes ajoutées pour Conference ---
+:ConferenceNationale rdf:type owl:Class ;
+  rdfs:subClassOf :Conference ;
+  rdfs:label "Conférence Nationale"@fr ;
+  rdfs:comment "Une conférence dont la portée et l'audience sont principalement nationales."@fr .
+:ConferenceInternationale rdf:type owl:Class ;
+  rdfs:subClassOf :Conference ;
+  rdfs:label "Conférence Internationale"@fr ;
+  rdfs:comment "Une conférence dont la portée et l'audience sont internationales."@fr .
+:Atelier rdf:type owl:Class ;
+  rdfs:subClassOf :Conference ;
+  rdfs:label "Atelier"@fr ;
+  rdfs:comment "Un événement plus petit et souvent plus interactif qu'une conférence formelle, parfois rattaché à une conférence plus grande."@fr .
+
+:Lecture rdf:type owl:Class .
+# --- Sous-classes ajoutées pour Lecture ---
+:SousClasseLecture1 rdf:type owl:Class ; rdfs:subClassOf :Lecture ; rdfs:label "Sous-classe de Lecture 1"@fr .
+:SousClasseLecture2 rdf:type owl:Class ; rdfs:subClassOf :Lecture ; rdfs:label "Sous-classe de Lecture 2"@fr .
+:SousClasseLecture3 rdf:type owl:Class ; rdfs:subClassOf :Lecture ; rdfs:label "Sous-classe de Lecture 3"@fr .
+:SousClasseLecture4 rdf:type owl:Class ; rdfs:subClassOf :Lecture ; rdfs:label "Sous-classe de Lecture 4"@fr .
+:SousClasseLecture5 rdf:type owl:Class ; rdfs:subClassOf :Lecture ; rdfs:label "Sous-classe de Lecture 5"@fr .
+:SousClasseLecture6 rdf:type owl:Class ; rdfs:subClassOf :Lecture ; rdfs:label "Sous-classe de Lecture 6"@fr .
+:SousClasseLecture7 rdf:type owl:Class ; rdfs:subClassOf :Lecture ; rdfs:label "Sous-classe de Lecture 7"@fr .
+:SousClasseLecture8 rdf:type owl:Class ; rdfs:subClassOf :Lecture ; rdfs:label "Sous-classe de Lecture 8"@fr .
+:SousClasseLecture9 rdf:type owl:Class ; rdfs:subClassOf :Lecture ; rdfs:label "Sous-classe de Lecture 9"@fr .
+:SousClasseLecture10 rdf:type owl:Class ; rdfs:subClassOf :Lecture ; rdfs:label "Sous-classe de Lecture 10"@fr .
+:SousClasseLecture11 rdf:type owl:Class ; rdfs:subClassOf :Lecture ; rdfs:label "Sous-classe de Lecture 11"@fr .
+:SousClasseLecture12 rdf:type owl:Class ; rdfs:subClassOf :Lecture ; rdfs:label "Sous-classe de Lecture 12"@fr .
+
+#################################################################
+#    Déclaration des Propriétés de Données
+#################################################################
+
+:nom rdf:type owl:DatatypeProperty ;
+  rdfs:comment "Propriété pour le nom (applicable à plusieurs classes)"@fr ;
+  rdfs:domain :Personne ;
+  rdfs:domain :Organisation ;
+  rdfs:domain :Projet ;
+  rdfs:domain :Publication ;
+  rdfs:domain :Conference ;
+  rdfs:domain :Lecture ;
+  rdfs:range xsd:string .
+
+:email rdf:type owl:DatatypeProperty ;
+  rdfs:domain :Personne ;
+  rdfs:range xsd:string .
+
+:orcid rdf:type owl:DatatypeProperty ;
+  rdfs:domain :Personne ;
+  rdfs:range xsd:string .
+
+:telephone rdf:type owl:DatatypeProperty ;
+  rdfs:label "téléphone"@fr ;
+  rdfs:comment "Numéro de téléphone de contact."@fr ;
+  rdfs:domain :Personne ;
+  rdfs:domain :Organisation ;
+  rdfs:range xsd:string .
+
+#################################################################
+#    Déclaration des Propriétés d'Objet
+#################################################################
+
+:affilieA rdf:type owl:ObjectProperty ;
+  rdfs:comment "Propriété objet pour l'affiliation"@fr ;
+  rdfs:domain :Personne ;
+  rdfs:range :Organisation .
+
+:aProjet rdf:type owl:ObjectProperty ;
+  rdfs:comment "Lie une personne à ses projets"@fr ;
+  rdfs:domain :Personne ;
+  rdfs:range :Projet .
+
+:estAuteurDePublication rdf:type owl:ObjectProperty ;
+  rdfs:comment "Lie une personne aux publications dont elle est auteur."@fr ;
+  rdfs:domain :Personne ;
+  rdfs:range :Publication .
+
+:publicationParAuteur rdf:type owl:ObjectProperty ;
+  owl:inverseOf :estAuteurDePublication ;
+  rdfs:comment "Lie une publication à ses auteurs."@fr ;
+  rdfs:domain :Publication ;
+  rdfs:range :Personne .
+
+:aPresenteAConference rdf:type owl:ObjectProperty ;
+  rdfs:comment "Lie une personne aux conférences où elle a présenté."@fr ;
+  rdfs:domain :Personne ;
+  rdfs:range :Conference .
+
+:conferenceAvecPresentationDe rdf:type owl:ObjectProperty ;
+  owl:inverseOf :aPresenteAConference ;
+  rdfs:comment "Lie une conférence aux personnes y ayant présenté."@fr ;
+  rdfs:domain :Conference ;
+  rdfs:range :Personne .
+
+:aDonneLecture rdf:type owl:ObjectProperty ;
+  rdfs:comment "Lie une personne aux lectures/cours qu'elle a donnés."@fr ;
+  rdfs:domain :Personne ;
+  rdfs:range :Lecture .
+
+:lectureDonneePar rdf:type owl:ObjectProperty ;
+  owl:inverseOf :aDonneLecture ;
+  rdfs:comment "Lie une lecture/cours à la personne l'ayant donné."@fr ;
+  rdfs:domain :Lecture ;
+  rdfs:range :Personne .
+
+#################################################################
+#    Déclaration des Individus
+#################################################################
+
+:DominiqueS_Loyer rdf:type owl:NamedIndividual ,
+                          :Personne ;
+  :nom "Dominique S. Loyer" ;
+  :email "votreconsultant@gmail.com" ;
+  :orcid "0009-0003-9713-7109" ;
+  :telephone "+1-819-412-3970"^^xsd:string ;
+  :affilieA :SherbrookeInformatiqueInc ;
+  :aProjet :Projet1 ,
+           :Projet2 ,
+           :Projet3 ,
+           :Projet4 ,
+           :Projet5 ,
+           :Projet6 ,
+           :Projet7 ,
+           :Projet8 ,
+           :Projet9 ,
+           :Projet10 ,
+           :Projet11 ,
+           :Projet12 ,
+           :Projet13 ;
+  :estAuteurDePublication :Publication1 ;
+  :aPresenteAConference :Conference1 ,
+                        :Conference2 ,
+                        :Conference3 ;
+  :aDonneLecture :Lecture1 ,
+                 :Lecture2 ,
+                 :Lecture3 ,
+                 :Lecture4 ,
+                 :Lecture5 ,
+                 :Lecture6 ,
+                 :Lecture7 ,
+                 :Lecture8 ,
+                 :Lecture9 ,
+                 :Lecture10 ,
+                 :Lecture11 ,
+                 :Lecture12 .
+
+:SherbrookeInformatiqueInc rdf:type owl:NamedIndividual ,
+                                   :Organisation ;
+  :nom "Sherbrooke Informatique Inc." .
+
+:Projet1 rdf:type owl:NamedIndividual ,
+                 :Projet ;
+  :nom "Project 1" .
+
+:Projet2 rdf:type owl:NamedIndividual ,
+                 :Projet ;
+  :nom "Project 2" .
+
+:Projet3 rdf:type owl:NamedIndividual ,
+                 :Projet ;
+  :nom "Project 3" .
+
+:Projet4 rdf:type owl:NamedIndividual ,
+                 :Projet ;
+  :nom "Project 4" .
+
+:Projet5 rdf:type owl:NamedIndividual ,
+                 :Projet ;
+  :nom "Project 5" .
+
+:Projet6 rdf:type owl:NamedIndividual ,
+                 :Projet ;
+  :nom "Project 6" .
+
+:Projet7 rdf:type owl:NamedIndividual ,
+                 :Projet ;
+  :nom "Project 7" .
+
+:Projet8 rdf:type owl:NamedIndividual ,
+                 :Projet ;
+  :nom "Project 8" .
+
+:Projet9 rdf:type owl:NamedIndividual ,
+                 :Projet ;
+  :nom "Project 9" .
+
+:Projet10 rdf:type owl:NamedIndividual ,
+                  :Projet ;
+  :nom "Project 10" .
+
+:Projet11 rdf:type owl:NamedIndividual ,
+                  :Projet ;
+  :nom "Project 11" .
+
+:Projet12 rdf:type owl:NamedIndividual ,
+                  :Projet ;
+  :nom "Project 12" .
+
+:Projet13 rdf:type owl:NamedIndividual ,
+                  :Projet ;
+  :nom "Project 13" .
+
+:Publication1 rdf:type owl:NamedIndividual ,
+                    :Publication ;
+  :nom "loyerTransparence_responsabilite_algorithme_personnalisation2024" .
+
+:Conference1 rdf:type owl:NamedIndividual ,
+                   :Conference ;
+  :nom "L’intelligence artificielle, qu’est-ce que c’est?" .
+
+:Conference2 rdf:type owl:NamedIndividual ,
+                   :Conference ;
+  :nom "Les algorithmese" .
+
+:Conference3 rdf:type owl:NamedIndividual ,
+                   :Conference ;
+  :nom "Les enjeux de la confidentialité des données" .
+
+:Lecture1 rdf:type owl:NamedIndividual ,
+                :Lecture ;
+  :nom "Chargé de cours pour Simple comptable et Excel" .
+
+:Lecture2 rdf:type owl:NamedIndividual ,
+                :Lecture ;
+  :nom "571-RC4-AS PRINCIPES COMPTABLES (avec le logiciel Simple Comptable)" .
+
+:Lecture3 rdf:type owl:NamedIndividual ,
+                :Lecture ;
+  :nom "571-BF4-AS INTRODUCTION À LA PLANIFICATION FINANCIÈRE ET BUDGÉTAIRE (Avec MS Excel)" .
+
+:Lecture4 rdf:type owl:NamedIndividual ,
+                :Lecture ;
+  :nom "Traitement et représentation graphique des données (avec MS Excel, niveaux débutant, intermédiaire et avancé)" .
+
+:Lecture5 rdf:type owl:NamedIndividual ,
+                :Lecture ;
+  :nom "412-DM2-AS GESTION DE PROJET ET ORGANISATION D’ÉVÈNEMENTS" .
+
+:Lecture6 rdf:type owl:NamedIndividual ,
+                :Lecture ;
+  :nom "582-DM2-AS Programmation web (niveau intermédiaire)" .
+
+:Lecture7 rdf:type owl:NamedIndividual ,
+                :Lecture ;
+  :nom "412-BM2-AS CRÉER DES PRÉSENTATIONS MULTIMÉDIAS (Avec PowerPoint)" .
+
+:Lecture8 rdf:type owl:NamedIndividual ,
+                :Lecture ;
+  :nom "582-MB3-AS NUMÉRISATION ET TRAITEMENT DE L’IMAGE NUMÉRIQUE" .
+
+:Lecture9 rdf:type owl:NamedIndividual ,
+                :Lecture ;
+  :nom "412-AM2-AS MESSAGERIE ÉLECTRONIQUE ET RECHERCHE WEB" .
+
+:Lecture10 rdf:type owl:NamedIndividual ,
+                 :Lecture ;
+  :nom "571-RX3-AS GESTION DES MARCHANDISES MODE" .
+
+:Lecture11 rdf:type owl:NamedIndividual ,
+                 :Lecture ;
+  :nom "571-R33-AS APPROCHE À LA PLANIFICATION (Stratégies de l’entreprise)" .
+
+:Lecture12 rdf:type owl:NamedIndividual ,
+                 :Lecture ;
+  :nom "-Cours sur Microsoft Word" .
+
+# --- Fin de l'ontologie ---
