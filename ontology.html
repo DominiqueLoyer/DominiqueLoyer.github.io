@@ -324,6 +324,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         .attr("width", width + margin.right + margin.left)
         .attr("height", height + margin.top + margin.bottom)
       .append("g")
+        .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     var i = 0,
@@ -371,11 +372,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           });
 
       // Add labels for the nodes.
-      nodeEnter.append('text')
-          .attr("dy", ".6em")
-          .attr("x", function(d) {
-              return d.children || d._children ? -13 : 13;
-          })
+      // Pour chaque nœud, si d.data.url existe, on crée un <a>, sinon on tombe
+var link = nodeEnter.append("a")
+  .attr("xlink:href", function(d) { return d.data.url || "#"; })
+  .attr("target", "_blank");
+
+// on y place le text
+link.append("text")
+  .attr("dy", ".6em")
+  .attr("x", function(d) { return d.children || d._children ? -13 : 13; })
+  .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+  .text(function(d) { return d.data.name; });
+
           .attr("text-anchor", function(d) {
               return d.children || d._children ? "end" : "start";
           })
