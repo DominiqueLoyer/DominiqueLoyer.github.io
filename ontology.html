@@ -1,7 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<<!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <title>Animated Ontology Tree</title>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <style>
+    .node { cursor: pointer; }
+    .node circle { fill: #fff; stroke: steelblue; stroke-width: 3px; }
+    .node text { font: 14px sans-serif; }
+    .link { fill: none; stroke: #ccc; stroke-width: 2px; }
+  </style>
+
+
 
 <link rel="icon" href="peace.png" alt="STOP T H E W A R!" width="16" height="16" type="image/icon type"> 
   <!-- Google Tag Manager -->
@@ -32,21 +42,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <title>Dominique Loyer researcher's ontology</title>
 
   
-  <script src="https://d3js.org/d3.v5.min.js"></script>
-  <style>
-    .node { cursor: pointer; }
-    .node circle { fill: #fff; stroke: steelblue; stroke-width: 1px; }
-    .node text { font: 7px sans-serif; }
-    .link { fill: none; stroke: #ccc; stroke-width: 1px; }
-  </style>
+
 </head>
 <body>
-  <h2>Dominique Loyer researcher's ontology</h2>
+  <h2>Researcher's Ontology</h2>
   <div id="tree-container"></div>
-  <!-- début structure JSON de l'ontologie -->
+  <!-- Ici, nous définissons la structure JSON de l'ontologie -->
   <script>
     var treeData = {
-      "name": "Researcher",
+      "name": "Ontologie Dominique Loyer",
       "children": [
         {
           "name": "Classes",
@@ -91,9 +95,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     { "name": "Axiom: rdfs:comment \"Une publication évaluée par les pairs dans une revue scientifique ou académique.\"" }
                   ]
                 },
-                {"name": "Projet de thèse de Dominique Loyer","url": "https://dominiqueloyer.github.io/docs/thesis_dl.pdf"
-            }
-
+                { "name": "Individual: Publication1" }
               ]
             },
             {
@@ -120,7 +122,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     { "name": "Axiom: rdfs:comment \"Un événement plus petit et souvent plus interactif qu'une conférence formelle, parfois rattaché à une conférence plus grande.\"" }
                   ]
                 },
-                {"name": "L'intelligence articielle, Qu'est ce que c'est?","url": "https://dominiqueloyer.github.io/docs/l'intelligence artificielle.pdf"},
+                { "name": "Individual: Conference1" },
                 { "name": "Individual: Conference2" },
                 { "name": "Individual: Conference3" }
               ]
@@ -324,7 +326,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         .attr("width", width + margin.right + margin.left)
         .attr("height", height + margin.top + margin.bottom)
       .append("g")
-        .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     var i = 0,
@@ -349,7 +350,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           links = treeData.descendants().slice(1);
 
       // Normalize for fixed-depth.
-      nodes.forEach(function(d){ d.y = d.depth * 100; });
+      nodes.forEach(function(d){ d.y = d.depth * 180; });
 
       // ****************** Nodes section ***************************
       var node = svg.selectAll('g.node')
@@ -372,18 +373,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           });
 
       // Add labels for the nodes.
-      // Pour chaque nœud, si d.data.url existe, on crée un <a>, sinon on tombe
-var link = nodeEnter.append("a")
-  .attr("xlink:href", function(d) { return d.data.url || "#"; })
-  .attr("target", "_blank");
-
-// on y place le text
-link.append("text")
-  .attr("dy", ".6em")
-  .attr("x", function(d) { return d.children || d._children ? -13 : 13; })
-  .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-  .text(function(d) { return d.data.name; });
-
+      nodeEnter.append('text')
+          .attr("dy", ".35em")
+          .attr("x", function(d) {
+              return d.children || d._children ? -13 : 13;
+          })
           .attr("text-anchor", function(d) {
               return d.children || d._children ? "end" : "start";
           })
@@ -396,7 +390,7 @@ link.append("text")
           .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
 
       nodeUpdate.select('circle.node')
-          .attr('r', 6)
+          .attr('r', 10)
           .style("fill", function(d) {
               return d._children ? "lightsteelblue" : "#fff";
           })
