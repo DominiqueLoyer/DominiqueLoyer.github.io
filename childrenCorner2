@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Animation: Précision et Rappel</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+    canvas { border: 1px solid #ccc; margin-top: 10px; }
+    button { margin: 5px; padding: 10px 20px; }
+  </style>
+</head>
+<body>
+  <h1>Animation: Précision et Rappel</h1>
+  <canvas id="myCanvas" width="800" height="550"></canvas>
+  <div>
+    <button onclick="drawAnimation()">Lancer l'animation</button>
+  </div>
+  
+  <script>
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    
+    // Dessiner un fruit (type : "pomme" ou "orange")
+    // highlight : true si c'est une bonne classification (vrai positif)
+    function drawFruit(x, y, type, highlight = false) {
+      ctx.beginPath();
+      if (type === "pomme") {
+        ctx.fillStyle = highlight ? "#FFB6C1" : "#DC143C"; // rose clair si correct, rouge sinon
+      } else if (type === "orange") {
+        ctx.fillStyle = highlight ? "#FFDAB9" : "#FF8C00"; // pêche si correct, orange sinon
+      }
+      ctx.arc(x, y, 20, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "black";
+      ctx.stroke();
+      ctx.fillStyle = "white";
+      ctx.font = "16px Arial";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(type === "pomme" ? "P" : "O", x, y);
+    }
+    
+    function drawAnimation() {
+      clearCanvas();
+      
+      // Titre
+      ctx.fillStyle = "black";
+      ctx.font = "24px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("Classification: Précision et Rappel", canvas.width/2, 30);
+      
+      // Ligne de séparation pour distinguer les deux catégories
+      ctx.beginPath();
+      ctx.moveTo(canvas.width/2, 50);
+      ctx.lineTo(canvas.width/2, canvas.height);
+      ctx.strokeStyle = "gray";
+      ctx.stroke();
+      
+      // Légendes pour chaque classe
+      ctx.font = "20px Arial";
+      ctx.fillText("Classe Pomme", canvas.width/4, 70);
+      ctx.fillText("Classe Orange", 3 * canvas.width/4, 70);
+      
+      // Positions pour la classification "Pomme" (côté gauche)
+      let applePositions = [];
+      for (let i = 0; i < 5; i++) {
+        applePositions.push({ x: 80 + i * 60, y: 120 });
+      }
+      
+      // Positions pour la classification "Orange" (côté droit)
+      let orangePositions = [];
+      for (let i = 0; i < 5; i++) {
+        orangePositions.push({ x: canvas.width/2 + 80 + i * 60, y: 120 });
+      }
+      
+      // Affichage initial sans surlignage
+      // Classification "Pomme" : 3 pommes (vrai positif) et 2 oranges (faux positif)
+      for (let i = 0; i < 5; i++) {
+        if (i < 3) {
+          drawFruit(applePositions[i].x, applePositions[i].y, "pomme", false);
+        } else {
+          drawFruit(applePositions[i].x, applePositions[i].y, "orange", false);
+        }
+      }
+      
+      // Classification "Orange" : 4 oranges (vrai positif) et 1 pomme (faux positif)
+      for (let i = 0; i < 5; i++) {
+        if (i < 4) {
+          drawFruit(orangePositions[i].x, orangePositions[i].y, "orange", false);
+        } else {
+          drawFruit(orangePositions[i].x, orangePositions[i].y, "pomme", false);
+        }
+      }
+      
+      // Affichage des chiffres pour la classification
+      ctx.font = "18px Arial";
+      ctx.fillText("Précision (Pomme) = 3/5 = 60%", canvas.width/4, 200);
+      ctx.fillText("Rappel (Pomme) = 3/4 = 75%", canvas.width/4, 230);
+      ctx.fillText("Précision (Orange) = 4/5 = 80%", 3*canvas.width/4, 200);
+      
+      // Explication pour les enfants, affichée dans la zone des pommes
+      ctx.font = "16px Arial";
+      ctx.fillStyle = "black";
+      ctx.fillText("La précision, c'est quand seulement 3 pommes sur 5", canvas.width/4, 270);
+      ctx.fillText("sont bien classées, donc 60% de réussite.", canvas.width/4, 295);
+      ctx.fillText("Le rappel, c'est 3 bonnes pommes sur 4 en réalité,", canvas.width/4, 320);
+      ctx.fillText("ce qui fait 75% de rappel.", canvas.width/4, 345);
+      
+      // Après 2 secondes, surligner les bons fruits (vrais positifs)
+      setTimeout(() => {
+        // Surligner dans la classification "Pomme"
+        for (let i = 0; i < 5; i++) {
+          if (i < 3) {
+            drawFruit(applePositions[i].x, applePositions[i].y, "pomme", true);
+          } else {
+            drawFruit(applePositions[i].x, applePositions[i].y, "orange", false);
+          }
+        }
+        // Surligner dans la classification "Orange"
+        for (let i = 0; i < 5; i++) {
+          if (i < 4) {
+            drawFruit(orangePositions[i].x, orangePositions[i].y, "orange", true);
+          } else {
+            drawFruit(orangePositions[i].x, orangePositions[i].y, "pomme", false);
+          }
+        }
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
