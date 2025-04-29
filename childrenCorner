@@ -1,1 +1,131 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Animation de Classification</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+    canvas { border: 1px solid #ccc; margin-top: 10px; }
+    button { margin: 5px; padding: 10px 20px; }
+  </style>
+</head>
+<body>
+  <h1>Animation de Classification</h1>
+  <canvas id="myCanvas" width="800" height="400"></canvas>
+  <div>
+    <button onclick="drawSlide1()">Cas équilibré</button>
+    <button onclick="drawSlide2()">Cas déséquilibré</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Fonction pour dessiner un fruit (type : "orange" ou "pomme")
+    function drawFruit(x, y, type, highlight = false) {
+      ctx.beginPath();
+      if (type === "orange") {
+        ctx.fillStyle = highlight ? "#FFA500" : "#FF8C00"; // orange clair ou foncé
+      } else if (type === "pomme") {
+        ctx.fillStyle = highlight ? "#FF6347" : "#DC143C"; // rouge clair ou foncé
+      }
+      ctx.arc(x, y, 20, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "black";
+      ctx.stroke();
+      ctx.fillStyle = "white";
+      ctx.font = "16px Arial";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(type === "orange" ? "O" : "P", x, y);
+    }
+
+    // Slide 1 : Cas équilibré (10 oranges, 10 pommes)
+    function drawSlide1() {
+      clearCanvas();
+      ctx.fillStyle = "black";
+      ctx.font = "24px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("Cas équilibré : 10 oranges et 10 pommes", canvas.width / 2, 30);
+
+      // Positions : deux rangées de 10 fruits
+      let positionsOrange = [];
+      let positionsPomme = [];
+      for (let i = 0; i < 10; i++) {
+        positionsOrange.push({ x: 70 + i * 70, y: 100 });
+        positionsPomme.push({ x: 70 + i * 70, y: 200 });
+      }
+      
+      // Dessine toutes les oranges et pommes sans surlignage
+      positionsOrange.forEach(pos => drawFruit(pos.x, pos.y, "orange", false));
+      positionsPomme.forEach(pos => drawFruit(pos.x, pos.y, "pomme", false));
+
+      // Après 2 secondes, surligne les fruits correctement classifiés
+      setTimeout(() => {
+        // Pour oranges : 4 sur 5 = 80% → 8/10 oranges bien classifiées
+        let indicesOrange = [0,1,2,3,4,5,6,7,8,9];
+        indicesOrange.sort(() => 0.5 - Math.random());
+        let highlightOrange = indicesOrange.slice(0, 8);
+        for (let i = 0; i < 10; i++) {
+          let pos = positionsOrange[i];
+          let hl = highlightOrange.includes(i);
+          drawFruit(pos.x, pos.y, "orange", hl);
+        }
+        // Pour pommes : 3 sur 5 = 60% → 6/10 pommes bien classifiées
+        let indicesPomme = [0,1,2,3,4,5,6,7,8,9];
+        indicesPomme.sort(() => 0.5 - Math.random());
+        let highlightPomme = indicesPomme.slice(0, 6);
+        for (let i = 0; i < 10; i++) {
+          let pos = positionsPomme[i];
+          let hl = highlightPomme.includes(i);
+          drawFruit(pos.x, pos.y, "pomme", hl);
+        }
+        // Affiche la précision globale
+        ctx.fillStyle = "black";
+        ctx.font = "20px Arial";
+        ctx.fillText("Précision globale : 70%", canvas.width / 2, 300);
+      }, 2000);
+    }
+
+    // Slide 2 : Cas déséquilibré (9 oranges, 1 pomme)
+    function drawSlide2() {
+      clearCanvas();
+      ctx.fillStyle = "black";
+      ctx.font = "24px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("Cas déséquilibré : 9 oranges et 1 pomme", canvas.width / 2, 30);
+
+      // Positions pour 10 fruits sur une rangée
+      let positions = [];
+      for (let i = 0; i < 10; i++) {
+        positions.push({ x: 70 + i * 70, y: 100 });
+      }
+      // Dessine 9 oranges et 1 pomme (position 10 pour la pomme)
+      for (let i = 0; i < 9; i++) {
+        drawFruit(positions[i].x, positions[i].y, "orange", false);
+      }
+      drawFruit(positions[9].x, positions[9].y, "pomme", false);
+
+      // Après 2 secondes, simule le modèle prédisant toutes les oranges
+      setTimeout(() => {
+        // Dessine une coche verte sur chaque fruit prédit comme orange
+        positions.forEach(pos => {
+          ctx.fillStyle = "green";
+          ctx.fillRect(pos.x - 10, pos.y - 10, 20, 20);
+        });
+        ctx.fillStyle = "black";
+        ctx.font = "20px Arial";
+        ctx.fillText("Le modèle prédit 10 oranges. Pomme ignorée.", canvas.width / 2, 300);
+      }, 2000);
+    }
+
+    // Affiche par défaut le slide 1
+    drawSlide1();
+  </script>
+</body>
+</html>
