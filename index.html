@@ -29,36 +29,40 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="msvalidate.01" content="36DCA3D92C79DDE66E87BAC045F726AE" />
   <title>D Ф m i И i q ц e L Ф y e r ~ AI researcher in Montreal</title>
- <style>
-        /* Styles existants de l'utilisateur */
-        div {
-          /* border: 1px solid black; */ /* Commenté car peut interférer avec le menu */
-          margin-top: 25px;
-          margin-bottom: 10px;
-          margin-right: 150px;
-          margin-left: 80px;
-          background-color: #f4f4f4;
-        }
+     <style>
+        /* Styles généraux du site (conservés et ajustés) */
         body {
           font-family: Arial, sans-serif;
-          font-size: 9px; /* Ajout de 'px' comme unité */
+          /* font-size: 9px; */ /* NOTE: 9px est très petit, ajustez si nécessaire. Ex: 14px */
+          font-size: 14px;
           margin: 0;
           padding: 0;
           background: #f4f4f4;
           color: #333;
-          text-align: center;
+          text-align: center; /* Le texte général est centré */
+          padding-bottom: 50px; /* Ajout de padding pour éviter que le footer ne cache le contenu */
         }
         header {
           background: #333;
           color: #fff;
           padding: 0.5rem 0;
+          /* text-align: left; */ /* Alignement à gauche pour le contenu du header si besoin */
         }
         header h1 {
           margin: 0;
-          font-size: 8px; /* Ajout de 'px' comme unité */
+          /* font-size: 8px; */ /* NOTE: 8px est très petit, ajustez si nécessaire. Ex: 1.5em */
+          font-size: 1.5em;
+          padding: 0 1rem; /* Ajoute un peu d'espace */
         }
         section {
           padding: 1rem;
+          margin-top: 25px;
+          margin-bottom: 10px;
+          margin-right: 80px; /* Ajustement possible des marges */
+          margin-left: 80px;
+          background-color: #fff; /* Fond blanc pour la section principale */
+          border: 1px solid #ccc; /* Bordure légère */
+          text-align: left; /* Aligne le texte de la section à gauche */
         }
         footer {
           background: #333;
@@ -67,40 +71,37 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           position: fixed;
           width: 100%;
           bottom: 0;
+          text-align: center; /* Centre le texte du footer */
+          z-index: 10; /* S'assure que le footer reste au-dessus */
         }
-        /* Correction de la syntaxe pour le lien dans le footer */
         footer a {
            color: white;
+           text-decoration: none; /* Enlève le soulignement */
         }
-        /* Style général pour les UL (peut être surchargé par nav ul) */
-        ul {
-           list-style-type: none;
-           margin: 0;
-           padding: 0;
-           width: 100px; /* Attention: très étroit, pourrait affecter d'autres listes */
-        }
-        /* Style général pour les LI A (peut être surchargé par nav ul li a) */
-        li a {
-           display: block;
-           background-color: #faf8f5;
+        footer a:hover {
+           text-decoration: underline; /* Souligne au survol */
         }
 
-        /* Styles ajoutés/fusionnés pour le menu déroulant */
+        /* Styles spécifiques pour le menu déroulant horizontal */
+        nav {
+            text-align: center; /* Centre la barre de navigation elle-même */
+            background-color: #eee; /* Couleur de fond pour la barre de nav */
+            padding: 10px 0; /* Padding vertical */
+            border-bottom: 1px solid #ccc; /* Ligne de séparation */
+        }
         nav ul {
             list-style: none;
             padding: 0;
-            margin: 0 auto; /* Centre la barre de nav si elle a une largeur définie */
-            background-color: #eee; /* Couleur de fond exemple pour la nav */
-            padding: 10px;
-            width: auto; /* Surcharge le width: 100px général pour la nav */
-            text-align: left; /* Aligne le texte du menu à gauche */
-            display: inline-block; /* Pour centrer le bloc nav si text-align: center est sur body */
+            margin: 0; /* Réinitialise marge/padding */
+            display: inline-block; /* Permet de centrer la liste */
+            width: auto; /* Annule le width: 100px général */
         }
 
         nav ul li {
-            margin-bottom: 5px;
+            margin: 0 5px; /* Espace horizontal entre les éléments */
+            padding: 0; /* Réinitialise padding */
             position: relative; /* Important pour le positionnement du sous-menu */
-            display: inline-block; /* Pour un menu horizontal, ou 'block' pour vertical */
+            display: inline-block; /* Pour un menu horizontal */
         }
 
         /* Style spécifique pour les liens dans la nav */
@@ -108,13 +109,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             text-decoration: none;
             color: #333;
             display: block;
-            padding: 5px 15px; /* Ajustement du padding pour l'apparence */
-            background-color: #eee; /* Surcharge le background général li a */
+            padding: 8px 15px; /* Padding pour les liens */
+            background-color: #eee; /* Fond des liens */
+            border-radius: 4px; /* Coins arrondis */
+            transition: background-color 0.3s; /* Transition douce */
         }
 
         /* Hover spécifique pour les liens dans la nav */
         nav ul li a:hover {
-            background-color: #ddd; /* Surcharge le background général li a */
+            background-color: #ddd;
         }
 
         /* Style du sous-menu */
@@ -124,33 +127,36 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             left: 0; /* Alignement à gauche */
             top: 100%; /* Apparaît juste en dessous du li parent */
             background-color: #f9f9f9; /* Couleur de fond du sous-menu */
-            min-width: 160px; /* Largeur minimale */
+            min-width: 180px; /* Largeur minimale ajustée */
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1; /* S'assure qu'il est au-dessus des autres éléments */
+            z-index: 100; /* S'assure qu'il est au-dessus des autres éléments */
             list-style: none;
-            padding: 0;
+            padding: 5px 0; /* Padding vertical pour le conteneur du sous-menu */
             margin: 0; /* Réinitialise marge/padding */
             width: auto; /* Assure que le sous-menu prend sa largeur naturelle */
+            border-radius: 4px; /* Coins arrondis */
+            text-align: left; /* Aligne le texte du sous-menu à gauche */
         }
 
         /* Style des éléments du sous-menu */
         .submenu li {
             display: block; /* Assure que les éléments du sous-menu sont verticaux */
-            margin-bottom: 0; /* Enlève la marge du bas pour les éléments du sous-menu */
+            margin: 0; /* Enlève la marge pour les éléments du sous-menu */
         }
 
         .submenu li a {
             color: black;
-            padding: 12px 16px;
+            padding: 10px 15px; /* Padding pour les liens du sous-menu */
             text-decoration: none;
             display: block;
             white-space: nowrap; /* Empêche le retour à la ligne */
             background-color: #f9f9f9; /* Fond pour les éléments du sous-menu */
+            border-radius: 0; /* Pas de coins arrondis pour les liens internes */
         }
 
         /* Hover pour les éléments du sous-menu */
         .submenu li a:hover {
-            background-color: #f1f1f1; /* Fond différent au survol */
+            background-color: #e0e0e0; /* Fond différent au survol */
         }
 
         /* Afficher le sous-menu au survol du LI parent */
@@ -163,9 +169,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
              content: ' ▼'; /* Petite flèche vers le bas */
              font-size: 0.7em;
              margin-left: 5px;
+             vertical-align: middle; /* Alignement vertical de la flèche */
         }
 
     </style>
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="https://dominiqueloyer.github.io/">About</a></li>
+        <li><a href="https://dominiqueloyer.github.io/papers.html">Papers</a></li>
+        <li><a href="https://dominiqueloyer.github.io/conferences.html">Conferences</a></li>
+        <li><a href="https://dominiqueloyer.github.io/lectures.html">Lectures</a></li>
+        <li><a href="https://dominiqueloyer.github.io/ontology.html">Researcher Ontology</a></li>
+        <li class="has-submenu"> <a href="#">Children's Corner</a> <ul class="submenu">
+                <li><a href="https://dominiqueloyer.github.io/childrenCorner2.html">Breakout Game</a></li> <li><a href="https://dominiqueloyer.github.io/pong.html">Pong</a></li>
+                <li><a href="https://dominiqueloyer.github.io/amusezvous.html">Blocs (Original)</a></li> </ul>
+        </li>
+        </ul>
+</nav>
   
     <!-- données structurees -->
   
