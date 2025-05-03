@@ -30,165 +30,62 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <meta name="msvalidate.01" content="36DCA3D92C79DDE66E87BAC045F726AE" />
   <title>D Ф m i И i q ц e L Ф y e r ~ AI researcher in Montreal</title>
      <style>
-        /* Styles généraux du site (conservés et ajustés) */
-        body {
-          font-family: Arial, sans-serif;
-          /* font-size: 9px; */ /* NOTE: 9px est très petit, ajustez si nécessaire. Ex: 14px */
-          font-size: 14px;
-          margin: 0;
-          padding: 0;
-          background: #f4f4f4;
-          color: #333;
-          text-align: center; /* Le texte général est centré */
-          padding-bottom: 50px; /* Ajout de padding pour éviter que le footer ne cache le contenu */
-        }
-        header {
-          background: #333;
-          color: #fff;
-          padding: 0.5rem 0;
-          /* text-align: left; */ /* Alignement à gauche pour le contenu du header si besoin */
-        }
-        header h1 {
-          margin: 0;
-          /* font-size: 8px; */ /* NOTE: 8px est très petit, ajustez si nécessaire. Ex: 1.5em */
-          font-size: 1.5em;
-          padding: 0 1rem; /* Ajoute un peu d'espace */
-        }
-        section {
-          padding: 1rem;
-          margin-top: 25px;
-          margin-bottom: 10px;
-          margin-right: 80px; /* Ajustement possible des marges */
-          margin-left: 80px;
-          background-color: #fff; /* Fond blanc pour la section principale */
-          border: 1px solid #ccc; /* Bordure légère */
-          text-align: left; /* Aligne le texte de la section à gauche */
-        }
-        footer {
-          background: #333;
-          color: #fff;
-          padding: 0.5rem 0;
-          position: fixed;
-          width: 100%;
-          bottom: 0;
-          text-align: center; /* Centre le texte du footer */
-          z-index: 10; /* S'assure que le footer reste au-dessus */
-        }
-        footer a {
-           color: white;
-           text-decoration: none; /* Enlève le soulignement */
-        }
-        footer a:hover {
-           text-decoration: underline; /* Souligne au survol */
-        }
+    div {
+      border: 1px solid black;
+      margin-top: 25px;
+      margin-bottom: 10px;
+      margin-right: 150px;
+      margin-left: 80px;
+      background-color: #f4f4f4;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      font-size:9;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+      color: #333;
+      text-align: center;
+    }
+    header {
+      background: #333;
+      color: #fff;
+      padding: 0.5rem 0;
+    }
+    header h1 {
+      margin: 0;
+      font-size:8;
+    }
+    section {
+      padding: 1rem;
+    }
+    footer {
+      background: #333;
+      a {
+        color:white;
+      }
+      color: #fff;
+      padding: 0.5rem 0;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+    }
+    ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 100px;
+    } 
+    li a {
+  display: block;
+  background-color: #faf8f5;
+    }
 
-        /* Styles spécifiques pour le menu déroulant horizontal */
-        nav {
-            text-align: center; /* Centre la barre de navigation elle-même */
-            background-color: #eee; /* Couleur de fond pour la barre de nav */
-            padding: 10px 0; /* Padding vertical */
-            border-bottom: 1px solid #ccc; /* Ligne de séparation */
-        }
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0; /* Réinitialise marge/padding */
-            display: inline-block; /* Permet de centrer la liste */
-            width: auto; /* Annule le width: 100px général */
-        }
+  </style>
 
-        nav ul li {
-            margin: 0 5px; /* Espace horizontal entre les éléments */
-            padding: 0; /* Réinitialise padding */
-            position: relative; /* Important pour le positionnement du sous-menu */
-            display: inline-block; /* Pour un menu horizontal */
-        }
-
-        /* Style spécifique pour les liens dans la nav */
-        nav ul li a {
-            text-decoration: none;
-            color: #333;
-            display: block;
-            padding: 8px 15px; /* Padding pour les liens */
-            background-color: #eee; /* Fond des liens */
-            border-radius: 4px; /* Coins arrondis */
-            transition: background-color 0.3s; /* Transition douce */
-        }
-
-        /* Hover spécifique pour les liens dans la nav */
-        nav ul li a:hover {
-            background-color: #ddd;
-        }
-
-        /* Style du sous-menu */
-        .submenu {
-            display: none; /* Caché par défaut */
-            position: absolute; /* Positionné par rapport au li parent */
-            left: 0; /* Alignement à gauche */
-            top: 100%; /* Apparaît juste en dessous du li parent */
-            background-color: #f9f9f9; /* Couleur de fond du sous-menu */
-            min-width: 180px; /* Largeur minimale ajustée */
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 100; /* S'assure qu'il est au-dessus des autres éléments */
-            list-style: none;
-            padding: 5px 0; /* Padding vertical pour le conteneur du sous-menu */
-            margin: 0; /* Réinitialise marge/padding */
-            width: auto; /* Assure que le sous-menu prend sa largeur naturelle */
-            border-radius: 4px; /* Coins arrondis */
-            text-align: left; /* Aligne le texte du sous-menu à gauche */
-        }
-
-        /* Style des éléments du sous-menu */
-        .submenu li {
-            display: block; /* Assure que les éléments du sous-menu sont verticaux */
-            margin: 0; /* Enlève la marge pour les éléments du sous-menu */
-        }
-
-        .submenu li a {
-            color: black;
-            padding: 10px 15px; /* Padding pour les liens du sous-menu */
-            text-decoration: none;
-            display: block;
-            white-space: nowrap; /* Empêche le retour à la ligne */
-            background-color: #f9f9f9; /* Fond pour les éléments du sous-menu */
-            border-radius: 0; /* Pas de coins arrondis pour les liens internes */
-        }
-
-        /* Hover pour les éléments du sous-menu */
-        .submenu li a:hover {
-            background-color: #e0e0e0; /* Fond différent au survol */
-        }
-
-        /* Afficher le sous-menu au survol du LI parent */
-        nav ul li:hover > .submenu {
-            display: block;
-        }
-
-        /* Optionnel: Style pour l'élément parent pour indiquer qu'il a un sous-menu */
-        .has-submenu > a::after { /* Appliquer à l'élément 'a' dans le li */
-             content: ' ▼'; /* Petite flèche vers le bas */
-             font-size: 0.7em;
-             margin-left: 5px;
-             vertical-align: middle; /* Alignement vertical de la flèche */
-        }
-
-    </style>
 </head>
 <body>
 
-<nav>
-    <ul>
-        <li><a href="https://dominiqueloyer.github.io/">About</a></li>
-        <li><a href="https://dominiqueloyer.github.io/papers.html">Papers</a></li>
-        <li><a href="https://dominiqueloyer.github.io/conferences.html">Conferences</a></li>
-        <li><a href="https://dominiqueloyer.github.io/lectures.html">Lectures</a></li>
-        <li><a href="https://dominiqueloyer.github.io/ontology.html">Researcher Ontology</a></li>
-        <li class="has-submenu"> <a href="#">Children's Corner</a> <ul class="submenu">
-                <li><a href="https://dominiqueloyer.github.io/childrenCorner2.html">Breakout Game</a></li> <li><a href="https://dominiqueloyer.github.io/pong.html">Pong</a></li>
-                <li><a href="https://dominiqueloyer.github.io/amusezvous.html">Blocs (Original)</a></li> </ul>
-        </li>
-        </ul>
-</nav>
   
     <!-- données structurees -->
   
@@ -255,25 +152,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
  <I>Circa MMXIII</I><br> Moreover, he is involded in a researcher assistant position for l'institut des sciences cognitives at UQAM.<p align="right"><img src="peace.png" alt="STOP T H E W A R!" width="16" height="16"> S T Ф P  T H E  W A R!</p>
 
 
-nav>
-    <ul>
-        <li><a href="https://dominiqueloyer.github.io/">About</a></li>
-        <li><a href="https://dominiqueloyer.github.io/papers.html">Papers</a></li>
-        <li><a href="https://dominiqueloyer.github.io/conferences.html">Conferences</a></li>
-        <li><a href="https://dominiqueloyer.github.io/lectures.html">Lectures</a></li>
-        <li><a href="https://dominiqueloyer.github.io/ontology.html">Researcher Ontology</a></li>
-        <li class="has-submenu"> <a href="#">Children's Corner</a> <ul class="submenu">
-                <li><a href="https://dominiqueloyer.github.io/childrenCorner.html">Learn how Google Works!</a></li>
-                <li><a href="https://dominiqueloyer.github.io/childrenCorner2.html">Learn more!</a></li>
-                <li><a href="https://dominiqueloyer.github.io/pong.html">Pong</a></li>
-            </ul>
-        </li>
-        <li><a href="#">Autre Lien</a></li>
-    </ul>
-</nav>
+ <ul>
+  <li><a href="https://dominiqueloyer.github.io/">About</a></li>
+  <li><a href="https://dominiqueloyer.github.io/papers.html">Papers</a></li>
+  <li><a href="https://dominiqueloyer.github.io/conferences.html">Conferences</a></li>
+  <li><a href="https://dominiqueloyer.github.io/lectures.html">Lectures</a></li>
+  <li><a href="https://dominiqueloyer.github.io/ontology.html">Researcher Ontology</a></li>
+  <li> <a href="https://dominiqueloyer.github.io/childrenCorner.html">Children's Corner/a></li>
+  <li> <a href="https://dominiqueloyer.github.io/childrenCorner2.html">Kids,how Google works!</a></li>
+  <li> <a href="https://dominiqueloyer.github.io/pong.html">Pong Game</a></li>
+ </ul>
 
-    
-  </section>
    <center>
      <img src="dl.png" alt="Dominique S. Loyer" width="180" height="180">
    </center>
