@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faîtes tomber les blocs!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        /* Apply the game font */
+        body, button, .game-message {
+            font-family: 'Press Start 2P', cursive;
+        }
+        /* Center canvas and ensure it doesn't exceed viewport width */
+        canvas {
+            display: block;
+            margin: 0 auto;
+            background-color: #000; /* Original background */
+            max-width: 100%; /* Ensure canvas fits smaller screens */
+            border-radius: 0.5rem; /* Rounded corners */
+        }
+        /* Style for game messages */
+        .game-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 10; /* Ensure messages are on top */
+            display: none; /* Hidden by default */
+        }
+        /* Style for the start button */
+        #startButton {
+            display: block; /* Show by default */
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border: 4px outset magenta; /* Similar to original style */
+            color: blue;
+            background-color: yellow;
+            transition: background-color 0.3s, color 0.3s;
+            border-radius: 0.5rem; /* Rounded corners */
+        }
+        #startButton:hover {
+            color: white;
+            background-color: red;
+        }
+        /* Ensure container takes full height and centers content */
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0; /* Light background for the page */
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+        /* Style for score and lives display */
+        .game-info {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: #333;
+            text-align: center;
+            width: 100%;
+            max-width: 600px; /* Match typical canvas width */
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="game-container relative">
+        <div id="gameInfo" class="game-info">Score: 0 &nbsp;&nbsp; Lives: 3</div>
+        <canvas id="gameCanvas"></canvas>
+
+        <div id="messageArea" class="game-message bg-black bg-opacity-75 text-white">
+             <div id="messageText" class="mb-4 text-xl">Bienvenue!</div>
+             <button id="startButton">Allez-y!</button>
+        </div>
+
+         <div id="gameOverMessage" class="game-message bg-black bg-opacity-75 text-magenta-500" style="color: magenta;">
+             <div class="mb-4 text-2xl">GAME OVER</div>
+             <button id="restartButtonGameOver" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">Rejouer</button>
+        </div>
+
+         <div id="clearMessage" class="game-message bg-black bg-opacity-75 text-green-400">
+             <div class="mb-4 text-2xl">VOUS AVEZ GAGNÉ!</div>
+             <div id="finalScore" class="mb-4">Score: 0</div>
+             <button id="restartButtonClear" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">Rejouer</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Canvas and Context ---
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // --- Game Elements & State ---
+        let paddleHeight = 10;
+        let paddleWidth = 75;
+        let paddleX = (canvas.width - paddleWidth) / 2; // Initial position (will be updated on resize)
+        const paddleColor = "#B0B0FF"; // Original color
+
+        let ballRadius = 8;
+        let ballX = canvas.width / 2; // Initial position (will be updated)
+        let ballY = canvas.height - 30; // Initial position (will be updated)
+        let ballDX = 4; // Initial speed X
+        let ballDY = -4; // Initial speed Y
+        const ballColor = "#B0B0B0"; // Original color
+
+        let lives = 3;
+        let score = 0;
+        let gameRunning = false;
+        let animationFrameId; // To control the game loop
+
+        // --- Brick Configuration ---
+        const brickRowCount = 5;
+        const brickColumnCount = 8;
+        const brickWidth = 42; // Original width
+        const brickHeight = 16; // Original height
+        const brickPadding = 4; // Spacing between bricks
+        const brickOffsetTop = 40; // Space from canvas top
+        const brickOffsetLeft = 30; // Space from canvas left
+        const brickColors = [ // Original colors
+            "#FFFF00", // Row 1
+            "#FFCF00", // Row 2
+            "#FF7F00", // Row 3
+            "#FF3F00", // Row 4
+            "#FF0000"  // Row 5
+        ];
+        const brickHitPoints = 5; // How many hits to destroy a brick
+
+        let bricks = [];
+
+        // --- DOM Elements ---
+        const startButton = document.getElementById('startButton');
+        const messageArea = document.getElementById('messageArea');
+        const messageText = document.getElementById('messageText');
+        const gameInfo = document.getElementById('gameInfo');
+        const gameOverMessage = document.getElementById('gameOverMessage');
+        const clearMessage = document.getElementById('clearMessage');
+        const finalScoreDisplay = document.getElementById('finalScore');
+        const restartButtonGameOver = document.getElementById('restartButtonGameOver');
+        const restartButtonClear = document.getElementById('restartButtonClear');
+
+        // --- Utility Functions ---
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        // Function to darken a color (used for brick hits)
+        function darkenColor(hex, percent) {
+            const rgb = hexToRgb(hex);
+            if (!rgb) return hex; // Return original if conversion fails
+
+            const factor = 1 - percent / 100;
+            rgb.r = Math.max(0, Math.floor(rgb.r * factor));
+            rgb.g = Math.max(0, Math.floor(rgb.g * factor));
+            rgb.b = Math.max(0, Math.floor(rgb.b * factor));
+
+            // Convert back to hex
+            return `#${rgb.r.toString(16).padStart(2, '0')}${rgb.g.toString(16).padStart(2, '0')}${rgb.b.toString(16).padStart(2, '0')}`;
+        }
+
+        // --- Brick Initialization ---
+        function initializeBricks() {
+            bricks = [];
+            let totalBricks = 0;
+            for (let c = 0; c < brickColumnCount; c++) {
+                bricks[c] = [];
+                for (let r = 0; r < brickRowCount; r++) {
+                    // Calculate brick position
+                    const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+                    const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
+                    // Store brick info: position, status (hits left), initial color
+                    bricks[c][r] = {
+                        x: brickX,
+                        y: brickY,
+                        hitsLeft: brickHitPoints, // Start with full health
+                        initialColor: brickColors[r], // Color based on row
+                        status: 1 // 1 = active, 0 = destroyed
+                    };
+                    totalBricks++;
+                }
+            }
+            console.log("Bricks initialized:", totalBricks); // Debug log
+        }
+
+        // --- Drawing Functions ---
+        function drawPaddle() {
+            ctx.beginPath();
+            ctx.rect(paddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight); // Positioned 10px from bottom
+            ctx.fillStyle = paddleColor;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function drawBall() {
+            ctx.beginPath();
+            ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
+            ctx.fillStyle = ballColor;
+            ctx.fill();
+            // Add a simple white highlight like the original
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fillRect(ballX - ballRadius / 2, ballY - ballRadius / 1.5, ballRadius, ballRadius / 2 );
+            ctx.closePath();
+        }
+
+        function drawBricks() {
+            let activeBricksCount = 0;
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                    const brick = bricks[c][r];
+                    if (brick.status === 1) {
+                        activeBricksCount++;
+                        // Calculate current color based on hits left
+                        const hitRatio = (brickHitPoints - brick.hitsLeft) / (brickHitPoints -1); // 0 to 1 ratio
+                        const currentColor = darkenColor(brick.initialColor, hitRatio * 80); // Darken up to 80%
+
+                        ctx.beginPath();
+                        ctx.rect(brick.x, brick.y, brickWidth, brickHeight);
+                        ctx.fillStyle = currentColor;
+                        ctx.fill();
+                        ctx.closePath();
+                    }
+                }
+            }
+             // console.log("Active bricks:", activeBricksCount); // Debug log for drawing
+        }
+
+        function drawScoreAndLives() {
+             gameInfo.textContent = `Score: ${score}    Lives: ${lives}`;
+        }
+
+        // --- Collision Detection ---
+        function collisionDetection() {
+            let allBricksDestroyed = true; // Assume win until proven otherwise
+
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                    const brick = bricks[c][r];
+                    if (brick.status === 1) {
+                        allBricksDestroyed = false; // Found an active brick
+
+                        // Check if ball's center is within the brick's boundaries
+                        if (
+                            ballX + ballRadius > brick.x &&
+                            ballX - ballRadius < brick.x + brickWidth &&
+                            ballY + ballRadius > brick.y &&
+                            ballY - ballRadius < brick.y + brickHeight
+                        ) {
+                            // --- Hit Detected ---
+                            ballDY = -ballDY; // Reverse vertical direction (simple bounce)
+                            brick.hitsLeft--; // Decrease brick health
+
+                            if (brick.hitsLeft <= 0) {
+                                brick.status = 0; // Destroy brick
+                                score += 10; // Increase score
+                            } else {
+                                score += 2; // Points for hitting
+                            }
+
+                            // More precise bounce (optional - basic reversal is often enough)
+                            // Could check which side was hit for more accurate DX/DY reversal
+                            // For simplicity, just reversing DY is common in basic Breakout.
+
+                            return; // Exit after first collision to avoid multiple hits per frame
+                        }
+                    }
+                }
+            }
+
+             // Check if all bricks are gone AFTER iterating through all
+             if (allBricksDestroyed) {
+                 winGame();
+             }
+        }
+
+        // --- Game Logic ---
+        function updateBallPosition() {
+            // Wall collisions (left/right)
+            if (ballX + ballDX > canvas.width - ballRadius || ballX + ballDX < ballRadius) {
+                ballDX = -ballDX;
+            }
+
+            // Wall collision (top)
+            if (ballY + ballDY < ballRadius) {
+                ballDY = -ballDY;
+            }
+            // Paddle or bottom collision
+            else if (ballY + ballDY > canvas.height - ballRadius - paddleHeight - 10) { // Check near paddle height
+                 if (ballY + ballDY > canvas.height - ballRadius - 10) { // Check if actually near paddle/bottom edge
+                    // Check if it hits the paddle
+                    if (ballX > paddleX - ballRadius && ballX < paddleX + paddleWidth + ballRadius) {
+                         ballDY = -ballDY;
+                         // Optional: Change angle based on where it hits the paddle
+                         let deltaX = ballX - (paddleX + paddleWidth / 2);
+                         ballDX = deltaX * 0.25; // Adjust horizontal speed based on hit position
+                    } else {
+                        // Ball hit the bottom - lose a life
+                        lives--;
+                        if (lives <= 0) {
+                            gameOver();
+                        } else {
+                            // Reset ball and paddle for next life
+                            resetBallPaddle();
+                            // Briefly pause or show message? For now, just reset.
+                        }
+                    }
+                 }
+            }
+
+
+            ballX += ballDX;
+            ballY += ballDY;
+        }
+
+        function resetBallPaddle() {
+             ballX = canvas.width / 2;
+             ballY = canvas.height - 30 - paddleHeight; // Start above paddle
+             // Randomize initial direction slightly
+             ballDX = (Math.random() > 0.5 ? 1 : -1) * 4;
+             ballDY = -4;
+             paddleX = (canvas.width - paddleWidth) / 2;
+        }
+
+        function resetGame() {
+            score = 0;
+            lives = 3;
+            initializeBricks();
+            resetBallPaddle();
+            gameOverMessage.style.display = 'none';
+            clearMessage.style.display = 'none';
+            messageArea.style.display = 'flex'; // Show start message
+            messageText.textContent = "Prêt?";
+            startButton.style.display = 'block';
+            gameRunning = false;
+             if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId); // Stop previous loop if any
+            }
+            // Initial draw before starting
+            draw();
+        }
+
+        function startGame() {
+            if (!gameRunning) {
+                gameRunning = true;
+                messageArea.style.display = 'none'; // Hide start message
+                gameOverMessage.style.display = 'none';
+                clearMessage.style.display = 'none';
+                resetBallPaddle(); // Ensure ball/paddle are centered
+                gameLoop(); // Start the main loop
+            }
+        }
+
+         function gameOver() {
+            gameRunning = false;
+            gameOverMessage.style.display = 'flex'; // Show game over message
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+        }
+
+        function winGame() {
+            gameRunning = false;
+            finalScoreDisplay.textContent = `Score Final: ${score}`;
+            clearMessage.style.display = 'flex'; // Show clear message
+             if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+        }
+
+        // --- Main Game Loop ---
+        function gameLoop() {
+            if (!gameRunning) return; // Stop loop if game isn't running
+
+            // 1. Clear Canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 2. Draw Elements
+            drawBricks();
+            drawPaddle();
+            drawBall();
+            drawScoreAndLives();
+
+            // 3. Collision Detection
+            collisionDetection();
+
+            // 4. Update Positions
+            updateBallPosition();
+
+            // 5. Request Next Frame
+            animationFrameId = requestAnimationFrame(gameLoop);
+        }
+
+        // --- Initial Drawing Function ---
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBricks();
+            drawPaddle();
+            drawBall();
+            drawScoreAndLives();
+        }
+
+
+        // --- Event Listeners ---
+        function handleMouseMove(e) {
+            // Calculate mouse position relative to the canvas
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width; // Handle CSS scaling
+            let relativeX = (e.clientX - rect.left) * scaleX;
+
+            // Keep paddle within canvas bounds
+            if (relativeX > paddleWidth / 2 && relativeX < canvas.width - paddleWidth / 2) {
+                paddleX = relativeX - paddleWidth / 2;
+            } else if (relativeX <= paddleWidth / 2) {
+                paddleX = 0; // Clamp to left edge
+            } else {
+                paddleX = canvas.width - paddleWidth; // Clamp to right edge
+            }
+
+            // Redraw paddle immediately for responsiveness if game not running
+            if (!gameRunning) {
+                 ctx.clearRect(0, canvas.height - paddleHeight - 20, canvas.width, paddleHeight + 20); // Clear paddle area
+                 drawPaddle();
+            }
+        }
+
+        function handleTouchMove(e) {
+             if (e.touches.length > 0) {
+                 const touch = e.touches[0];
+                 const rect = canvas.getBoundingClientRect();
+                 const scaleX = canvas.width / rect.width;
+                 let relativeX = (touch.clientX - rect.left) * scaleX;
+
+                 // Keep paddle within canvas bounds
+                 if (relativeX > paddleWidth / 2 && relativeX < canvas.width - paddleWidth / 2) {
+                     paddleX = relativeX - paddleWidth / 2;
+                 } else if (relativeX <= paddleWidth / 2) {
+                     paddleX = 0; // Clamp to left edge
+                 } else {
+                     paddleX = canvas.width - paddleWidth; // Clamp to right edge
+                 }
+                 e.preventDefault(); // Prevent scrolling while dragging paddle
+
+                 // Redraw paddle immediately for responsiveness if game not running
+                 if (!gameRunning) {
+                      ctx.clearRect(0, canvas.height - paddleHeight - 20, canvas.width, paddleHeight + 20); // Clear paddle area
+                      drawPaddle();
+                 }
+             }
+        }
+
+
+        // --- Resize Handling ---
+        function resizeCanvas() {
+            // Calculate desired width based on container or window size
+            const container = canvas.parentElement;
+            // Set a max width based on original game proportions if desired
+            const maxWidth = 450; // Approx original width (394 + padding)
+            let newWidth = Math.min(container.clientWidth - 32, maxWidth); // Subtract padding
+             if (newWidth < 300) newWidth = 300; // Minimum width
+
+            // Maintain aspect ratio (optional, but good for consistency)
+            // Original canvas area seemed roughly 4:3 (e.g., 400x300)
+            // Let's use a fixed height for simplicity or calculate based on width
+            const newHeight = newWidth * 0.75; // Maintain aspect ratio
+
+            // Update canvas element size
+            canvas.width = newWidth;
+            canvas.height = newHeight;
+
+            // Recalculate element sizes/positions based on new canvas size
+            // Paddle width could scale, or stay fixed:
+            // paddleWidth = canvas.width / 8; // Example scaling paddle width
+            paddleHeight = canvas.height / 35;
+            paddleX = (canvas.width - paddleWidth) / 2; // Recenter paddle
+
+            ballRadius = canvas.width / 50; // Scale ball size
+
+            // Brick dimensions and offsets might need recalculation if you want them
+            // to perfectly fill the new space, or keep them fixed size and adjust offsets.
+            // For simplicity here, we keep brick size fixed and recenter the block.
+            const totalBrickWidth = brickColumnCount * (brickWidth + brickPadding) - brickPadding;
+            const newBrickOffsetLeft = (canvas.width - totalBrickWidth) / 2;
+             const totalBrickHeight = brickRowCount * (brickHeight + brickPadding) - brickPadding;
+             const newBrickOffsetTop = canvas.height * 0.1; // Place bricks 10% from top
+
+            // Update brick positions
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                     if(bricks[c] && bricks[c][r]) {
+                        bricks[c][r].x = c * (brickWidth + brickPadding) + newBrickOffsetLeft;
+                        bricks[c][r].y = r * (brickHeight + brickPadding) + newBrickOffsetTop;
+                     }
+                }
+            }
+
+
+            // Reset ball position if game not running, otherwise let it continue
+            if (!gameRunning) {
+                resetBallPaddle();
+            }
+
+            // Redraw everything with new dimensions
+            draw();
+        }
+
+        // --- Initialization ---
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('touchmove', handleTouchMove, { passive: false }); // Use passive: false if preventDefault is needed
+
+        startButton.addEventListener('click', startGame);
+        restartButtonGameOver.addEventListener('click', resetGame);
+        restartButtonClear.addEventListener('click', resetGame);
+
+        window.addEventListener('resize', resizeCanvas);
+
+        // Initial setup
+        initializeBricks();
+        resizeCanvas(); // Set initial size and draw elements
+        messageArea.style.display = 'flex'; // Show initial message
+
+    </script>
+
+</body>
+</html>
