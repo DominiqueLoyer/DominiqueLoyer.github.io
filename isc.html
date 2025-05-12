@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-T">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma Plateforme Vidéo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Couleurs inspirées de isc.uqam.ca */
+        :root {
+            --uqam-dark-blue: #003366; /* Bleu foncé principal */
+            --uqam-light-blue: #337ab7; /* Bleu plus clair pour les accents */
+            --uqam-grey: #f0f0f0;      /* Gris clair pour les fonds */
+            --uqam-dark-grey: #cccccc; /* Gris pour les bordures/texte secondaire */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif; /* Police standard et propre */
+            background-color: var(--uqam-grey);
+        }
+
+        .header-bg {
+            background-color: var(--uqam-dark-blue);
+        }
+
+        .button-primary {
+            background-color: var(--uqam-light-blue);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .button-primary:hover {
+            background-color: #286090; /* Un bleu légèrement plus foncé au survol */
+        }
+
+        .video-card {
+            background-color: white;
+            border: 1px solid var(--uqam-dark-grey);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .search-input {
+            border: 2px solid var(--uqam-dark-blue); /* Bordure assortie au header */
+        }
+        .search-input:focus {
+            border-color: var(--uqam-light-blue);
+            box-shadow: 0 0 0 0.2rem rgba(51, 122, 183, 0.25); /* Ombre de focus assortie */
+        }
+
+        /* Styles pour la page de lecture vidéo */
+        .video-player-container {
+            background-color: black;
+        }
+        .video-info {
+            background-color: white;
+        }
+        .share-button {
+            background-color: var(--uqam-light-blue);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-right: 10px;
+            display: inline-block;
+        }
+        .share-button:hover {
+            background-color: #286090;
+        }
+
+        /* Style pour le message modal (pour les alertes) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Assurez-vous qu'il est au-dessus des autres éléments */
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .modal-button {
+            background-color: var(--uqam-light-blue);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        .modal-button:hover {
+             background-color: #286090;
+        }
+
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <header class="header-bg text-white p-4 shadow-md">
+        <div class="container mx-auto flex flex-wrap items-center justify-between">
+            <a href="#" onclick="showHomePage()" class="text-2xl font-bold">MaPlateformeVidéo</a>
+            <div class="w-full md:w-auto mt-4 md:mt-0 flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
+                <div class="relative w-full md:w-64 lg:w-96">
+                    <input type="search" id="searchInput" class="search-input w-full p-2 pl-10 rounded-md text-gray-800 focus:outline-none" placeholder="Rechercher des vidéos...">
+                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <i class="fas fa-search"></i>
+                    </span>
+                </div>
+                <button id="uploadButton" class="button-primary font-semibold py-2 px-4 rounded-md w-full md:w-auto hover:bg-blue-700 transition duration-300">
+                    <i class="fas fa-upload mr-2"></i>Téléverser
+                </button>
+                <input type="file" id="videoUploadInput" accept="video/*" class="hidden">
+            </div>
+        </div>
+    </header>
+
+    <main id="mainContent" class="container mx-auto p-4">
+        <section id="videoGridPage">
+            <h2 class="text-2xl font-semibold mb-6 text-gray-700">Vidéos Populaires</h2>
+            <div id="videoGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                </div>
+        </section>
+
+        <section id="videoPlayerPage" class="hidden">
+            <div class="max-w-4xl mx-auto">
+                <button onclick="showHomePage()" class="button-primary mb-4 py-2 px-4 rounded-md"><i class="fas fa-arrow-left mr-2"></i>Retour</button>
+                <div class="video-player-container rounded-lg shadow-xl overflow-hidden">
+                    <video id="videoPlayer" width="100%" controls autoplay class="aspect-video">
+                        Votre navigateur ne supporte pas la balise vidéo.
+                    </video>
+                </div>
+                <div class="video-info p-6 mt-4 rounded-lg shadow-lg">
+                    <h2 id="videoTitle" class="text-3xl font-bold mb-2 text-gray-800">Titre de la Vidéo</h2>
+                    <p id="videoUploader" class="text-gray-600 mb-1">Par: <span class="font-semibold">Nom de l'utilisateur</span></p>
+                    <p id="videoViews" class="text-gray-600 mb-4">Vues: <span class="font-semibold">1,234,567</span></p>
+                    <p id="videoDescription" class="text-gray-700 mb-6">
+                        Description de la vidéo ici. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    </p>
+                    <div class="share-buttons">
+                        <h3 class="text-lg font-semibold mb-2 text-gray-700">Partager cette vidéo :</h3>
+                        <a href="#" id="shareFacebook" target="_blank" class="share-button facebook"><i class="fab fa-facebook-f mr-1"></i> Facebook</a>
+                        <a href="#" id="shareTwitter" target="_blank" class="share-button twitter"><i class="fab fa-twitter mr-1"></i> Twitter</a>
+                        <a href="#" id="shareEmail" class="share-button email"><i class="fas fa-envelope mr-1"></i> Email</a>
+                        <button id="copyLinkButton" class="share-button"><i class="fas fa-link mr-1"></i> Copier le lien</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center p-4 mt-8 text-gray-600 border-t border-gray-300">
+        &copy; <span id="currentYear"></span> MaPlateformeVidéo. Tous droits réservés.
+    </footer>
+
+    <div id="messageModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <p id="modalMessageText"></p>
+            <button id="modalCloseButton" class="modal-button">OK</button>
+        </div>
+    </div>
+
+
+    <script>
+        // Données de démonstration pour les vidéos
+        // Dans une vraie application, ces données viendraient d'une base de données.
+        // Les URLs des vidéos et des miniatures sont des placeholders.
+        // Pour les miniatures, vous pouvez utiliser un service comme placehold.co ou des images réelles.
+        const sampleVideos = [
+            {
+                id: 'vid001',
+                title: 'Voyage Incroyable en Montagne',
+                uploader: 'AventureMax',
+                views: '1.2M',
+                duration: '12:34',
+                thumbnailUrl: 'https://placehold.co/600x400/003366/FFFFFF?text=Montagne',
+                videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4', // Exemple de vidéo (Big Buck Bunny)
+                description: 'Découvrez des paysages à couper le souffle lors de notre dernière expédition en montagne. Des sommets enneigés aux vallées verdoyantes, une aventure inoubliable vous attend.'
+            },
+            {
+                id: 'vid002',
+                title: 'Recette Facile : Gâteau au Chocolat',
+                uploader: 'ChefCuisine',
+                views: '875K',
+                duration: '08:15',
+                thumbnailUrl: 'https://placehold.co/600x400/337ab7/FFFFFF?text=Gâteau',
+                videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
+                description: 'Apprenez à faire un délicieux gâteau au chocolat fondant avec cette recette simple et rapide. Parfait pour toutes les occasions !'
+            },
+            {
+                id: 'vid003',
+                title: 'Introduction à la Programmation Python',
+                uploader: 'CodeFacile',
+                views: '2.5M',
+                duration: '25:50',
+                thumbnailUrl: 'https://placehold.co/600x400/0055A4/FFFFFF?text=Python',
+                videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
+                description: 'Une introduction complète au langage de programmation Python pour les débutants. Apprenez les bases et commencez à coder dès aujourd\'hui.'
+            },
+            {
+                id: 'vid004',
+                title: 'Les Mystères de l\'Univers',
+                uploader: 'CosmoScope',
+                views: '3.1M',
+                duration: '18:22',
+                thumbnailUrl: 'https://placehold.co/600x400/2C3E50/FFFFFF?text=Univers',
+                videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
+                description: 'Explorez les merveilles et les mystères de notre univers, des galaxies lointaines aux trous noirs énigmatiques.'
+            },
+            {
+                id: 'vid005',
+                title: 'Yoga Matinal pour Débutants',
+                uploader: 'ZenAttitude',
+                views: '500K',
+                duration: '15:00',
+                thumbnailUrl: 'https://placehold.co/600x400/1ABC9C/FFFFFF?text=Yoga',
+                videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
+                description: 'Commencez votre journée avec cette séance de yoga douce, parfaite pour les débutants souhaitant améliorer leur flexibilité et leur bien-être.'
+            },
+            {
+                id: 'vid006',
+                title: 'Apprendre la Guitare : Accords de Base',
+                uploader: 'MusicPassion',
+                views: '720K',
+                duration: '22:10',
+                thumbnailUrl: 'https://placehold.co/600x400/E74C3C/FFFFFF?text=Guitare',
+                videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
+                description: 'Maîtrisez les accords de base à la guitare avec ce tutoriel pas à pas. Idéal pour les musiciens en herbe.'
+            }
+        ];
+
+        const videoGrid = document.getElementById('videoGrid');
+        const searchInput = document.getElementById('searchInput');
+        const videoGridPage = document.getElementById('videoGridPage');
+        const videoPlayerPage = document.getElementById('videoPlayerPage');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const videoTitle = document.getElementById('videoTitle');
+        const videoUploader = document.getElementById('videoUploader').querySelector('span');
+        const videoViews = document.getElementById('videoViews').querySelector('span');
+        const videoDescription = document.getElementById('videoDescription');
+        const uploadButton = document.getElementById('uploadButton');
+        const videoUploadInput = document.getElementById('videoUploadInput');
+
+        // Éléments pour le partage
+        const shareFacebook = document.getElementById('shareFacebook');
+        const shareTwitter = document.getElementById('shareTwitter');
+        const shareEmail = document.getElementById('shareEmail');
+        const copyLinkButton = document.getElementById('copyLinkButton');
+
+        // Modal de message
+        const messageModal = document.getElementById('messageModal');
+        const modalMessageText = document.getElementById('modalMessageText');
+        const modalCloseButton = document.getElementById('modalCloseButton');
+
+        // Afficher un message dans le modal
+        function showModal(message) {
+            modalMessageText.textContent = message;
+            messageModal.classList.remove('hidden');
+        }
+
+        // Fermer le modal
+        modalCloseButton.addEventListener('click', () => {
+            messageModal.classList.add('hidden');
+        });
+
+
+        // Fonction pour afficher les vidéos dans la grille
+        function displayVideos(videosToDisplay) {
+            videoGrid.innerHTML = ''; // Nettoyer la grille existante
+            if (videosToDisplay.length === 0) {
+                videoGrid.innerHTML = '<p class="col-span-full text-center text-gray-500">Aucune vidéo trouvée.</p>';
+                return;
+            }
+            videosToDisplay.forEach(video => {
+                const card = document.createElement('div');
+                card.className = 'video-card rounded-lg shadow-lg overflow-hidden cursor-pointer';
+                card.innerHTML = `
+                    <div class="relative">
+                        <img src="${video.thumbnailUrl}" alt="${video.title}" class="w-full h-48 object-cover">
+                        <span class="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded">${video.duration}</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-1 truncate" title="${video.title}">${video.title}</h3>
+                        <p class="text-gray-600 text-sm">${video.uploader}</p>
+                        <p class="text-gray-500 text-xs">${video.views} vues</p>
+                    </div>
+                `;
+                card.addEventListener('click', () => showVideoPlayer(video));
+                videoGrid.appendChild(card);
+            });
+        }
+
+        // Fonction pour afficher la page de lecture vidéo
+        function showVideoPlayer(video) {
+            videoGridPage.classList.add('hidden');
+            videoPlayerPage.classList.remove('hidden');
+
+            videoPlayer.src = video.videoUrl;
+            videoTitle.textContent = video.title;
+            videoUploader.textContent = video.uploader;
+            videoViews.textContent = video.views;
+            videoDescription.textContent = video.description;
+
+            // Mettre à jour les liens de partage
+            const pageUrl = window.location.href.split('#')[0] + '#video=' + video.id; // URL simplifiée pour la démo
+            const shareText = encodeURIComponent(`Regardez cette vidéo : ${video.title}`);
+
+            shareFacebook.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
+            shareTwitter.href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(pageUrl)}&text=${shareText}`;
+            shareEmail.href = `mailto:?subject=${shareText}&body=${encodeURIComponent(pageUrl)}`;
+
+            copyLinkButton.onclick = () => {
+                navigator.clipboard.writeText(pageUrl).then(() => {
+                    showModal('Lien copié dans le presse-papiers !');
+                }).catch(err => {
+                    showModal('Erreur lors de la copie du lien.');
+                    console.error('Erreur copie lien:', err);
+                });
+            };
+
+            window.scrollTo(0, 0); // Remonter en haut de la page
+        }
+
+        // Fonction pour afficher la page d'accueil
+        function showHomePage() {
+            videoPlayerPage.classList.add('hidden');
+            videoGridPage.classList.remove('hidden');
+            videoPlayer.pause(); // Arrêter la vidéo si elle joue
+            videoPlayer.src = ""; // Vider la source pour arrêter le chargement
+        }
+
+        // Gestion de la recherche
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredVideos = sampleVideos.filter(video =>
+                video.title.toLowerCase().includes(searchTerm) ||
+                video.uploader.toLowerCase().includes(searchTerm) ||
+                video.description.toLowerCase().includes(searchTerm)
+            );
+            displayVideos(filteredVideos);
+        });
+
+        // Gestion du bouton de téléversement (simulation)
+        uploadButton.addEventListener('click', () => {
+            // Dans une vraie application, cela ouvrirait un dialogue de fichier
+            // et le fichier sélectionné serait envoyé à un serveur.
+            // Ici, nous allons juste simuler le clic sur l'input caché.
+            // videoUploadInput.click();
+
+            // Pour cette démo, nous affichons un message.
+            showModal(
+                "Fonctionnalité de téléversement :\n" +
+                "Pour téléverser des vidéos, un backend (serveur) est nécessaire pour recevoir, stocker et traiter les fichiers.\n" +
+                "Ceci est une maquette front-end. L'intégration avec OneDrive ou une autre solution de stockage cloud nécessiterait un développement backend significatif (par exemple, avec Node.js, Python, PHP, etc., et l'utilisation de l'API du service cloud)."
+            );
+        });
+
+        videoUploadInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                showModal(`Fichier "${file.name}" sélectionné.\nPrêt pour le téléversement vers un serveur (non implémenté dans cette démo).`);
+                // Logique de téléversement vers le backend ici
+            }
+        });
+
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            displayVideos(sampleVideos); // Afficher toutes les vidéos au chargement
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+        });
+
+    </script>
+</body>
+</html>
