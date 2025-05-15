@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plateforme de diffusion de l'institut des sciences cognitives</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --uqam-dark-blue: #003366;
+            --uqam-light-blue: #337ab7;
+            --uqam-grey: #f0f0f0;
+            --uqam-dark-grey: #cccccc;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--uqam-grey); }
+        .header-bg { background-color: var(--uqam-dark-blue); }
+        .button-primary { background-color: var(--uqam-light-blue); color: white; transition: background-color 0.3s ease; }
+        .button-primary:hover { background-color: #286090; }
+        .button-secondary { background-color: var(--uqam-dark-grey); color: var(--uqam-dark-blue); transition: background-color 0.3s ease; }
+        .button-secondary:hover { background-color: #b3b3b3; }
+        .video-card { background-color: white; border: 1px solid var(--uqam-dark-grey); transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
+        .video-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .search-input { border: 2px solid var(--uqam-dark-blue); }
+        .search-input:focus { border-color: var(--uqam-light-blue); box-shadow: 0 0 0 0.2rem rgba(51, 122, 183, 0.25); }
+        .video-player-container { background-color: black; }
+        .video-info { background-color: white; }
+        .share-button { background-color: var(--uqam-light-blue); color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; margin-right: 10px; display: inline-block; }
+        .share-button:hover { background-color: #286090; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; transition: opacity 0.3s ease; }
+        .modal-content { background-color: white; padding: 25px; border-radius: 8px; text-align: left; box-shadow: 0 5px 20px rgba(0,0,0,0.3); width: 90%; max-width: 500px; }
+        .modal-content h3 { color: var(--uqam-dark-blue); margin-bottom: 15px; }
+        .modal-content label { display: block; margin-bottom: 5px; font-weight: 600; color: #333; }
+        .modal-content input[type="text"], .modal-content input[type="password"], .modal-content textarea { width: 100%; padding: 10px; border: 1px solid var(--uqam-dark-grey); border-radius: 4px; margin-bottom: 15px; }
+        .modal-content textarea { min-height: 80px; }
+        .admin-description-text { 
+            font-size: 0.875rem; 
+            color: #4A5568; 
+            margin-top: 8px; 
+            background-color: #f9f9f9; 
+            padding: 8px; 
+            border-radius: 4px; 
+            border-left: 3px solid var(--uqam-light-blue); 
+            cursor: pointer; /* Make it look clickable */
+            max-height: 70px; /* Limit height */
+            overflow: hidden; /* Hide overflow */
+            text-overflow: ellipsis; /* Add ellipsis for overflow */
+            display: -webkit-box;
+            -webkit-line-clamp: 3; /* Limit to 3 lines */
+            -webkit-box-orient: vertical;
+        }
+        .admin-description-text:hover {
+            color: var(--uqam-light-blue);
+        }
+        .video-thumbnail-container {
+            width: 100%;
+            height: 14rem; /* Approx h-48 + some padding, adjust as needed. Tailwind h-48 is 12rem. Let's use 12rem (h-48) */
+            /* Using padding-bottom trick for aspect ratio (16:9) if needed, but direct height for iframe is simpler here */
+            /* position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; */
+            background-color: #e0e0e0; /* Placeholder background */
+        }
+        .video-thumbnail-container iframe {
+            width: 100%;
+            height: 100%;
+            /* position: absolute; top: 0; left: 0; */ /* Needed if using padding-bottom trick */
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <header class="header-bg text-white p-4 shadow-md">
+        <div class="container mx-auto flex flex-wrap items-center justify-between">
+            <a href="#" onclick="showHomePage(); return false;" class="text-xl sm:text-2xl font-bold">Plateforme de diffusion de l'institut des sciences cognitives</a>
+            
+            <div class="w-full md:w-auto mt-4 md:mt-0 flex flex-col md:flex-row items-center md:ml-auto space-y-2 md:space-y-0 md:space-x-2">
+                <div class="relative w-full md:w-auto"> <input type="search" id="searchInput" class="search-input w-full md:w-64 lg:w-80 p-2 pl-10 rounded-md text-gray-800 focus:outline-none" placeholder="Rechercher des vidéos...">
+                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"><i class="fas fa-search"></i></span>
+                </div>
+                <div id="adminControlsContainer" class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-2 w-full md:w-auto">
+                     <button id="adminLoginButton" class="button-secondary font-semibold py-2 px-4 rounded-md w-full md:w-auto">Accès Admin</button>
+                     <button id="addYoutubeVideoBtn" class="button-primary font-semibold py-2 px-4 rounded-md w-full md:w-auto hidden"><i class="fab fa-youtube mr-2"></i>Ajouter Vidéo YouTube</button>
+                     <button id="uploadButton" class="button-primary font-semibold py-2 px-4 rounded-md w-full md:w-auto hidden"><i class="fas fa-upload mr-2"></i>Téléverser Fichier</button>
+                </div>
+                <input type="file" id="videoUploadInput" accept="video/*" class="hidden">
+            </div>
+        </div>
+    </header>
+
+    <main id="mainContent" class="container mx-auto p-4">
+        <section id="videoGridPage">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-semibold text-gray-700">Dernières vidéos</h2>
+            </div>
+            <div id="videoGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
+                </div>
+            <div class="text-center mt-8">
+                <button id="viewMoreButton" class="button-primary font-semibold py-2 px-6 rounded-md">Voir Toutes les Vidéos</button>
+            </div>
+        </section>
+
+        <section id="videoPlayerPage" class="hidden">
+            <div class="max-w-4xl mx-auto">
+                <button onclick="showHomePage(); return false;" class="button-primary mb-4 py-2 px-4 rounded-md"><i class="fas fa-arrow-left mr-2"></i>Retour</button>
+                <div class="video-player-container rounded-lg shadow-xl overflow-hidden">
+                     <iframe id="mainVideoPlayerIframe" width="100%" class="aspect-video" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <video id="videoPlayer" width="100%" controls class="aspect-video hidden">Votre navigateur ne supporte pas la balise vidéo.</video>
+                </div>
+                <div class="video-info p-6 mt-4 rounded-lg shadow-lg">
+                    <h2 id="videoTitleElem" class="text-3xl font-bold mb-2 text-gray-800"></h2>
+                    <p id="videoUploader" class="text-gray-600 mb-1">Par: <span class="font-semibold"></span></p>
+                    <p id="videoViews" class="text-gray-600 mb-4">Vues: <span class="font-semibold"></span></p>
+                    <p id="videoDescription" class="text-gray-700 mb-6 whitespace-pre-line"></p> <div class="share-buttons">
+                        <h3 class="text-lg font-semibold mb-2 text-gray-700">Partager :</h3>
+                        <a href="#" id="shareFacebook" target="_blank" class="share-button"><i class="fab fa-facebook-f mr-1"></i> Facebook</a>
+                        <a href="#" id="shareTwitter" target="_blank" class="share-button"><i class="fab fa-twitter mr-1"></i> Twitter</a>
+                        <a href="#" id="shareEmail" class="share-button"><i class="fas fa-envelope mr-1"></i> Email</a>
+                        <button id="copyLinkButton" class="share-button"><i class="fas fa-link mr-1"></i> Copier lien</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center p-4 mt-8 text-gray-600 border-t border-gray-300">
+        © 2025 Développement par Dominique S. Loyer, assistant de recherche ISC. Tous droits réservés.
+    </footer>
+
+    <div id="messageModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <p id="modalMessageText"></p>
+            <button id="modalCloseButton" class="modal-button button-primary mt-4 ml-auto block">OK</button>
+        </div>
+    </div>
+
+    <div id="adminLoginModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3 class="text-xl font-semibold">Accès Administrateur</h3>
+            <label for="adminPassword">Mot de passe :</label>
+            <input type="password" id="adminPassword" placeholder="********">
+            <div class="flex justify-end space-x-2 mt-4">
+                <button id="submitAdminLogin" class="button-primary py-2 px-4 rounded-md">Se Connecter</button>
+                <button id="closeAdminLoginModal" class="button-secondary py-2 px-4 rounded-md">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="addYoutubeVideoModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3 class="text-xl font-semibold">Ajouter/Modifier une Vidéo YouTube</h3>
+            <label for="youtubeVideoUrl">URL de la vidéo YouTube (standard, ex: https://www.youtube.com/watch?v=VIDEO_ID):</label>
+            <input type="text" id="youtubeVideoUrl" placeholder="https://www.youtube.com/watch?v=VIDEO_ID">
+            <button id="fetchYoutubeInfoBtn" class="button-secondary py-2 px-4 rounded-md mb-3">Récupérer Infos (Simulé)</button>
+            
+            <div id="youtubeInfoPreview" class="mb-3 hidden">
+                <p><strong>Titre (simulé):</strong> <span id="previewTitle"></span></p>
+                <p><strong>Chaîne (simulé):</strong> <span id="previewChannel"></span></p>
+                <img id="previewThumbnail" src="" alt="Miniature" class="w-32 h-auto my-2 border">
+            </div>
+
+            <label for="adminCustomDescription">Description personnalisée (sera affichée en entier sur la page de détail) :</label>
+            <textarea id="adminCustomDescription" placeholder="Ajoutez votre description détaillée ici..."></textarea>
+            <input type="hidden" id="editingVideoId"> 
+            <div class="flex justify-end space-x-2 mt-4">
+                <button id="saveYoutubeVideoBtn" class="button-primary py-2 px-4 rounded-md">Sauvegarder</button>
+                <button id="closeAddYoutubeVideoModal" class="button-secondary py-2 px-4 rounded-md">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Globals and State ---
+        let isAdmin = false;
+        let currentVideos = []; 
+        const initialDisplayCount = 6;
+        let showingAllVideos = false;
+
+        // Sample videos (structure should match backend API response)
+        // youtubeVideoId MUST be the 11-character ID for iframe embeds and thumbnail fetching.
+        // videoUrl is not strictly needed if we always construct embed from youtubeVideoId
+        const sampleVideos = [
+            { id: 'yt001', youtubeVideoId: 'dQw4w9WgXcQ', title: 'Cognition et Apprentissage Automatique', uploader: 'ISC Channel', views: '150K', duration: '15:30', adminDescription: 'Un séminaire fascinant explorant les liens profonds et les synergies émergentes entre la cognition humaine, avec ses complexités et ses nuances, et les derniers développements en intelligence artificielle, notamment les modèles d\'apprentissage automatique. Discussion sur les implications futures pour la recherche et la société.', originalDescription: 'Description originale de YouTube sur la cognition...' },
+            { id: 'yt002', youtubeVideoId: 'L_LUpnjgPso', title: 'Neurosciences de la Décision', uploader: 'ISC Channel', views: '88K', duration: '22:10', adminDescription: 'Comment notre cerveau évalue-t-il les options et prend-il des décisions, des plus simples aux plus complexes ? Cette présentation plonge dans les circuits neuronaux impliqués dans la prise de décision, examinant les facteurs qui influencent nos choix.', originalDescription: 'YouTube: Neurosciences et prise de décision.' },
+            { id: 'yt003', youtubeVideoId: '3tmd-ClpJxA', title: 'Langage et Pensée : Nouvelles Perspectives', uploader: 'ISC Channel', views: '120K', duration: '18:45', adminDescription: 'Une discussion approfondie sur l\'interaction complexe entre le langage et les processus cognitifs. Comment la structure de notre langue façonne-t-elle notre manière de penser et de percevoir le monde ? Exploration des théories classiques et des recherches récentes.', originalDescription: 'YouTube: Langage, pensée, et cognition.' },
+            { id: 'yt004', youtubeVideoId: 'JGwWNGJdvx8', title: 'La Perception Visuelle et ses Illusions', uploader: 'ISC Channel', views: '210K', duration: '12:05', adminDescription: 'Découvrez les mécanismes fascinants par lesquels notre cerveau interprète les informations visuelles pour construire notre perception du monde. Analyse de diverses illusions d\'optique pour illustrer comment notre système visuel peut parfois être trompé.', originalDescription: 'YouTube: Illusions d\'optique expliquées.' },
+            { id: 'yt005', youtubeVideoId: 'hY7m5jjJ9e4', title: 'Mémoire et Oubli : Le Rôle de l\'Hippocampe', uploader: 'ISC Channel', views: '95K', duration: '25:00', adminDescription: 'Une plongée au cœur des mécanismes neuronaux de la mémoire, de l\'encodage au rappel. Quel est le rôle crucial de l\'hippocampe et d\'autres structures cérébrales ? Pourquoi oublions-nous et comment pouvons-nous améliorer notre mémoire ?', originalDescription: 'YouTube: Le fonctionnement de la mémoire.' },
+            { id: 'yt006', youtubeVideoId: 'I7jVyHA_6CQ', title: 'Introduction à la Conscience Artificielle', uploader: 'ISC Channel', views: '300K', duration: '30:12', adminDescription: 'La question de la conscience artificielle est l\'un des défis majeurs de l\'IA. Peut-on réellement créer une machine consciente ? Ce débat explore l\'état actuel de la recherche, les différentes approches théoriques et les implications éthiques.', originalDescription: 'YouTube: Conscience artificielle, mythe ou réalité ?' },
+            { id: 'yt007', youtubeVideoId: 'M_SMqgHkS2E', title: 'Émotions et Cognition Sociale', uploader: 'ISC Channel', views: '75K', duration: '19:50', adminDescription: 'Analyse de l\'impact profond des émotions sur nos interactions sociales et notre capacité à comprendre les intentions et les états mentaux des autres. Comment le cerveau traite-t-il les signaux émotionnels et comment cela module-t-il notre comportement social ?', originalDescription: 'YouTube: Le rôle des émotions.' }
+        ];
+        currentVideos = [...sampleVideos]; 
+
+        // --- DOM Elements ---
+        const videoGrid = document.getElementById('videoGrid');
+        const searchInput = document.getElementById('searchInput');
+        const videoGridPage = document.getElementById('videoGridPage');
+        const videoPlayerPage = document.getElementById('videoPlayerPage');
+        // const videoPlayer = document.getElementById('videoPlayer'); // Native video element, less used now
+        const mainVideoPlayerIframe = document.getElementById('mainVideoPlayerIframe');
+        const videoTitleElem = document.getElementById('videoTitleElem');
+        const videoUploaderElem = document.getElementById('videoUploader').querySelector('span');
+        const videoViewsElem = document.getElementById('videoViews').querySelector('span');
+        const videoDescriptionElem = document.getElementById('videoDescription');
+        const adminLoginButton = document.getElementById('adminLoginButton');
+        const addYoutubeVideoBtn = document.getElementById('addYoutubeVideoBtn');
+        const uploadButton = document.getElementById('uploadButton'); 
+        const messageModal = document.getElementById('messageModal');
+        const modalMessageText = document.getElementById('modalMessageText');
+        const modalCloseButton = document.getElementById('modalCloseButton');
+        const adminLoginModal = document.getElementById('adminLoginModal');
+        const addYoutubeVideoModal = document.getElementById('addYoutubeVideoModal');
+        const viewMoreButton = document.getElementById('viewMoreButton');
+
+        // --- Utility Functions ---
+        function showModal(modalElement) { modalElement.classList.remove('hidden'); }
+        function hideModal(modalElement) { modalElement.classList.add('hidden'); }
+        function showUserMessage(message) {
+            modalMessageText.innerText = message;
+            showModal(messageModal);
+        }
+        
+        /**
+         * Extracts 11-character YouTube video ID from various standard URL formats.
+         * @param {string} url - The YouTube video URL.
+         * @returns {string|null} The 11-character video ID or null if not found.
+         */
+        function getYouTubeVideoId(url) {
+            const patterns = [
+                /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
+                /(?:https?:\/\/)?youtu\.be\/([a-zA-Z0-9_-]{11})/,
+                /(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+                /(?:https?:\/\/)?(?:www\.)?youtube\.com\/v\/([a-zA-Z0-9_-]{11})/
+            ];
+            for (const pattern of patterns) {
+                const match = url.match(pattern);
+                if (match && match[1]) {
+                    return match[1];
+                }
+            }
+            return null;
+        }
+
+        // --- Video Display Logic ---
+        function displayVideos(videosToDisplay) {
+            videoGrid.innerHTML = '';
+            const videosToShow = showingAllVideos ? videosToDisplay : videosToDisplay.slice(0, initialDisplayCount);
+
+            if (videosToShow.length === 0) {
+                videoGrid.innerHTML = '<p class="col-span-full text-center text-gray-500">Aucune vidéo trouvée.</p>';
+                viewMoreButton.classList.add('hidden');
+                return;
+            }
+            
+            videosToShow.forEach(video => {
+                const card = document.createElement('div');
+                card.className = 'video-card rounded-lg shadow-lg overflow-hidden flex flex-col';
+                
+                const iframeSrc = video.youtubeVideoId 
+                                ? `https://www.youtube.com/embed/gTvh94yjIIk?si=DKA6Z0HUR8FrenS_{video.youtubeVideoId}?autoplay=0&controls=0&showinfo=0&rel=0&modestbranding=1`
+                                : ''; // No iframe if no valid ID
+
+                card.innerHTML = `
+                    <div class="video-thumbnail-container h-48">
+                        ${iframeSrc ? 
+                            `<iframe 
+                                src="${iframeSrc}" 
+                                title="${video.title || 'YouTube video player'}" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen>
+                             </iframe>`
+                            : `<div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">Miniature indisponible</div>`
+                        }
+                    </div>
+                    <div class="p-4 flex-grow flex flex-col">
+                        <h3 class="font-semibold text-lg mb-1 truncate" title="${video.title}">${video.title}</h3>
+                        <p class="text-gray-600 text-sm">${video.uploader}</p>
+                        <p class="text-gray-500 text-xs">${video.views} vues</p>
+                        ${video.adminDescription ? `<p class="admin-description-text video-description-trigger" title="Cliquez pour voir la description complète et la vidéo">${video.adminDescription}</p>` : ''}
+                        <div class="mt-auto pt-2 flex items-center ${isAdmin ? '' : 'hidden'}">
+                             <button class="edit-video-btn text-xs text-blue-600 hover:text-blue-800 mr-2" data-id="${video.id}"><i class="fas fa-edit"></i> Modifier</button>
+                             <button class="delete-video-btn text-xs text-red-600 hover:text-red-800" data-id="${video.id}"><i class="fas fa-trash"></i> Suppr.</button>
+                        </div>
+                    </div>
+                `;
+                // Event listener for the description text to show detailed view
+                const descriptionTrigger = card.querySelector('.video-description-trigger');
+                if (descriptionTrigger) {
+                    descriptionTrigger.addEventListener('click', () => showVideoPlayer(video));
+                }
+                // Event listener for the iframe container (or title) if needed for other actions (optional)
+                // card.querySelector('.video-thumbnail-container').addEventListener('click', () => showVideoPlayer(video));
+                card.querySelector('h3').addEventListener('click', () => showVideoPlayer(video));
+
+
+                if (isAdmin) {
+                    card.querySelector('.edit-video-btn').addEventListener('click', (e) => {
+                        e.stopPropagation(); 
+                        openEditVideoModal(video.id);
+                    });
+                    card.querySelector('.delete-video-btn').addEventListener('click', (e) => {
+                        e.stopPropagation(); 
+                        deleteVideo(video.id);
+                    });
+                }
+                videoGrid.appendChild(card);
+            });
+
+            if (videosToDisplay.length > initialDisplayCount) {
+                viewMoreButton.classList.remove('hidden');
+                viewMoreButton.textContent = showingAllVideos ? 'Voir Moins' : `Voir Toutes les Vidéos (${videosToDisplay.length})`;
+            } else {
+                viewMoreButton.classList.add('hidden');
+            }
+        }
+        
+        viewMoreButton.addEventListener('click', () => {
+            showingAllVideos = !showingAllVideos;
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredVideos = currentVideos.filter(video =>
+                video.title.toLowerCase().includes(searchTerm) ||
+                video.uploader.toLowerCase().includes(searchTerm) ||
+                (video.adminDescription && video.adminDescription.toLowerCase().includes(searchTerm))
+            );
+            displayVideos(filteredVideos);
+        });
+
+        function showVideoPlayer(video) {
+            videoGridPage.classList.add('hidden');
+            videoPlayerPage.classList.remove('hidden');
+            
+            if (video.youtubeVideoId) {
+                mainVideoPlayerIframe.src = `https://www.youtube.com/embed/gTvh94yjIIk?si=DKA6Z0HUR8FrenS_{video.youtubeVideoId}?autoplay=1`; // Autoplay when opened
+                mainVideoPlayerIframe.classList.remove('hidden');
+                // videoPlayer.classList.add('hidden'); // Hide native player if iframe is shown
+            } else {
+                // Fallback for non-YouTube videos (if any)
+                // videoPlayer.src = video.videoUrl || '';
+                // videoPlayer.classList.remove('hidden');
+                mainVideoPlayerIframe.classList.add('hidden'); // Hide iframe
+                mainVideoPlayerIframe.src = ''; // Clear src
+                 showUserMessage("Cette vidéo n'est pas une vidéo YouTube et ne peut être lue dans le lecteur iframe.");
+            }
+            
+            videoTitleElem.textContent = video.title;
+            videoUploaderElem.textContent = video.uploader;
+            videoViewsElem.textContent = video.views;
+            videoDescriptionElem.textContent = video.adminDescription || video.originalDescription || 'Pas de description disponible.';
+            
+            const pageUrl = window.location.href.split('#')[0] + '#video=' + video.id; 
+            const shareText = encodeURIComponent(`Regardez: ${video.title}`);
+            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
+            document.getElementById('shareTwitter').href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(pageUrl)}&text=${shareText}`;
+            document.getElementById('shareEmail').href = `mailto:?subject=${shareText}&body=${encodeURIComponent(pageUrl)}`;
+            document.getElementById('copyLinkButton').onclick = () => {
+                navigator.clipboard.writeText(pageUrl).then(() => showUserMessage('Lien copié !')).catch(() => showUserMessage('Erreur copie.'));
+            };
+            window.scrollTo(0, 0);
+        }
+
+        function showHomePage() {
+            videoPlayerPage.classList.add('hidden');
+            videoGridPage.classList.remove('hidden');
+            // Stop iframe video
+            mainVideoPlayerIframe.src = '';
+            // videoPlayer.pause(); // For native player
+            // videoPlayer.src = "";
+            searchInput.value = ''; 
+            showingAllVideos = false; 
+            displayVideos(currentVideos);
+        }
+
+        // --- Admin Logic (Simulated) ---
+        function toggleAdminControls(show) {
+            isAdmin = show;
+            document.getElementById('addYoutubeVideoBtn').classList.toggle('hidden', !show);
+            document.getElementById('uploadButton').classList.toggle('hidden', !show);
+            adminLoginButton.textContent = show ? 'Déconnexion Admin' : 'Accès Admin';
+            displayVideos(currentVideos);
+        }
+
+        adminLoginButton.addEventListener('click', () => {
+            if (isAdmin) { 
+                toggleAdminControls(false);
+                showUserMessage('Déconnecté.');
+            } else {
+                showModal(adminLoginModal);
+            }
+        });
+        document.getElementById('closeAdminLoginModal').addEventListener('click', () => hideModal(adminLoginModal));
+        document.getElementById('submitAdminLogin').addEventListener('click', () => {
+            const password = document.getElementById('adminPassword').value;
+            if (password === 'admin123') { 
+                toggleAdminControls(true);
+                hideModal(adminLoginModal);
+                showUserMessage('Connecté en tant qu\'administrateur (simulation).');
+                document.getElementById('adminPassword').value = '';
+            } else {
+                showUserMessage('Mot de passe incorrect (simulation).');
+            }
+        });
+
+        addYoutubeVideoBtn.addEventListener('click', () => {
+            document.getElementById('youtubeVideoUrl').value = '';
+            document.getElementById('adminCustomDescription').value = '';
+            document.getElementById('editingVideoId').value = '';
+            document.getElementById('youtubeInfoPreview').classList.add('hidden');
+            document.getElementById('previewThumbnail').src = ''; // Clear preview thumbnail
+            document.getElementById('addYoutubeVideoModal').querySelector('h3').textContent = "Ajouter une Vidéo YouTube";
+            showModal(addYoutubeVideoModal);
+        });
+        document.getElementById('closeAddYoutubeVideoModal').addEventListener('click', () => hideModal(addYoutubeVideoModal));
+
+        document.getElementById('fetchYoutubeInfoBtn').addEventListener('click', () => {
+            const url = document.getElementById('youtubeVideoUrl').value;
+            const videoId = getYouTubeVideoId(url); 
+            if (videoId) { 
+                document.getElementById('previewTitle').textContent = `Titre Simulé pour ${videoId}`;
+                document.getElementById('previewChannel').textContent = 'Chaîne YouTube Simulée';
+                // For the modal preview, we still use an img tag for simplicity
+                document.getElementById('previewThumbnail').src = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+                document.getElementById('youtubeInfoPreview').classList.remove('hidden');
+            } else {
+                showUserMessage("URL YouTube invalide ou ID non trouvé. Veuillez utiliser une URL YouTube standard (ex: youtube.com/watch?v=...).");
+                document.getElementById('youtubeInfoPreview').classList.add('hidden');
+            }
+        });
+
+        document.getElementById('saveYoutubeVideoBtn').addEventListener('click', () => {
+            const url = document.getElementById('youtubeVideoUrl').value;
+            const customDescription = document.getElementById('adminCustomDescription').value;
+            const editingDbId = document.getElementById('editingVideoId').value;
+            const youtubeVideoId = getYouTubeVideoId(url); 
+
+            if (!youtubeVideoId) {
+                showUserMessage("URL YouTube invalide ou ID non standard. Impossible de sauvegarder. L'ID doit être de 11 caractères.");
+                return;
+            }
+            
+            const videoDataFromPreview = {
+                title: document.getElementById('previewTitle').textContent || `Vidéo ${youtubeVideoId}`,
+                uploader: document.getElementById('previewChannel').textContent || 'ISC Channel',
+                duration: 'N/A', 
+                views: 'N/A'     
+            };
+
+            if (editingDbId) { 
+                const videoIndex = currentVideos.findIndex(v => v.id === editingDbId);
+                if (videoIndex > -1) {
+                    currentVideos[videoIndex].youtubeVideoId = youtubeVideoId; // Crucial for iframe src
+                    currentVideos[videoIndex].title = videoDataFromPreview.title;
+                    currentVideos[videoIndex].uploader = videoDataFromPreview.uploader;
+                    currentVideos[videoIndex].adminDescription = customDescription;
+                }
+            } else { 
+                const newVideo = {
+                    id: 'temp' + Date.now(), 
+                    youtubeVideoId: youtubeVideoId, // Crucial for iframe src
+                    ...videoDataFromPreview,
+                    adminDescription: customDescription,
+                    originalDescription: 'Description YouTube (simulée).'
+                };
+                currentVideos.unshift(newVideo); 
+            }
+            
+            displayVideos(currentVideos);
+            hideModal(addYoutubeVideoModal);
+            showUserMessage(editingDbId ? "Vidéo mise à jour (simulation) !" : "Vidéo ajoutée (simulation) !");
+        });
+
+        function openEditVideoModal(videoDbId) {
+            const videoToEdit = currentVideos.find(v => v.id === videoDbId);
+            if (videoToEdit && videoToEdit.youtubeVideoId) {
+                // For editing, show the standard watch URL or a share URL in the input field
+                document.getElementById('youtubeVideoUrl').value = `https://www.youtube.com/watch?v=${videoToEdit.youtubeVideoId}`;
+                document.getElementById('adminCustomDescription').value = videoToEdit.adminDescription || '';
+                document.getElementById('editingVideoId').value = videoToEdit.id;
+
+                document.getElementById('previewTitle').textContent = videoToEdit.title;
+                document.getElementById('previewChannel').textContent = videoToEdit.uploader;
+                document.getElementById('previewThumbnail').src = `https://i.ytimg.com/vi/${videoToEdit.youtubeVideoId}/hqdefault.jpg`;
+                document.getElementById('youtubeInfoPreview').classList.remove('hidden');
+                
+                document.getElementById('addYoutubeVideoModal').querySelector('h3').textContent = "Modifier la Vidéo YouTube";
+                showModal(addYoutubeVideoModal);
+            } else {
+                showUserMessage("Impossible de modifier cette vidéo ou ID YouTube (11 caractères) manquant.");
+            }
+        }
+
+        function deleteVideo(videoDbId) {
+            if (confirm("Êtes-vous sûr de vouloir supprimer cette vidéo ?")) {
+                currentVideos = currentVideos.filter(v => v.id !== videoDbId);
+                displayVideos(currentVideos);
+                showUserMessage("Vidéo supprimée (simulation).");
+            }
+        }
+
+        uploadButton.addEventListener('click', () => {
+            if (!isAdmin) {
+                showUserMessage("Accès réservé à l'administrateur.");
+                return;
+            }
+            showUserMessage(
+                "Fonctionnalité de téléversement de fichier direct :\n" +
+                "Ceci nécessiterait un backend pour gérer le stockage des fichiers."
+            );
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredVideos = currentVideos.filter(video =>
+                video.title.toLowerCase().includes(searchTerm) ||
+                video.uploader.toLowerCase().includes(searchTerm) ||
+                (video.adminDescription && video.adminDescription.toLowerCase().includes(searchTerm)) ||
+                (video.originalDescription && video.originalDescription.toLowerCase().includes(searchTerm))
+            );
+            showingAllVideos = true; 
+            displayVideos(filteredVideos);
+            if (filteredVideos.length <= initialDisplayCount || searchTerm === "") {
+                 viewMoreButton.classList.add('hidden'); 
+                 if(searchTerm === "") showingAllVideos = false; 
+            }
+        });
+        
+        // --- Initialization ---
+        modalCloseButton.addEventListener('click', () => hideModal(messageModal));
+        document.addEventListener('DOMContentLoaded', () => {
+            displayVideos(currentVideos);
+        });
+
+    </script>
+</body>
+</html>
