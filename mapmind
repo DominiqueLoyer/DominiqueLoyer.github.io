@@ -1,0 +1,3340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carte Mentale Unifiée - xAI</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      color: #f0f0f0;
+      font-family: 'Inter', Arial, sans-serif;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    #controls-container {
+      position: fixed;
+      top: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      background-color: rgba(40, 40, 40, 0.9);
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    #search-input {
+      padding: 0.6rem 1rem;
+      font-size: 0.95rem;
+      border-radius: 8px;
+      border: 1px solid #555;
+      background-color: #2f2f2f;
+      color: #f0f0f0;
+      outline: none;
+      min-width: 250px;
+    }
+    #search-input:focus {
+        border-color: #00bcd4;
+        box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.3);
+    }
+    
+    label {
+        font-size: 0.95rem;
+        color: #c0c0c0;
+    }
+
+    .node {
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .node circle {
+      fill: #282828;
+      stroke: #666;
+      stroke-width: 2px;
+      transition: fill 0.3s ease, stroke 0.3s ease, r 0.3s ease;
+    }
+    
+    .node.collapsed > circle {
+        fill: #4a5568; 
+    }
+    /* Style pour le noeud racine "xAI" */
+    .node.root-node > circle {
+        fill: #007bff; /* Couleur distinctive pour la racine */
+        stroke: #0056b3;
+        r: 10; /* Plus grand rayon */
+    }
+    .node.root-node:hover > circle {
+        r: 12;
+    }
+
+
+    .node:hover circle {
+      stroke: #00bcd4;
+      stroke-width: 3px;
+      r: 8;
+    }
+    
+    .node.highlighted circle {
+        stroke: #00bcd4;
+        stroke-width: 3px;
+        fill: #006064;
+    }
+
+
+    .node text {
+      font-size: 12px;
+      fill: #e0e0e0;
+      pointer-events: none;
+      text-shadow: 0 0 3px rgba(0,0,0,0.7);
+      transition: fill 0.3s ease;
+    }
+     /* Style pour le texte du noeud racine "xAI" */
+    .node.root-node > text {
+        font-size: 16px;
+        font-weight: bold;
+        fill: #ffffff;
+    }
+    
+    .node.highlighted text {
+        fill: #26c6da;
+        font-weight: bold;
+    }
+
+    .link {
+      fill: none;
+      stroke: #555;
+      stroke-width: 1.5px;
+      stroke-opacity: 0.7;
+      transition: stroke-opacity 0.3s ease, stroke-width 0.3s ease;
+    }
+
+    .tooltip {
+      position: absolute;
+      text-align: center;
+      padding: 8px 12px;
+      font-size: 13px;
+      background: rgba(20, 20, 20, 0.95);
+      color: #fff;
+      border: 1px solid #444;
+      border-radius: 6px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      max-width: 250px;
+    }
+
+    svg {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="controls-container">
+    <div>
+      <label for="search-input">Recherche :</label>
+      <input id="search-input" type="text" placeholder="Filtrer les nœuds...">
+    </div>
+  </div>
+  
+  <div id="tooltip" class="tooltip"></div>
+  <svg></svg>
+
+  <script>
+    // --- Données pour la Carte Mentale Unifiée ---
+    const masterMindMapData = {
+      name: "xAI",
+      tooltip: "Intelligence Artificielle Explicable - Nœud racine regroupant toutes les cartes mentales.",
+      isRoot: true,
+      children: [
+        {
+          name: "Utopie des Règles",
+          tooltip: "Réflexions sur l'utopie et les règlementations dans l'IA",
+          children: [
+            {
+              name: "Philosophie des Règles",
+              tooltip: "Approches philosophiques de la réglementation",
+              children: [
+                { 
+                  name: "Déontologie", 
+                  tooltip: "Principes éthiques fondamentaux",
+                  children: [
+                    {
+                      name: "Impératifs Kantiens",
+                      tooltip: "Principes universels d'action",
+                      children: [
+                        { name: "Impératif Catégorique", tooltip: "Agir selon des maximes universalisables" },
+                        { name: "Respect de la Dignité", tooltip: "Traiter l'humanité comme fin en soi" },
+                        { name: "Autonomie Morale", tooltip: "Capacité d'auto-législation éthique" }
+                      ]
+                    },
+                    {
+                      name: "Codes Déontologiques",
+                      tooltip: "Règles professionnelles spécifiques",
+                      children: [
+                        { name: "IEEE Standards", tooltip: "Standards techniques et éthiques" },
+                        { name: "ACM Code of Ethics", tooltip: "Code de conduite informatique" },
+                        { name: "Partnership on AI", tooltip: "Principes collaboratifs industrie" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Utilitarisme", 
+                  tooltip: "Maximisation du bien-être collectif",
+                  children: [
+                    {
+                      name: "Calcul Utilitariste",
+                      tooltip: "Méthodes de mesure du bien-être",
+                      children: [
+                        { name: "Hédonisme", tooltip: "Maximisation du plaisir net" },
+                        { name: "Préférences", tooltip: "Satisfaction des préférences individuelles" },
+                        { name: "Capabilities Approach", tooltip: "Développement des capacités humaines" }
+                      ]
+                    },
+                    {
+                      name: "Applications IA",
+                      tooltip: "Utilisation pratique en IA",
+                      children: [
+                        { name: "Optimisation Sociale", tooltip: "Algorithmes de bien-être social" },
+                        { name: "Resource Allocation", tooltip: "Distribution équitable des ressources" },
+                        { name: "Policy Making", tooltip: "Aide à la décision publique" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Éthique des Vertus", 
+                  tooltip: "Développement du caractère moral",
+                  children: [
+                    {
+                      name: "Vertus Cardinales",
+                      tooltip: "Vertus fondamentales à cultiver",
+                      children: [
+                        { name: "Prudence", tooltip: "Sagesse pratique dans les décisions" },
+                        { name: "Justice", tooltip: "Équité dans les relations" },
+                        { name: "Tempérance", tooltip: "Modération et mesure" },
+                        { name: "Courage", tooltip: "Fermeté face aux défis éthiques" }
+                      ]
+                    },
+                    {
+                      name: "Character Building",
+                      tooltip: "Formation du caractère moral",
+                      children: [
+                        { name: "Habitus", tooltip: "Formation des habitudes vertueuses" },
+                        { name: "Role Models", tooltip: "Exemples de conduite exemplaire" },
+                        { name: "Communauté de Pratique", tooltip: "Apprentissage collectif des vertus" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              name: "Gouvernance Algorithmique",
+              tooltip: "Structures de gouvernance pour l'IA",
+              children: [
+                { 
+                  name: "Autoréglementation", 
+                  tooltip: "Régulation interne par l'industrie",
+                  children: [
+                    {
+                      name: "Mécanismes Internes",
+                      tooltip: "Processus de régulation interne",
+                      children: [
+                        { name: "Ethics Boards", tooltip: "Comités d'éthique internes" },
+                        { name: "Codes de Conduite", tooltip: "Règles internes d'entreprise" },
+                        { name: "Audit Algorithms", tooltip: "Vérification automatisée des pratiques" },
+                        { name: "Whistleblowing", tooltip: "Mécanismes d'alerte interne" }
+                      ]
+                    },
+                    {
+                      name: "Standards Industriels",
+                      tooltip: "Normes adoptées par l'industrie",
+                      children: [
+                        { name: "Best Practices", tooltip: "Pratiques recommandées sectorielles" },
+                        { name: "Certification", tooltip: "Processus de certification volontaire" },
+                        { name: "Peer Review", tooltip: "Évaluation par les pairs" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Co-réglementation", 
+                  tooltip: "Collaboration public-privé",
+                  children: [
+                    {
+                      name: "Partenariats",
+                      tooltip: "Collaborations institutionnelles",
+                      children: [
+                        { name: "Multi-stakeholder", tooltip: "Plateformes multi-acteurs" },
+                        { name: "Sandbox Réglementaire", tooltip: "Espaces d'expérimentation contrôlée" },
+                        { name: "Dialogue Continu", tooltip: "Communication permanente" }
+                      ]
+                    },
+                    {
+                      name: "Mécanismes Hybrides",
+                      tooltip: "Outils de collaboration",
+                      children: [
+                        { name: "Soft Law", tooltip: "Droit souple non-contraignant" },
+                        { name: "Guidelines", tooltip: "Lignes directrices consensuelles" },
+                        { name: "Co-design", tooltip: "Conception collaborative des règles" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Réglementation Étatique", 
+                  tooltip: "Contrôle gouvernemental direct",
+                  children: [
+                    {
+                      name: "Instruments Légaux",
+                      tooltip: "Outils juridiques de régulation",
+                      children: [
+                        { name: "Lois", tooltip: "Textes législatifs contraignants" },
+                        { name: "Décrets", tooltip: "Actes réglementaires gouvernementaux" },
+                        { name: "Jurisprudence", tooltip: "Décisions judiciaires créatrices" }
+                      ]
+                    },
+                    {
+                      name: "Autorités de Régulation",
+                      tooltip: "Institutions de contrôle",
+                      children: [
+                        { name: "CNIL", tooltip: "Commission informatique et libertés" },
+                        { name: "Autorités Sectorielles", tooltip: "Régulateurs spécialisés" },
+                        { name: "Ombudsman", tooltip: "Médiateurs institutionnels" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              name: "Idéaux Régulateurs",
+              tooltip: "Visions idéales de la réglementation IA",
+              children: [
+                { 
+                  name: "Transparence Totale", 
+                  tooltip: "Accès complet aux algorithmes",
+                  children: [
+                    {
+                      name: "Open Source",
+                      tooltip: "Libération du code source",
+                      children: [
+                        { name: "GitHub Public", tooltip: "Dépôts publics de code" },
+                        { name: "Copyleft", tooltip: "Licences de partage obligatoire" },
+                        { name: "Commons", tooltip: "Biens communs numériques" }
+                      ]
+                    },
+                    {
+                      name: "Accountability",
+                      tooltip: "Mécanismes de responsabilisation",
+                      children: [
+                        { name: "Audit Trails", tooltip: "Journaux de décisions traçables" },
+                        { name: "Explainable AI", tooltip: "IA interprétable par design" },
+                        { name: "Public Scrutiny", tooltip: "Examen public des algorithmes" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Équité Universelle", 
+                  tooltip: "Élimination de tous les biais",
+                  children: [
+                    {
+                      name: "Fairness Metrics",
+                      tooltip: "Métriques de mesure de l'équité",
+                      children: [
+                        { name: "Demographic Parity", tooltip: "Parité démographique des résultats" },
+                        { name: "Equal Opportunity", tooltip: "Égalité des chances" },
+                        { name: "Calibration", tooltip: "Calibration des prédictions" }
+                      ]
+                    },
+                    {
+                      name: "Bias Mitigation",
+                      tooltip: "Techniques de réduction des biais",
+                      children: [
+                        { name: "Pre-processing", tooltip: "Correction des données d'entrée" },
+                        { name: "In-processing", tooltip: "Contraintes durant l'entraînement" },
+                        { name: "Post-processing", tooltip: "Ajustement des résultats" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Autonomie Préservée", 
+                  tooltip: "Maintien du libre arbitre humain",
+                  children: [
+                    {
+                      name: "Human in the Loop",
+                      tooltip: "Intégration humaine dans les décisions",
+                      children: [
+                        { name: "Meaningful Control", tooltip: "Contrôle humain significatif" },
+                        { name: "Override Capability", tooltip: "Capacité de surpassement" },
+                        { name: "Informed Consent", tooltip: "Consentement éclairé" }
+                      ]
+                    },
+                    {
+                      name: "Agency Protection",
+                      tooltip: "Protection de l'agentivité humaine",
+                      children: [
+                        { name: "Decision Rights", tooltip: "Droits de décision préservés" },
+                        { name: "Cognitive Liberty", tooltip: "Liberté cognitive garantie" },
+                        { name: "Dignity Preservation", tooltip: "Préservation de la dignité humaine" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          name: "Boîtes Noires IA",
+          tooltip: "Problématiques d'opacité dans les systèmes d'IA",
+          children: [
+            {
+              name: "Types de Boîtes Noires",
+              tooltip: "Classification des opacités algorithmiques",
+              children: [
+                { 
+                  name: "Opacité Technique", 
+                  tooltip: "Complexité computationnelle intrinsèque",
+                  children: [
+                    {
+                      name: "Deep Learning",
+                      tooltip: "Réseaux de neurones profonds",
+                      children: [
+                        { 
+                          name: "Architectures Complexes",
+                          tooltip: "Structures multi-couches",
+                          children: [
+                            { name: "CNN Profondes", tooltip: "Réseaux convolutionnels multi-niveaux" },
+                            { name: "Transformers", tooltip: "Mécanismes d'attention complexes" },
+                            { name: "GANs", tooltip: "Réseaux antagonistes génératifs" }
+                          ]
+                        },
+                        { 
+                          name: "Paramètres Massifs",
+                          tooltip: "Millions/milliards de paramètres",
+                          children: [
+                            { name: "GPT-3/4", tooltip: "175B+ paramètres" },
+                            { name: "Vision Models", tooltip: "Modèles de vision lourds" },
+                            { name: "Multimodal", tooltip: "Modèles multi-modalités" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Algorithmes Non-linéaires",
+                      tooltip: "Complexité mathématique intrinsèque",
+                      children: [
+                        { name: "Kernel Methods", tooltip: "Méthodes à noyaux complexes" },
+                        { name: "Ensemble Methods", tooltip: "Combinaisons de modèles" },
+                        { name: "Reinforcement Learning", tooltip: "Apprentissage par renforcement" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Opacité Juridique", 
+                  tooltip: "Protection par secret commercial",
+                  children: [
+                    {
+                      name: "Propriété Intellectuelle",
+                      tooltip: "Protection légale des algorithmes",
+                      children: [
+                        { name: "Brevets", tooltip: "Protection par brevets" },
+                        { name: "Trade Secrets", tooltip: "Secrets commerciaux" },
+                        { name: "Copyright", tooltip: "Droits d'auteur sur le code" }
+                      ]
+                    },
+                    {
+                      name: "Avantage Concurrentiel",
+                      tooltip: "Préservation de l'avantage économique",
+                      children: [
+                        { name: "Algorithmes Propriétaires", tooltip: "Formules exclusives" },
+                        { name: "Données Privées", tooltip: "Datasets non publics" },
+                        { name: "Know-how", tooltip: "Savoir-faire technique" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Opacité Cognitive", 
+                  tooltip: "Limites de compréhension humaine",
+                  children: [
+                    {
+                      name: "Limites Humaines",
+                      tooltip: "Contraintes cognitives naturelles",
+                      children: [
+                        { name: "Mémoire de Travail", tooltip: "Capacité limitée de traitement" },
+                        { name: "Visualisation", tooltip: "Difficultés de représentation" },
+                        { name: "Abstraction", tooltip: "Niveaux d'abstraction multiples" }
+                      ]
+                    },
+                    {
+                      name: "Expertise Requise",
+                      tooltip: "Connaissances spécialisées nécessaires",
+                      children: [
+                        { name: "Mathématiques", tooltip: "Formalisme mathématique avancé" },
+                        { name: "Informatique", tooltip: "Concepts algorithmiques" },
+                        { name: "Domaine d'Application", tooltip: "Expertise métier spécifique" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              name: "Conséquences Sociétales",
+              tooltip: "Impacts des boîtes noires sur la société",
+              children: [
+                { 
+                  name: "Perte de Confiance", 
+                  tooltip: "Méfiance envers les systèmes opaques",
+                  children: [
+                    {
+                      name: "Scepticisme Public",
+                      tooltip: "Défiance généralisée",
+                      children: [
+                        { name: "Surveys", tooltip: "Enquêtes d'opinion défavorables" },
+                        { name: "Media Coverage", tooltip: "Couverture médiatique négative" },
+                        { name: "Public Protests", tooltip: "Manifestations contre l'IA" }
+                      ]
+                    },
+                    {
+                      name: "Adoption Réduite",
+                      tooltip: "Résistance à l'adoption",
+                      children: [
+                        { name: "Consumer Resistance", tooltip: "Résistance des consommateurs" },
+                        { name: "Professional Skepticism", tooltip: "Scepticisme professionnel" },
+                        { name: "Institutional Barriers", tooltip: "Barrières institutionnelles" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Discrimination Cachée", 
+                  tooltip: "Biais non détectables",
+                  children: [
+                    {
+                      name: "Biais Algorithmiques",
+                      tooltip: "Discrimination systémique",
+                      children: [
+                        { name: "Racial Bias", tooltip: "Discrimination raciale" },
+                        { name: "Gender Bias", tooltip: "Discrimination de genre" },
+                        { name: "Socioeconomic Bias", tooltip: "Discrimination socio-économique" }
+                      ]
+                    },
+                    {
+                      name: "Amplification",
+                      tooltip: "Renforcement des inégalités",
+                      children: [
+                        { name: "Feedback Loops", tooltip: "Boucles de rétroaction négatives" },
+                        { name: "Systemic Perpetuation", tooltip: "Perpétuation systémique" },
+                        { name: "Intersectional Discrimination", tooltip: "Discrimination intersectionnelle" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Déresponsabilisation", 
+                  tooltip: "Dilution de l'accountability",
+                  children: [
+                    {
+                      name: "Chaîne de Responsabilité",
+                      tooltip: "Complexité des responsabilités",
+                      children: [
+                        { name: "Développeurs", tooltip: "Responsabilité des créateurs" },
+                        { name: "Déployeurs", tooltip: "Responsabilité des utilisateurs" },
+                        { name: "Régulateurs", tooltip: "Responsabilité des superviseurs" }
+                      ]
+                    },
+                    {
+                      name: "Esquive de Responsabilité",
+                      tooltip: "Mécanismes d'évitement",
+                      children: [
+                        { name: "Automation Bias", tooltip: "Délégation aveugle à la machine" },
+                        { name: "Plausible Deniability", tooltip: "Déni plausible" },
+                        { name: "Moral Hazard", tooltip: "Aléa moral technologique" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              name: "Solutions Techniques",
+              tooltip: "Approches pour ouvrir les boîtes noires",
+              children: [
+                { 
+                  name: "LIME/SHAP", 
+                  tooltip: "Méthodes d'explication locale",
+                  children: [
+                    {
+                      name: "LIME",
+                      tooltip: "Local Interpretable Model-agnostic Explanations",
+                      children: [
+                        { name: "Perturbation Locale", tooltip: "Modification des entrées localement" },
+                        { name: "Modèle Linéaire", tooltip: "Approximation linéaire locale" },
+                        { name: "Feature Importance", tooltip: "Importance des caractéristiques" }
+                      ]
+                    },
+                    {
+                      name: "SHAP",
+                      tooltip: "SHapley Additive exPlanations",
+                      children: [
+                        { name: "Valeurs de Shapley", tooltip: "Théorie des jeux coopératifs" },
+                        { name: "Additivité", tooltip: "Somme des contributions" },
+                        { name: "TreeSHAP", tooltip: "Optimisation pour arbres" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Attention Maps", 
+                  tooltip: "Visualisation des zones d'attention",
+                  children: [
+                    {
+                      name: "Computer Vision",
+                      tooltip: "Applications en vision",
+                      children: [
+                        { name: "Grad-CAM", tooltip: "Gradient-weighted Class Activation Mapping" },
+                        { name: "Saliency Maps", tooltip: "Cartes de saillance visuelle" },
+                        { name: "Layer-wise Relevance", tooltip: "Propagation de pertinence" }
+                      ]
+                    },
+                    {
+                      name: "NLP",
+                      tooltip: "Applications en traitement du langage",
+                      children: [
+                        { name: "Attention Weights", tooltip: "Poids d'attention des transformers" },
+                        { name: "Head Visualization", tooltip: "Visualisation des têtes d'attention" },
+                        { name: "Token Attribution", tooltip: "Attribution aux tokens" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Counterfactuals", 
+                  tooltip: "Explications contrefactuelles",
+                  children: [
+                    {
+                      name: "Génération",
+                      tooltip: "Méthodes de génération d'exemples",
+                      children: [
+                        { name: "Optimization-based", tooltip: "Optimisation directe" },
+                        { name: "Model-based", tooltip: "Utilisation de modèles génératifs" },
+                        { name: "Search-based", tooltip: "Recherche dans l'espace" }
+                      ]
+                    },
+                    {
+                      name: "Qualité",
+                      tooltip: "Critères de qualité des contrefactuels",
+                      children: [
+                        { name: "Proximity", tooltip: "Proximité à l'exemple original" },
+                        { name: "Plausibility", tooltip: "Plausibilité réaliste" },
+                        { name: "Diversity", tooltip: "Diversité des explications" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          name: "Fondements Théoriques",
+          tooltip: "Bases conceptuelles et théoriques de l'IA",
+          children: [
+            {
+              name: "Apprentissage Machine",
+              tooltip: "Paradigmes d'apprentissage automatique",
+              children: [
+                { 
+                  name: "Supervisé", 
+                  tooltip: "Apprentissage avec étiquettes",
+                  children: [
+                    {
+                      name: "Classification",
+                      tooltip: "Prédiction de catégories",
+                      children: [
+                        { 
+                          name: "Linéaire",
+                          tooltip: "Méthodes de classification linéaire",
+                          children: [
+                            { name: "Regression Logistique", tooltip: "Modèle probabiliste linéaire" },
+                            { name: "SVM Linéaire", tooltip: "Séparateurs à vaste marge" },
+                            { name: "Perceptron", tooltip: "Classificateur linéaire simple" }
+                          ]
+                        },
+                        { 
+                          name: "Non-linéaire",
+                          tooltip: "Méthodes de classification non-linéaire",
+                          children: [
+                            { name: "Random Forest", tooltip: "Ensemble d'arbres de décision" },
+                            { name: "SVM Kernel", tooltip: "SVM avec noyaux non-linéaires" },
+                            { name: "Neural Networks", tooltip: "Réseaux de neurones multi-couches" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Régression",
+                      tooltip: "Prédiction de valeurs continues",
+                      children: [
+                        { name: "Linéaire", tooltip: "Régression linéaire simple/multiple" },
+                        { name: "Polynomiale", tooltip: "Régression polynomiale" },
+                        { name: "Ridge/Lasso", tooltip: "Régularisation L2/L1" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Non-supervisé", 
+                  tooltip: "Découverte de patterns cachés",
+                  children: [
+                    {
+                      name: "Clustering",
+                      tooltip: "Regroupement en clusters",
+                      children: [
+                        { 
+                          name: "Centroïdes",
+                          tooltip: "Méthodes basées sur des centres",
+                          children: [
+                            { name: "K-Means", tooltip: "Partition en k clusters" },
+                            { name: "K-Medoids", tooltip: "Centres robustes aux outliers" },
+                            { name: "Fuzzy C-Means", tooltip: "Appartenance floue" }
+                          ]
+                        },
+                        { 
+                          name: "Hiérarchique",
+                          tooltip: "Clustering hiérarchique",
+                          children: [
+                            { name: "Agglomératif", tooltip: "Bottom-up clustering" },
+                            { name: "Divisif", tooltip: "Top-down clustering" },
+                            { name: "Dendrogrammes", tooltip: "Représentation arborée" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Réduction de Dimension",
+                      tooltip: "Diminution de la dimensionnalité",
+                      children: [
+                        { name: "PCA", tooltip: "Analyse en composantes principales" },
+                        { name: "t-SNE", tooltip: "t-distributed Stochastic Neighbor Embedding" },
+                        { name: "UMAP", tooltip: "Uniform Manifold Approximation" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Par Renforcement", 
+                  tooltip: "Apprentissage par essai-erreur",
+                  children: [
+                    {
+                      name: "Model-Free",
+                      tooltip: "Sans modèle de l'environnement",
+                      children: [
+                        { 
+                          name: "Value-Based",
+                          tooltip: "Méthodes basées sur la valeur",
+                          children: [
+                            { name: "Q-Learning", tooltip: "Apprentissage de la fonction Q" },
+                            { name: "Deep Q-Networks", tooltip: "Q-learning avec réseaux profonds" },
+                            { name: "Double DQN", tooltip: "Correction du biais d'optimisme" }
+                          ]
+                        },
+                        { 
+                          name: "Policy-Based",
+                          tooltip: "Méthodes basées sur la politique",
+                          children: [
+                            { name: "REINFORCE", tooltip: "Gradient de politique Monte Carlo" },
+                            { name: "Actor-Critic", tooltip: "Combinaison valeur-politique" },
+                            { name: "PPO", tooltip: "Proximal Policy Optimization" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Model-Based",
+                      tooltip: "Avec modèle de l'environnement",
+                      children: [
+                        { name: "Dynamic Programming", tooltip: "Programmation dynamique" },
+                        { name: "Monte Carlo Tree Search", tooltip: "Recherche arborescente" },
+                        { name: "Model Predictive Control", tooltip: "Contrôle prédictif" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              name: "Architectures Neuronales",
+              tooltip: "Structures des réseaux de neurones",
+              children: [
+                { 
+                  name: "Perceptrons", 
+                  tooltip: "Réseaux feedforward basiques",
+                  children: [
+                    {
+                      name: "Single Layer",
+                      tooltip: "Perceptron simple",
+                      children: [
+                        { name: "Linear Separator", tooltip: "Séparation linéaire uniquement" },
+                        { name: "Perceptron Algorithm", tooltip: "Algorithme d'apprentissage" },
+                        { name: "Limitations", tooltip: "Problème XOR non résolvable" }
+                      ]
+                    },
+                    {
+                      name: "Multi-Layer",
+                      tooltip: "Perceptron multi-couches",
+                      children: [
+                        { name: "Hidden Layers", tooltip: "Couches cachées intermédiaires" },
+                        { name: "Backpropagation", tooltip: "Rétropropagation du gradient" },
+                        { name: "Universal Approximation", tooltip: "Théorème d'approximation universelle" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "CNN", 
+                  tooltip: "Réseaux convolutionnels",
+                  children: [
+                    {
+                      name: "Opérations de Base",
+                      tooltip: "Briques fondamentales",
+                      children: [
+                        { 
+                          name: "Convolution",
+                          tooltip: "Opération de convolution",
+                          children: [
+                            { name: "Filters/Kernels", tooltip: "Noyaux de convolution" },
+                            { name: "Stride", tooltip: "Pas de convolution" },
+                            { name: "Padding", tooltip: "Remplissage des bords" }
+                          ]
+                        },
+                        { 
+                          name: "Pooling",
+                          tooltip: "Réduction de résolution",
+                          children: [
+                            { name: "Max Pooling", tooltip: "Maximum dans une fenêtre" },
+                            { name: "Average Pooling", tooltip: "Moyenne dans une fenêtre" },
+                            { name: "Global Pooling", tooltip: "Pooling sur toute la carte" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Architectures Célèbres",
+                      tooltip: "Modèles CNN historiques",
+                      children: [
+                        { name: "LeNet", tooltip: "Premier CNN pour chiffres" },
+                        { name: "AlexNet", tooltip: "Révolution deep learning 2012" },
+                        { name: "VGG", tooltip: "Réseaux très profonds" },
+                        { name: "ResNet", tooltip: "Connexions résiduelles" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Transformers", 
+                  tooltip: "Architecture attention-based",
+                  children: [
+                    {
+                      name: "Mécanisme d'Attention",
+                      tooltip: "Cœur des transformers",
+                      children: [
+                        { 
+                          name: "Self-Attention",
+                          tooltip: "Auto-attention",
+                          children: [
+                            { name: "Query/Key/Value", tooltip: "Triplet Q/K/V" },
+                            { name: "Scaled Dot-Product", tooltip: "Produit scalaire normalisé" },
+                            { name: "Softmax", tooltip: "Normalisation probabiliste" }
+                          ]
+                        },
+                        { 
+                          name: "Multi-Head",
+                          tooltip: "Attention multi-têtes",
+                          children: [
+                            { name: "Parallel Attention", tooltip: "Têtes parallèles" },
+                            { name: "Concatenation", tooltip: "Concaténation des sorties" },
+                            { name: "Linear Projection", tooltip: "Projection linéaire finale" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Applications",
+                      tooltip: "Domaines d'application",
+                      children: [
+                        { name: "NLP", tooltip: "Traitement du langage naturel" },
+                        { name: "Computer Vision", tooltip: "Vision par ordinateur" },
+                        { name: "Multimodal", tooltip: "Modalités multiples" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              name: "Théorie de l'Information",
+              tooltip: "Bases mathématiques de l'information",
+              children: [
+                { 
+                  name: "Entropie", 
+                  tooltip: "Mesure de l'incertitude",
+                  children: [
+                    {
+                      name: "Entropie de Shannon",
+                      tooltip: "Mesure classique d'information",
+                      children: [
+                        { name: "Formule H(X)", tooltip: "-Σ p(x) log p(x)" },
+                        { name: "Unités", tooltip: "Bits, nats, digits" },
+                        { name: "Propriétés", tooltip: "Non-négativité, maximalité" }
+                      ]
+                    },
+                    {
+                      name: "Entropie Conditionnelle",
+                      tooltip: "Incertitude conditionnelle",
+                      children: [
+                        { name: "H(Y|X)", tooltip: "Entropie de Y sachant X" },
+                        { name: "Chain Rule", tooltip: "Règle de la chaîne" },
+                        { name: "Réduction d'Incertitude", tooltip: "Impact de l'information" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Information Mutuelle", 
+                  tooltip: "Dépendance entre variables",
+                  children: [
+                    {
+                      name: "Définition",
+                      tooltip: "Mesure de dépendance statistique",
+                      children: [
+                        { name: "I(X;Y)", tooltip: "Information mutuelle entre X et Y" },
+                        { name: "Symétrie", tooltip: "I(X;Y) = I(Y;X)" },
+                        { name: "Non-négativité", tooltip: "I(X;Y) ≥ 0" }
+                      ]
+                    },
+                    {
+                      name: "Applications ML",
+                      tooltip: "Usage en apprentissage machine",
+                      children: [
+                        { name: "Feature Selection", tooltip: "Sélection de caractéristiques" },
+                        { name: "Clustering", tooltip: "Regroupement par similarité" },
+                        { name: "Causality", tooltip: "Inférence causale" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Complexité de Kolmogorov", 
+                  tooltip: "Complexité algorithmique",
+                  children: [
+                    {
+                      name: "Définition",
+                      tooltip: "Taille du plus petit programme",
+                      children: [
+                        { name: "K(x)", tooltip: "Complexité de Kolmogorov de x" },
+                        { name: "Incomputabilité", tooltip: "Non calculable en général" },
+                        { name: "Invariance", tooltip: "Invariance de machine" }
+                      ]
+                    },
+                    {
+                      name: "Relations",
+                      tooltip: "Liens avec autres concepts",
+                      children: [
+                        { name: "Entropie", tooltip: "Lien avec entropie de Shannon" },
+                        { name: "Randomness", tooltip: "Mesure d'aléatoire" },
+                        { name: "Compression", tooltip: "Théorie de la compression" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          name: "Modélisation IA",
+          tooltip: "Approches et méthodologies de modélisation",
+          children: [
+            {
+              name: "Processus de Modélisation",
+              tooltip: "Étapes du développement de modèles",
+              children: [
+                { 
+                  name: "Collecte de Données", 
+                  tooltip: "Acquisition et curation des données",
+                  children: [
+                    {
+                      name: "Sources de Données",
+                      tooltip: "Origines des données",
+                      children: [
+                        { 
+                          name: "Primaires",
+                          tooltip: "Données collectées directement",
+                          children: [
+                            { name: "Capteurs IoT", tooltip: "Internet des objets" },
+                            { name: "Enquêtes", tooltip: "Collecte par questionnaires" },
+                            { name: "Expérimentations", tooltip: "Données expérimentales contrôlées" }
+                          ]
+                        },
+                        { 
+                          name: "Secondaires",
+                          tooltip: "Données existantes",
+                          children: [
+                            { name: "Datasets Publics", tooltip: "ImageNet, MNIST, etc." },
+                            { name: "APIs", tooltip: "Interfaces de programmation" },
+                            { name: "Web Scraping", tooltip: "Extraction web automatisée" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Qualité des Données",
+                      tooltip: "Critères de qualité",
+                      children: [
+                        { name: "Complétude", tooltip: "Absence de valeurs manquantes" },
+                        { name: "Consistance", tooltip: "Cohérence interne" },
+                        { name: "Fraîcheur", tooltip: "Actualité des données" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Préparation", 
+                  tooltip: "Nettoyage et transformation",
+                  children: [
+                    {
+                      name: "Nettoyage",
+                      tooltip: "Correction des données",
+                      children: [
+                        { name: "Valeurs Manquantes", tooltip: "Imputation, suppression" },
+                        { name: "Outliers", tooltip: "Détection et traitement" },
+                        { name: "Duplicatas", tooltip: "Identification et déduplication" }
+                      ]
+                    },
+                    {
+                      name: "Transformation",
+                      tooltip: "Mise en forme des données",
+                      children: [
+                        { name: "Normalisation", tooltip: "Mise à l'échelle" },
+                        { name: "Encoding", tooltip: "Codage des variables catégorielles" },
+                        { name: "Feature Engineering", tooltip: "Création de nouvelles variables" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Entraînement", 
+                  tooltip: "Optimisation des paramètres",
+                  children: [
+                    {
+                      name: "Algorithmes d'Optimisation",
+                      tooltip: "Méthodes d'optimisation",
+                      children: [
+                        { 
+                          name: "First-Order",
+                          tooltip: "Méthodes du premier ordre",
+                          children: [
+                            { name: "SGD", tooltip: "Stochastic Gradient Descent" },
+                            { name: "Adam", tooltip: "Adaptive Moment Estimation" },
+                            { name: "RMSprop", tooltip: "Root Mean Square Propagation" }
+                          ]
+                        },
+                        { 
+                          name: "Second-Order",
+                          tooltip: "Méthodes du second ordre",
+                          children: [
+                            { name: "Newton", tooltip: "Méthode de Newton" },
+                            { name: "BFGS", tooltip: "Broyden-Fletcher-Goldfarb-Shanno" },
+                            { name: "L-BFGS", tooltip: "Limited-memory BFGS" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Régularisation",
+                      tooltip: "Prévention du surapprentissage",
+                      children: [
+                        { name: "L1/L2", tooltip: "Régularisation des poids" },
+                        { name: "Dropout", tooltip: "Désactivation aléatoire" },
+                        { name: "Early Stopping", tooltip: "Arrêt précoce" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Validation", 
+                  tooltip: "Évaluation des performances",
+                  children: [
+                    {
+                      name: "Stratégies de Validation",
+                      tooltip: "Approches de validation",
+                      children: [
+                        { name: "Hold-out", tooltip: "Séparation train/test" },
+                        { name: "K-Fold", tooltip: "Validation croisée k-fold" },
+                        { name: "Leave-One-Out", tooltip: "Validation leave-one-out" }
+                      ]
+                    },
+                    {
+                      name: "Métriques d'Évaluation",
+                      tooltip: "Mesures de performance",
+                      children: [
+                        { name: "Accuracy", tooltip: "Précision globale" },
+                        { name: "F1-Score", tooltip: "Moyenne harmonique précision/rappel" },
+                        { name: "AUC-ROC", tooltip: "Aire sous courbe ROC" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              name: "Types de Modèles",
+              tooltip: "Catégories de modèles d'IA",
+              children: [
+                { 
+                  name: "Prédictifs", 
+                  tooltip: "Modèles de prédiction",
+                  children: [
+                    {
+                      name: "Time Series",
+                      tooltip: "Prédiction temporelle",
+                      children: [
+                        { name: "ARIMA", tooltip: "AutoRegressive Integrated Moving Average" },
+                        { name: "LSTM", tooltip: "Long Short-Term Memory" },
+                        { name: "Prophet", tooltip: "Modèle de prédiction de Facebook" }
+                      ]
+                    },
+                    {
+                      name: "Classification",
+                      tooltip: "Prédiction de classes",
+                      children: [
+                        { name: "Binaire", tooltip: "Classification à deux classes" },
+                        { name: "Multi-classe", tooltip: "Classification multiple" },
+                        { name: "Multi-label", tooltip: "Étiquettes multiples" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Génératifs", 
+                  tooltip: "Modèles de génération de contenu",
+                  children: [
+                    {
+                      name: "Images",
+                      tooltip: "Génération d'images",
+                      children: [
+                        { name: "GANs", tooltip: "Generative Adversarial Networks" },
+                        { name: "VAE", tooltip: "Variational Autoencoders" },
+                        { name: "Diffusion", tooltip: "Modèles de diffusion" }
+                      ]
+                    },
+                    {
+                      name: "Texte",
+                      tooltip: "Génération de texte",
+                      children: [
+                        { name: "GPT", tooltip: "Generative Pre-trained Transformer" },
+                        { name: "T5", tooltip: "Text-to-Text Transfer Transformer" },
+                        { name: "BERT", tooltip: "Bidirectional Encoder Representations" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Descriptifs", 
+                  tooltip: "Modèles d'analyse et description",
+                  children: [
+                    {
+                      name: "Clustering",
+                      tooltip: "Regroupement de données",
+                      children: [
+                        { name: "K-Means", tooltip: "Partition en k groupes" },
+                        { name: "DBSCAN", tooltip: "Density-based clustering" },
+                        { name: "Hierarchical", tooltip: "Clustering hiérarchique" }
+                      ]
+                    },
+                    {
+                      name: "Association Rules",
+                      tooltip: "Règles d'association",
+                      children: [
+                        { name: "Apriori", tooltip: "Algorithme Apriori" },
+                        { name: "FP-Growth", tooltip: "Frequent Pattern Growth" },
+                        { name: "Market Basket", tooltip: "Analyse du panier de la ménagère" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              name: "Évaluation",
+              tooltip: "Métriques et méthodes d'évaluation",
+              children: [
+                { 
+                  name: "Précision/Rappel", 
+                  tooltip: "Métriques de classification",
+                  children: [
+                    {
+                      name: "Métriques de Base",
+                      tooltip: "Mesures fondamentales",
+                      children: [
+                        { name: "True Positives", tooltip: "Vrais positifs" },
+                        { name: "False Positives", tooltip: "Faux positifs" },
+                        { name: "True Negatives", tooltip: "Vrais négatifs" },
+                        { name: "False Negatives", tooltip: "Faux négatifs" }
+                      ]
+                    },
+                    {
+                      name: "Métriques Dérivées",
+                      tooltip: "Combinaisons des métriques de base",
+                      children: [
+                        { name: "Precision", tooltip: "TP / (TP + FP)" },
+                        { name: "Recall", tooltip: "TP / (TP + FN)" },
+                        { name: "Specificity", tooltip: "TN / (TN + FP)" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "BLEU/ROUGE", 
+                  tooltip: "Métriques pour le langage",
+                  children: [
+                    {
+                      name: "BLEU",
+                      tooltip: "Bilingual Evaluation Understudy",
+                      children: [
+                        { name: "N-gram Precision", tooltip: "Précision des n-grammes" },
+                        { name: "Brevity Penalty", tooltip: "Pénalité de brièveté" },
+                        { name: "Geometric Mean", tooltip: "Moyenne géométrique" }
+                      ]
+                    },
+                    {
+                      name: "ROUGE",
+                      tooltip: "Recall-Oriented Understudy for Gisting Evaluation",
+                      children: [
+                        { name: "ROUGE-N", tooltip: "N-gram co-occurrence" },
+                        { name: "ROUGE-L", tooltip: "Longest Common Subsequence" },
+                        { name: "ROUGE-S", tooltip: "Skip-bigram co-occurrence" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Validation Croisée", 
+                  tooltip: "Techniques de validation robuste",
+                  children: [
+                    {
+                      name: "Types de CV",
+                      tooltip: "Variantes de validation croisée",
+                      children: [
+                        { name: "Stratified", tooltip: "Préservation des proportions" },
+                        { name: "Time Series", tooltip: "Respect de l'ordre temporel" },
+                        { name: "Group", tooltip: "Groupes exclusifs" }
+                      ]
+                    },
+                    {
+                      name: "Avantages",
+                      tooltip: "Bénéfices de la validation croisée",
+                      children: [
+                        { name: "Robustesse", tooltip: "Estimation plus robuste" },
+                        { name: "Utilisation Complète", tooltip: "Usage de toutes les données" },
+                        { name: "Variance Réduite", tooltip: "Réduction de la variance" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          name: "Systèmes Cognitifs",
+          tooltip: "Intelligence artificielle cognitive et symbolique",
+          children: [
+            {
+              name: "Représentation des Connaissances",
+              tooltip: "Méthodes de représentation du savoir",
+              children: [
+                { 
+                  name: "Ontologies", 
+                  tooltip: "Structures formelles de connaissances",
+                  children: [
+                    {
+                      name: "Composants Ontologiques",
+                      tooltip: "Éléments constitutifs",
+                      children: [
+                        { 
+                          name: "Concepts",
+                          tooltip: "Entités abstraites ou concrètes",
+                          children: [
+                            { name: "Classes", tooltip: "Catégories d'objets" },
+                            { name: "Instances", tooltip: "Objets individuels" },
+                            { name: "Hiérarchies", tooltip: "Relations de subsomption" }
+                          ]
+                        },
+                        { 
+                          name: "Relations",
+                          tooltip: "Liens entre concepts",
+                          children: [
+                            { name: "Object Properties", tooltip: "Relations entre instances" },
+                            { name: "Data Properties", tooltip: "Attributs des instances" },
+                            { name: "Annotation Properties", tooltip: "Métadonnées descriptives" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Langages Ontologiques",
+                      tooltip: "Formalismes de représentation",
+                      children: [
+                        { name: "OWL", tooltip: "Web Ontology Language" },
+                        { name: "RDF", tooltip: "Resource Description Framework" },
+                        { name: "RDFS", tooltip: "RDF Schema" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Graphes de Connaissances", 
+                  tooltip: "Réseaux sémantiques",
+                  children: [
+                    {
+                      name: "Structure",
+                      tooltip: "Organisation des graphes",
+                      children: [
+                        { name: "Nœuds", tooltip: "Entités du monde réel" },
+                        { name: "Arêtes", tooltip: "Relations entre entités" },
+                        { name: "Propriétés", tooltip: "Attributs des entités" }
+                      ]
+                    },
+                    {
+                      name: "Exemples Célèbres",
+                      tooltip: "Graphes de connaissances populaires",
+                      children: [
+                        { name: "Google Knowledge Graph", tooltip: "Graphe de Google" },
+                        { name: "Wikidata", tooltip: "Base de connaissances Wikimedia" },
+                        { name: "DBpedia", tooltip: "Extraction de Wikipedia" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Logique Formelle", 
+                  tooltip: "Systèmes de raisonnement logique",
+                  children: [
+                    {
+                      name: "Logique Propositionnelle",
+                      tooltip: "Logique des propositions",
+                      children: [
+                        { name: "Connecteurs", tooltip: "ET, OU, NON, IMPLIQUE" },
+                        { name: "Tables de Vérité", tooltip: "Évaluation logique" },
+                        { name: "Satisfiabilité", tooltip: "Problème SAT" }
+                      ]
+                    },
+                    {
+                      name: "Logique Prédicats",
+                      tooltip: "Logique du premier ordre",
+                      children: [
+                        { name: "Quantificateurs", tooltip: "Universel, existentiel" },
+                        { name: "Prédicats", tooltip: "Relations et propriétés" },
+                        { name: "Unification", tooltip: "Appariement de termes" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              name: "Raisonnement Automatique",
+              tooltip: "Mécanismes de raisonnement IA",
+              children: [
+                { 
+                  name: "Inférence", 
+                  tooltip: "Déduction de nouvelles connaissances",
+                  children: [
+                    {
+                      name: "Types d'Inférence",
+                      tooltip: "Modes de raisonnement",
+                      children: [
+                        { 
+                          name: "Déduction",
+                          tooltip: "Raisonnement du général au particulier",
+                          children: [
+                            { name: "Modus Ponens", tooltip: "Si P alors Q, P, donc Q" },
+                            { name: "Syllogisme", tooltip: "Raisonnement en trois propositions" },
+                            { name: "Resolution", tooltip: "Méthode de résolution" }
+                          ]
+                        },
+                        { 
+                          name: "Induction",
+                          tooltip: "Raisonnement du particulier au général",
+                          children: [
+                            { name: "Induction Mathématique", tooltip: "Preuve par récurrence" },
+                            { name: "Induction Empirique", tooltip: "Généralisation d'observations" },
+                            { name: "Machine Learning", tooltip: "Apprentissage inductif" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Moteurs d'Inférence",
+                      tooltip: "Systèmes de raisonnement automatique",
+                      children: [
+                        { name: "Forward Chaining", tooltip: "Chaînage avant" },
+                        { name: "Backward Chaining", tooltip: "Chaînage arrière" },
+                        { name: "Hybrid Systems", tooltip: "Systèmes hybrides" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Planification", 
+                  tooltip: "Élaboration de stratégies d'action",
+                  children: [
+                    {
+                      name: "Planification Classique",
+                      tooltip: "Approches traditionnelles",
+                      children: [
+                        { name: "STRIPS", tooltip: "Stanford Research Institute Problem Solver" },
+                        { name: "PDDL", tooltip: "Planning Domain Definition Language" },
+                        { name: "Graph-plan", tooltip: "Planification par graphes" }
+                      ]
+                    },
+                    {
+                      name: "Planification Avancée",
+                      tooltip: "Techniques modernes",
+                      children: [
+                        { name: "HTN", tooltip: "Hierarchical Task Networks" },
+                        { name: "Probabilistic Planning", tooltip: "Planification probabiliste" },
+                        { name: "Multi-Agent Planning", tooltip: "Planification multi-agents" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Résolution de Problèmes", 
+                  tooltip: "Approches algorithmiques",
+                  children: [
+                    {
+                      name: "Recherche Non-Informée",
+                      tooltip: "Recherche aveugle",
+                      children: [
+                        { name: "Breadth-First", tooltip: "Parcours en largeur" },
+                        { name: "Depth-First", tooltip: "Parcours en profondeur" },
+                        { name: "Uniform Cost", tooltip: "Coût uniforme" }
+                      ]
+                    },
+                    {
+                      name: "Recherche Informée",
+                      tooltip: "Recherche heuristique",
+                      children: [
+                        { name: "A*", tooltip: "Algorithme A étoile" },
+                        { name: "Greedy Best-First", tooltip: "Recherche gloutonne" },
+                        { name: "IDA*", tooltip: "Iterative Deepening A*" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              name: "Architectures Cognitives",
+              tooltip: "Modèles d'architectures cognitives",
+              children: [
+                { 
+                  name: "ACT-R", 
+                  tooltip: "Adaptive Control of Thought-Rational",
+                  children: [
+                    {
+                      name: "Modules",
+                      tooltip: "Composants de l'architecture",
+                      children: [
+                        { name: "Declarative Memory", tooltip: "Mémoire déclarative" },
+                        { name: "Procedural Memory", tooltip: "Mémoire procédurale" },
+                        { name: "Perceptual-Motor", tooltip: "Modules perceptivo-moteurs" }
+                      ]
+                    },
+                    {
+                      name: "Mécanismes",
+                      tooltip: "Processus cognitifs",
+                      children: [
+                        { name: "Production Rules", tooltip: "Règles de production" },
+                        { name: "Activation", tooltip: "Mécanisme d'activation" },
+                        { name: "Conflict Resolution", tooltip: "Résolution de conflits" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "SOAR", 
+                  tooltip: "State, Operator, And Result",
+                  children: [
+                    {
+                      name: "Cycle Décisionnel",
+                      tooltip: "Boucle de décision",
+                      children: [
+                        { name: "Élaboration", tooltip: "Construction de l'état" },
+                        { name: "Sélection", tooltip: "Choix d'opérateur" },
+                        { name: "Application", tooltip: "Exécution d'opérateur" }
+                      ]
+                    },
+                    {
+                      name: "Apprentissage",
+                      tooltip: "Mécanismes d'apprentissage",
+                      children: [
+                        { name: "Chunking", tooltip: "Formation de chunks" },
+                        { name: "Reinforcement", tooltip: "Apprentissage par renforcement" },
+                        { name: "Episodic Memory", tooltip: "Mémoire épisodique" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Systèmes Hybrides", 
+                  tooltip: "Combinaison symbolique-connexionniste",
+                  children: [
+                    {
+                      name: "Approches d'Intégration",
+                      tooltip: "Méthodes de combinaison",
+                      children: [
+                        { name: "Loose Coupling", tooltip: "Couplage lâche" },
+                        { name: "Tight Coupling", tooltip: "Couplage serré" },
+                        { name: "Unified Architecture", tooltip: "Architecture unifiée" }
+                      ]
+                    },
+                    {
+                      name: "Avantages",
+                      tooltip: "Bénéfices des systèmes hybrides",
+                      children: [
+                        { name: "Flexibilité", tooltip: "Adaptabilité accrue" },
+                        { name: "Robustesse", tooltip: "Résistance aux erreurs" },
+                        { name: "Explicabilité", tooltip: "Interprétabilité améliorée" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          name: "TALN",
+          tooltip: "Traitement Automatique du Langage Naturel",
+          children: [
+            {
+              name: "Analyse Linguistique",
+              tooltip: "Niveaux d'analyse du langage",
+              children: [
+                { 
+                  name: "Morphologie", 
+                  tooltip: "Structure des mots",
+                  children: [
+                    {
+                      name: "Segmentation",
+                      tooltip: "Découpage des unités",
+                      children: [
+                        { 
+                          name: "Tokenisation",
+                          tooltip: "Division en tokens",
+                          children: [
+                            { name: "Whitespace", tooltip: "Séparation par espaces" },
+                            { name: "Subword", tooltip: "BPE, WordPiece" },
+                            { name: "Character-level", tooltip: "Niveau caractère" }
+                          ]
+                        },
+                        { 
+                          name: "Lemmatisation",
+                          tooltip: "Réduction à la forme canonique",
+                          children: [
+                            { name: "Dictionnaires", tooltip: "Approche basée dictionnaire" },
+                            { name: "Règles", tooltip: "Approche basée règles" },
+                            { name: "Statistical", tooltip: "Approche statistique" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Étiquetage",
+                      tooltip: "Assignation de catégories",
+                      children: [
+                        { name: "POS Tagging", tooltip: "Étiquetage morpho-syntaxique" },
+                        { name: "NER", tooltip: "Reconnaissance d'entités nommées" },
+                        { name: "Chunking", tooltip: "Segmentation en groupes" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Syntaxe", 
+                  tooltip: "Structure des phrases",
+                  children: [
+                    {
+                      name: "Analyse Syntaxique",
+                      tooltip: "Parsing syntaxique",
+                      children: [
+                        { 
+                          name: "Constituency Parsing",
+                          tooltip: "Analyse en constituants",
+                          children: [
+                            { name: "CFG", tooltip: "Context-Free Grammar" },
+                            { name: "PCFG", tooltip: "Probabilistic CFG" },
+                            { name: "Chart Parsing", tooltip: "Algorithme CYK" }
+                          ]
+                        },
+                        { 
+                          name: "Dependency Parsing",
+                          tooltip: "Analyse en dépendances",
+                          children: [
+                            { name: "Arc-Standard", tooltip: "Système de transition" },
+                            { name: "Arc-Eager", tooltip: "Système de transition" },
+                            { name: "Graph-based", tooltip: "Approche par graphes" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Grammaires",
+                      tooltip: "Formalismes grammaticaux",
+                      children: [
+                        { name: "Chomsky Hierarchy", tooltip: "Hiérarchie de Chomsky" },
+                        { name: "Unification", tooltip: "Grammaires d'unification" },
+                        { name: "Tree Adjoining", tooltip: "Tree Adjoining Grammar" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Sémantique", 
+                  tooltip: "Sens et signification",
+                  children: [
+                    {
+                      name: "Représentation du Sens",
+                      tooltip: "Modélisation sémantique",
+                      children: [
+                        { 
+                          name: "Word Embeddings",
+                          tooltip: "Représentations vectorielles",
+                          children: [
+                            { name: "Word2Vec", tooltip: "Skip-gram, CBOW" },
+                            { name: "GloVe", tooltip: "Global Vectors" },
+                            { name: "FastText", tooltip: "Prise en compte sous-mots" }
+                          ]
+                        },
+                        { 
+                          name: "Contextualized",
+                          tooltip: "Représentations contextuelles",
+                          children: [
+                            { name: "ELMo", tooltip: "Embeddings from Language Models" },
+                            { name: "BERT", tooltip: "Bidirectional Encoder" },
+                            { name: "GPT", tooltip: "Generative Pre-training" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Relations Sémantiques",
+                      tooltip: "Relations entre concepts",
+                      children: [
+                        { name: "Synonymie", tooltip: "Même sens" },
+                        { name: "Antonymie", tooltip: "Sens opposé" },
+                        { name: "Hyperonymie", tooltip: "Relation de généralisation" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Pragmatique", 
+                  tooltip: "Contexte et usage",
+                  children: [
+                    {
+                      name: "Actes de Langage",
+                      tooltip: "Actions réalisées par la parole",
+                      children: [
+                        { name: "Assertifs", tooltip: "Affirmations, descriptions" },
+                        { name: "Directifs", tooltip: "Ordres, requêtes" },
+                        { name: "Promissifs", tooltip: "Promesses, engagements" }
+                      ]
+                    },
+                    {
+                      name: "Contexte",
+                      tooltip: "Éléments contextuels",
+                      children: [
+                        { name: "Situationnel", tooltip: "Contexte immédiat" },
+                        { name: "Culturel", tooltip: "Références culturelles" },
+                        { name: "Conversationnel", tooltip: "Historique du dialogue" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              name: "Tâches TALN",
+              tooltip: "Applications principales du TALN",
+              children: [
+                { 
+                  name: "Traduction Automatique", 
+                  tooltip: "Translation entre langues",
+                  children: [
+                    {
+                      name: "Approches Historiques",
+                      tooltip: "Méthodes traditionnelles",
+                      children: [
+                        { name: "Rule-based", tooltip: "Basée sur des règles" },
+                        { name: "Statistical", tooltip: "Traduction statistique" },
+                        { name: "Phrase-based", tooltip: "Basée sur les phrases" }
+                      ]
+                    },
+                    {
+                      name: "Neural MT",
+                      tooltip: "Traduction neuronale",
+                      children: [
+                        { name: "Seq2Seq", tooltip: "Sequence to Sequence" },
+                        { name: "Attention", tooltip: "Mécanismes d'attention" },
+                        { name: "Transformer", tooltip: "Architecture Transformer" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Analyse de Sentiment", 
+                  tooltip: "Détection d'émotions",
+                  children: [
+                    {
+                      name: "Niveaux d'Analyse",
+                      tooltip: "Granularité de l'analyse",
+                      children: [
+                        { name: "Document", tooltip: "Sentiment global" },
+                        { name: "Phrase", tooltip: "Sentiment par phrase" },
+                        { name: "Aspect", tooltip: "Sentiment par aspect" }
+                      ]
+                    },
+                    {
+                      name: "Techniques",
+                      tooltip: "Méthodes d'analyse",
+                      children: [
+                        { name: "Lexicon-based", tooltip: "Basée sur lexiques" },
+                        { name: "Machine Learning", tooltip: "Apprentissage supervisé" },
+                        { name: "Deep Learning", tooltip: "Réseaux profonds" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Résumé Automatique", 
+                  tooltip: "Synthèse de textes",
+                  children: [
+                    {
+                      name: "Extractif",
+                      tooltip: "Sélection de phrases existantes",
+                      children: [
+                        { name: "Scoring", tooltip: "Notation des phrases" },
+                        { name: "Graph-based", tooltip: "Approches par graphes" },
+                        { name: "Clustering", tooltip: "Regroupement thématique" }
+                      ]
+                    },
+                    {
+                      name: "Abstractif",
+                      tooltip: "Génération de nouveau texte",
+                      children: [
+                        { name: "Template-based", tooltip: "Basé sur des modèles" },
+                        { name: "Neural", tooltip: "Génération neuronale" },
+                        { name: "Transformer", tooltip: "Modèles Transformer" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Question-Réponse", 
+                  tooltip: "Systèmes de QA",
+                  children: [
+                    {
+                      name: "Types de Questions",
+                      tooltip: "Catégories de questions",
+                      children: [
+                        { name: "Factuelles", tooltip: "Questions factuelles" },
+                        { name: "Définitions", tooltip: "Demandes de définition" },
+                        { name: "Procédurales", tooltip: "Questions sur les procédures" }
+                      ]
+                    },
+                    {
+                      name: "Architectures",
+                      tooltip: "Systèmes de QA",
+                      children: [
+                        { name: "Information Retrieval", tooltip: "Recherche d'information" },
+                        { name: "Reading Comprehension", tooltip: "Compréhension de lecture" },
+                        { name: "Knowledge-based", tooltip: "Basé sur connaissances" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              name: "Modèles de Langage",
+              tooltip: "Architectures pour le langage",
+              children: [
+                { 
+                  name: "N-grammes", 
+                  tooltip: "Modèles statistiques classiques",
+                  children: [
+                    {
+                      name: "Principe",
+                      tooltip: "Fonctionnement des n-grammes",
+                      children: [
+                        { name: "Unigrams", tooltip: "Modèle 1-gramme" },
+                        { name: "Bigrams", tooltip: "Modèle 2-grammes" },
+                        { name: "Trigrams", tooltip: "Modèle 3-grammes" }
+                      ]
+                    },
+                    {
+                      name: "Problèmes",
+                      tooltip: "Limitations des n-grammes",
+                      children: [
+                        { name: "Sparsity", tooltip: "Problème de parcimonie" },
+                        { name: "Context", tooltip: "Contexte limité" },
+                        { name: "Smoothing", tooltip: "Techniques de lissage" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "RNN/LSTM", 
+                  tooltip: "Réseaux récurrents",
+                  children: [
+                    {
+                      name: "RNN Simple",
+                      tooltip: "Réseaux récurrents basiques",
+                      children: [
+                        { name: "Vanilla RNN", tooltip: "RNN standard" },
+                        { name: "Vanishing Gradient", tooltip: "Problème du gradient" },
+                        { name: "Exploding Gradient", tooltip: "Explosion du gradient" }
+                      ]
+                    },
+                    {
+                      name: "LSTM/GRU",
+                      tooltip: "Cellules mémoire",
+                      children: [
+                        { name: "Forget Gate", tooltip: "Porte d'oubli" },
+                        { name: "Input Gate", tooltip: "Porte d'entrée" },
+                        { name: "Output Gate", tooltip: "Porte de sortie" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Transformers", 
+                  tooltip: "Architecture attention",
+                  children: [
+                    {
+                      name: "Composants",
+                      tooltip: "Éléments des Transformers",
+                      children: [
+                        { name: "Multi-Head Attention", tooltip: "Attention multi-têtes" },
+                        { name: "Feed-Forward", tooltip: "Couches denses" },
+                        { name: "Positional Encoding", tooltip: "Encodage positionnel" }
+                      ]
+                    },
+                    {
+                      name: "Variantes",
+                      tooltip: "Types de Transformers",
+                      children: [
+                        { name: "Encoder-only", tooltip: "BERT, RoBERTa" },
+                        { name: "Decoder-only", tooltip: "GPT series" },
+                        { name: "Encoder-Decoder", tooltip: "T5, BART" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "LLM", 
+                  tooltip: "Large Language Models",
+                  children: [
+                    {
+                      name: "Génération GPT",
+                      tooltip: "Famille GPT",
+                      children: [
+                        { name: "GPT-1", tooltip: "117M paramètres" },
+                        { name: "GPT-2", tooltip: "1.5B paramètres" },
+                        { name: "GPT-3", tooltip: "175B paramètres" },
+                        { name: "GPT-4", tooltip: "Multimodal, +1T paramètres" }
+                      ]
+                    },
+                    {
+                      name: "Capacités Émergentes",
+                      tooltip: "Propriétés émergentes des LLM",
+                      children: [
+                        { name: "In-Context Learning", tooltip: "Apprentissage en contexte" },
+                        { name: "Chain-of-Thought", tooltip: "Raisonnement étape par étape" },
+                        { name: "Few-Shot", tooltip: "Apprentissage avec peu d'exemples" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          name: "Systèmes Adaptatifs",
+          tooltip: "IA adaptative et évolutive",
+          children: [
+            {
+              name: "Apprentissage Continu",
+              tooltip: "Systèmes d'apprentissage en continu",
+              children: [
+                { 
+                  name: "Online Learning", 
+                  tooltip: "Apprentissage en temps réel",
+                  children: [
+                    {
+                      name: "Algorithmes Online",
+                      tooltip: "Méthodes d'apprentissage incrémental",
+                      children: [
+                        { 
+                          name: "Gradient Descent Online",
+                          tooltip: "Descente de gradient en ligne",
+                          children: [
+                            { name: "SGD", tooltip: "Stochastic Gradient Descent" },
+                            { name: "AdaGrad", tooltip: "Adaptive Gradient" },
+                            { name: "RMSprop", tooltip: "Root Mean Square Propagation" }
+                          ]
+                        },
+                        { 
+                          name: "Ensemble Online",
+                          tooltip: "Méthodes d'ensemble adaptatives",
+                          children: [
+                            { name: "Online Bagging", tooltip: "Bagging en ligne" },
+                            { name: "Online Boosting", tooltip: "Boosting adaptatif" },
+                            { name: "Streaming Random Forest", tooltip: "Forêts aléatoires en flux" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Défis",
+                      tooltip: "Challenges de l'apprentissage online",
+                      children: [
+                        { name: "Concept Drift", tooltip: "Dérive des concepts" },
+                        { name: "Catastrophic Forgetting", tooltip: "Oubli catastrophique" },
+                        { name: "Resource Constraints", tooltip: "Contraintes de ressources" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Transfer Learning", 
+                  tooltip: "Transfert de connaissances",
+                  children: [
+                    {
+                      name: "Types de Transfert",
+                      tooltip: "Catégories de transfert",
+                      children: [
+                        { 
+                          name: "Homogène",
+                          tooltip: "Même domaine et tâche",
+                          children: [
+                            { name: "Instance Transfer", tooltip: "Transfert d'instances" },
+                            { name: "Feature Transfer", tooltip: "Transfert de caractéristiques" },
+                            { name: "Parameter Transfer", tooltip: "Transfert de paramètres" }
+                          ]
+                        },
+                        { 
+                          name: "Hétérogène",
+                          tooltip: "Domaines ou tâches différents",
+                          children: [
+                            { name: "Domain Adaptation", tooltip: "Adaptation de domaine" },
+                            { name: "Task Transfer", tooltip: "Transfert de tâche" },
+                            { name: "Cross-lingual", tooltip: "Transfert inter-linguistique" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Stratégies",
+                      tooltip: "Approches de transfert",
+                      children: [
+                        { name: "Fine-tuning", tooltip: "Ajustement fin" },
+                        { name: "Feature Extraction", tooltip: "Extraction de caractéristiques" },
+                        { name: "Multi-task Learning", tooltip: "Apprentissage multi-tâches" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Meta-Learning", 
+                  tooltip: "Apprendre à apprendre",
+                  children: [
+                    {
+                      name: "Approches",
+                      tooltip: "Méthodes de meta-learning",
+                      children: [
+                        { 
+                          name: "Model-Agnostic",
+                          tooltip: "Indépendant du modèle",
+                          children: [
+                            { name: "MAML", tooltip: "Model-Agnostic Meta-Learning" },
+                            { name: "Reptile", tooltip: "Approximation du premier ordre" },
+                            { name: "Prototypical Networks", tooltip: "Réseaux prototypiques" }
+                          ]
+                        },
+                        { 
+                          name: "Memory-based",
+                          tooltip: "Basé sur la mémoire",
+                          children: [
+                            { name: "Neural Turing Machine", tooltip: "Machine de Turing neuronale" },
+                            { name: "Memory Networks", tooltip: "Réseaux de mémoire" },
+                            { name: "Differentiable Neural Computer", tooltip: "Ordinateur neural différentiable" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Applications",
+                      tooltip: "Domaines d'application",
+                      children: [
+                        { name: "Few-Shot Learning", tooltip: "Apprentissage avec peu d'exemples" },
+                        { name: "Zero-Shot Learning", tooltip: "Apprentissage sans exemple" },
+                        { name: "Continual Learning", tooltip: "Apprentissage continu" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              name: "Adaptation Contextuelle",
+              tooltip: "Adaptation au contexte d'usage",
+              children: [
+                { 
+                  name: "Personnalisation", 
+                  tooltip: "Adaptation aux utilisateurs",
+                  children: [
+                    {
+                      name: "Profils Utilisateur",
+                      tooltip: "Modélisation des préférences",
+                      children: [
+                        { name: "Explicit Feedback", tooltip: "Retours explicites" },
+                        { name: "Implicit Feedback", tooltip: "Comportements observés" },
+                        { name: "Demographic", tooltip: "Données démographiques" }
+                      ]
+                    },
+                    {
+                      name: "Recommandation",
+                      tooltip: "Systèmes de recommandation",
+                      children: [
+                        { name: "Collaborative Filtering", tooltip: "Filtrage collaboratif" },
+                        { name: "Content-based", tooltip: "Basé sur le contenu" },
+                        { name: "Hybrid Systems", tooltip: "Systèmes hybrides" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Contextualisation", 
+                  tooltip: "Prise en compte du contexte",
+                  children: [
+                    {
+                      name: "Types de Contexte",
+                      tooltip: "Dimensions contextuelles",
+                      children: [
+                        { name: "Spatial", tooltip: "Contexte spatial/géographique" },
+                        { name: "Temporal", tooltip: "Contexte temporel" },
+                        { name: "Social", tooltip: "Contexte social" },
+                        { name: "Environmental", tooltip: "Contexte environnemental" }
+                      ]
+                    },
+                    {
+                      name: "Intégration",
+                      tooltip: "Méthodes d'intégration contextuelle",
+                      children: [
+                        { name: "Context-aware Computing", tooltip: "Informatique contextuelle" },
+                        { name: "Situation Recognition", tooltip: "Reconnaissance de situation" },
+                        { name: "Adaptive Interfaces", tooltip: "Interfaces adaptatives" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Évolution Temporelle", 
+                  tooltip: "Adaptation aux changements",
+                  children: [
+                    {
+                      name: "Détection de Changement",
+                      tooltip: "Identification des modifications",
+                      children: [
+                        { name: "Statistical Tests", tooltip: "Tests statistiques" },
+                        { name: "Distance Measures", tooltip: "Mesures de distance" },
+                        { name: "Window-based", tooltip: "Fenêtres glissantes" }
+                      ]
+                    },
+                    {
+                      name: "Réponse au Changement",
+                      tooltip: "Stratégies d'adaptation",
+                      children: [
+                        { name: "Model Retraining", tooltip: "Ré-entraînement du modèle" },
+                        { name: "Ensemble Update", tooltip: "Mise à jour d'ensemble" },
+                        { name: "Architecture Change", tooltip: "Modification d'architecture" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              name: "Robustesse",
+              tooltip: "Résistance aux perturbations",
+              children: [
+                { 
+                  name: "Adversarial Training", 
+                  tooltip: "Entraînement contre les attaques",
+                  children: [
+                    {
+                      name: "Types d'Attaques",
+                      tooltip: "Catégories d'attaques adverses",
+                      children: [
+                        { 
+                          name: "White-box",
+                          tooltip: "Accès complet au modèle",
+                          children: [
+                            { name: "FGSM", tooltip: "Fast Gradient Sign Method" },
+                            { name: "PGD", tooltip: "Projected Gradient Descent" },
+                            { name: "C&W", tooltip: "Carlini & Wagner" }
+                          ]
+                        },
+                        { 
+                          name: "Black-box",
+                          tooltip: "Accès limité au modèle",
+                          children: [
+                            { name: "Query-based", tooltip: "Basé sur les requêtes" },
+                            { name: "Transfer-based", tooltip: "Basé sur le transfert" },
+                            { name: "Substitute Model", tooltip: "Modèle de substitution" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Défenses",
+                      tooltip: "Mécanismes de défense",
+                      children: [
+                        { name: "Adversarial Training", tooltip: "Entraînement adversarial" },
+                        { name: "Defensive Distillation", tooltip: "Distillation défensive" },
+                        { name: "Input Preprocessing", tooltip: "Prétraitement d'entrée" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Domain Adaptation", 
+                  tooltip: "Adaptation entre domaines",
+                  children: [
+                    {
+                      name: "Supervised DA",
+                      tooltip: "Adaptation supervisée",
+                      children: [
+                        { name: "Source + Target Labels", tooltip: "Étiquettes source et cible" },
+                        { name: "Fine-tuning", tooltip: "Ajustement fin" },
+                        { name: "Multi-domain Learning", tooltip: "Apprentissage multi-domaine" }
+                      ]
+                    },
+                    {
+                      name: "Unsupervised DA",
+                      tooltip: "Adaptation non-supervisée",
+                      children: [
+                        { name: "Domain Adversarial", tooltip: "Entraînement adversarial de domaine" },
+                        { name: "Maximum Mean Discrepancy", tooltip: "Minimisation MMD" },
+                        { name: "CORAL", tooltip: "Correlation Alignment" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Uncertainty Quantification", 
+                  tooltip: "Quantification de l'incertitude",
+                  children: [
+                    {
+                      name: "Types d'Incertitude",
+                      tooltip: "Sources d'incertitude",
+                      children: [
+                        { 
+                          name: "Épistémique",
+                          tooltip: "Incertitude du modèle",
+                          children: [
+                            { name: "Model Uncertainty", tooltip: "Incertitude architecturale" },
+                            { name: "Parameter Uncertainty", tooltip: "Incertitude paramétrique" },
+                            { name: "Bayesian Inference", tooltip: "Inférence bayésienne" }
+                          ]
+                        },
+                        { 
+                          name: "Aléatoire",
+                          tooltip: "Incertitude des données",
+                          children: [
+                            { name: "Data Noise", tooltip: "Bruit dans les données" },
+                            { name: "Measurement Error", tooltip: "Erreurs de mesure" },
+                            { name: "Inherent Randomness", tooltip: "Aléa intrinsèque" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Méthodes",
+                      tooltip: "Techniques de quantification",
+                      children: [
+                        { name: "Bayesian Neural Networks", tooltip: "Réseaux bayésiens" },
+                        { name: "Monte Carlo Dropout", tooltip: "Dropout Monte Carlo" },
+                        { name: "Ensemble Methods", tooltip: "Méthodes d'ensemble" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          name: "xAI Synthèses",
+          tooltip: "Synthèses sur l'IA explicable et générative",
+          children: [
+            {
+              name: "Méthodes XAI",
+              tooltip: "Techniques d'explicabilité",
+              children: [
+                { 
+                  name: "Post-hoc", 
+                  tooltip: "Explications après entraînement",
+                  children: [
+                    {
+                      name: "Model-Agnostic",
+                      tooltip: "Indépendant du modèle",
+                      children: [
+                        { 
+                          name: "Perturbation-based",
+                          tooltip: "Basé sur les perturbations",
+                          children: [
+                            { name: "LIME", tooltip: "Local Interpretable Model-agnostic Explanations" },
+                            { name: "SHAP", tooltip: "SHapley Additive exPlanations" },
+                            { name: "Anchors", tooltip: "Règles locales robustes" }
+                          ]
+                        },
+                        { 
+                          name: "Gradient-based",
+                          tooltip: "Basé sur les gradients",
+                          children: [
+                            { name: "Saliency Maps", tooltip: "Cartes de saillance" },
+                            { name: "Integrated Gradients", tooltip: "Gradients intégrés" },
+                            { name: "Grad-CAM", tooltip: "Gradient-weighted Class Activation Mapping" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Model-Specific",
+                      tooltip: "Spécifique au modèle",
+                      children: [
+                        { name: "Decision Trees", tooltip: "Visualisation d'arbres" },
+                        { name: "Neural Networks", tooltip: "Analyse des activations" },
+                        { name: "Linear Models", tooltip: "Coefficients et poids" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Intrinsèque", 
+                  tooltip: "Modèles explicables par nature",
+                  children: [
+                    {
+                      name: "Modèles Linéaires",
+                      tooltip: "Transparence par construction",
+                      children: [
+                        { name: "Régression Linéaire", tooltip: "Coefficients interprétables" },
+                        { name: "Régression Logistique", tooltip: "Odds ratios" },
+                        { name: "Modèles GAM", tooltip: "Generalized Additive Models" }
+                      ]
+                    },
+                    {
+                      name: "Modèles Basés Règles",
+                      tooltip: "Logique explicite",
+                      children: [
+                        { name: "Decision Trees", tooltip: "Arbres de décision" },
+                        { name: "Rule Lists", tooltip: "Listes de règles" },
+                        { name: "Bayesian Rule Lists", tooltip: "Règles bayésiennes" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Contrefactuelle", 
+                  tooltip: "Explications par contraste",
+                  children: [
+                    {
+                      name: "Génération",
+                      tooltip: "Méthodes de génération",
+                      children: [
+                        { name: "Optimization-based", tooltip: "Optimisation contrainte" },
+                        { name: "Generative Models", tooltip: "Modèles génératifs" },
+                        { name: "Nearest Neighbors", tooltip: "Plus proches voisins" }
+                      ]
+                    },
+                    {
+                      name: "Qualité",
+                      tooltip: "Critères d'évaluation",
+                      children: [
+                        { name: "Validity", tooltip: "Validité du changement" },
+                        { name: "Proximity", tooltip: "Proximité à l'original" },
+                        { name: "Sparsity", tooltip: "Nombre minimal de changements" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              name: "IA Générative",
+              tooltip: "Systèmes de génération de contenu",
+              children: [
+                { 
+                  name: "GANs", 
+                  tooltip: "Generative Adversarial Networks",
+                  children: [
+                    {
+                      name: "Architectures",
+                      tooltip: "Variantes d'architectures",
+                      children: [
+                        { name: "DCGAN", tooltip: "Deep Convolutional GAN" },
+                        { name: "StyleGAN", tooltip: "Style-based GAN" },
+                        { name: "CycleGAN", tooltip: "Unpaired image-to-image translation" },
+                        { name: "Progressive GAN", tooltip: "Croissance progressive" }
+                      ]
+                    },
+                    {
+                      name: "Applications",
+                      tooltip: "Domaines d'application",
+                      children: [
+                        { name: "Image Generation", tooltip: "Génération d'images" },
+                        { name: "Data Augmentation", tooltip: "Augmentation de données" },
+                        { name: "Super Resolution", tooltip: "Super-résolution" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "VAE", 
+                  tooltip: "Variational Autoencoders",
+                  children: [
+                    {
+                      name: "Composants",
+                      tooltip: "Architecture VAE",
+                      children: [
+                        { name: "Encoder", tooltip: "Encodeur vers espace latent" },
+                        { name: "Latent Space", tooltip: "Espace latent structuré" },
+                        { name: "Decoder", tooltip: "Décodeur génératif" }
+                      ]
+                    },
+                    {
+                      name: "Variantes",
+                      tooltip: "Extensions des VAE",
+                      children: [
+                        { name: "β-VAE", tooltip: "VAE avec régularisation β" },
+                        { name: "WAE", tooltip: "Wasserstein Autoencoders" },
+                        { name: "VQ-VAE", tooltip: "Vector Quantized VAE" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Diffusion Models", 
+                  tooltip: "Modèles de diffusion",
+                  children: [
+                    {
+                      name: "Processus",
+                      tooltip: "Mécanisme de diffusion",
+                      children: [
+                        { name: "Forward Process", tooltip: "Ajout progressif de bruit" },
+                        { name: "Reverse Process", tooltip: "Débruitage progressif" },
+                        { name: "Score Matching", tooltip: "Apprentissage du gradient" }
+                      ]
+                    },
+                    {
+                      name: "Modèles Populaires",
+                      tooltip: "Implementations célèbres",
+                      children: [
+                        { name: "DDPM", tooltip: "Denoising Diffusion Probabilistic Models" },
+                        { name: "DDIM", tooltip: "Denoising Diffusion Implicit Models" },
+                        { name: "Stable Diffusion", tooltip: "Diffusion dans l'espace latent" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Large Language Models", 
+                  tooltip: "Modèles de langage massifs",
+                  children: [
+                    {
+                      name: "Architectures",
+                      tooltip: "Types d'architectures",
+                      children: [
+                        { name: "Transformer Decoder", tooltip: "GPT, PaLM, LLaMA" },
+                        { name: "Encoder-Decoder", tooltip: "T5, UL2" },
+                        { name: "Mixture of Experts", tooltip: "Switch Transformer, GLaM" }
+                      ]
+                    },
+                    {
+                      name: "Capacités",
+                      tooltip: "Capacités émergentes",
+                      children: [
+                        { name: "Few-Shot Learning", tooltip: "Apprentissage avec peu d'exemples" },
+                        { name: "Code Generation", tooltip: "Génération de code" },
+                        { name: "Reasoning", tooltip: "Raisonnement complexe" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              name: "Évaluation XAI",
+              tooltip: "Métriques d'évaluation de l'explicabilité",
+              children: [
+                { 
+                  name: "Fidélité", 
+                  tooltip: "Correspondance avec le modèle",
+                  children: [
+                    {
+                      name: "Métriques Quantitatives",
+                      tooltip: "Mesures objectives",
+                      children: [
+                        { name: "Faithfulness", tooltip: "Fidélité aux prédictions" },
+                        { name: "Sufficiency", tooltip: "Suffisance de l'explication" },
+                        { name: "Necessity", tooltip: "Nécessité des éléments" }
+                      ]
+                    },
+                    {
+                      name: "Tests de Robustesse",
+                      tooltip: "Stabilité des explications",
+                      children: [
+                        { name: "Perturbation Tests", tooltip: "Tests de perturbation" },
+                        { name: "Consistency", tooltip: "Consistance temporelle" },
+                        { name: "Sensitivity", tooltip: "Sensibilité aux changements" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Compréhensibilité", 
+                  tooltip: "Facilité de compréhension humaine",
+                  children: [
+                    {
+                      name: "Études Utilisateur",
+                      tooltip: "Évaluation avec humains",
+                      children: [
+                        { name: "Trust", tooltip: "Confiance des utilisateurs" },
+                        { name: "Mental Models", tooltip: "Modèles mentaux formés" },
+                        { name: "Decision Making", tooltip: "Impact sur les décisions" }
+                      ]
+                    },
+                    {
+                      name: "Facteurs Cognitifs",
+                      tooltip: "Aspects cognitifs",
+                      children: [
+                        { name: "Cognitive Load", tooltip: "Charge cognitive" },
+                        { name: "Expertise Level", tooltip: "Niveau d'expertise" },
+                        { name: "Domain Knowledge", tooltip: "Connaissances du domaine" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Complétude", 
+                  tooltip: "Couverture de l'explication",
+                  children: [
+                    {
+                      name: "Étendue",
+                      tooltip: "Portée de l'explication",
+                      children: [
+                        { name: "Local vs Global", tooltip: "Portée locale ou globale" },
+                        { name: "Feature Coverage", tooltip: "Couverture des caractéristiques" },
+                        { name: "Decision Boundary", tooltip: "Frontières de décision" }
+                      ]
+                    },
+                    {
+                      name: "Granularité",
+                      tooltip: "Niveau de détail",
+                      children: [
+                        { name: "High-level", tooltip: "Concepts de haut niveau" },
+                        { name: "Fine-grained", tooltip: "Détails fins" },
+                        { name: "Multi-scale", tooltip: "Multi-échelles" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          name: "Informatique Théorique",
+          tooltip: "Fondements informatiques de l'IA",
+          children: [
+            {
+              name: "Complexité Algorithmique",
+              tooltip: "Analyse de la complexité computationnelle",
+              children: [
+                { 
+                  name: "Complexité Temporelle", 
+                  tooltip: "Temps d'exécution",
+                  children: [
+                    {
+                      name: "Notations Asymptotiques",
+                      tooltip: "Analyse asymptotique",
+                      children: [
+                        { 
+                          name: "Big O",
+                          tooltip: "Borne supérieure",
+                          children: [
+                            { name: "O(1)", tooltip: "Temps constant" },
+                            { name: "O(log n)", tooltip: "Temps logarithmique" },
+                            { name: "O(n)", tooltip: "Temps linéaire" },
+                            { name: "O(n²)", tooltip: "Temps quadratique" }
+                          ]
+                        },
+                        { 
+                          name: "Autres Notations",
+                          tooltip: "Notations complémentaires",
+                          children: [
+                            { name: "Ω (Omega)", tooltip: "Borne inférieure" },
+                            { name: "Θ (Theta)", tooltip: "Borne serrée" },
+                            { name: "o (petit o)", tooltip: "Borne supérieure stricte" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Analyse Amortie",
+                      tooltip: "Coût moyen sur une séquence",
+                      children: [
+                        { name: "Méthode Agrégée", tooltip: "Coût total divisé" },
+                        { name: "Méthode Comptable", tooltip: "Crédits et débits" },
+                        { name: "Méthode Potentiel", tooltip: "Fonction de potentiel" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Complexité Spatiale", 
+                  tooltip: "Utilisation mémoire",
+                  children: [
+                    {
+                      name: "Types de Mémoire",
+                      tooltip: "Catégories d'utilisation mémoire",
+                      children: [
+                        { name: "Mémoire Auxiliaire", tooltip: "Espace supplémentaire" },
+                        { name: "In-place", tooltip: "Espace constant O(1)" },
+                        { name: "Mémoire de Travail", tooltip: "Espace temporaire" }
+                      ]
+                    },
+                    {
+                      name: "Trade-offs",
+                      tooltip: "Compromis temps-espace",
+                      children: [
+                        { name: "Memoization", tooltip: "Cache pour vitesse" },
+                        { name: "Compression", tooltip: "Réduction d'espace" },
+                        { name: "Streaming", tooltip: "Traitement en flux" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Classes de Complexité", 
+                  tooltip: "P, NP, PSPACE...",
+                  children: [
+                    {
+                      name: "Classes Temporelles",
+                      tooltip: "Basées sur le temps",
+                      children: [
+                        { 
+                          name: "P",
+                          tooltip: "Polynomial Time",
+                          children: [
+                            { name: "Problèmes Polynomiaux", tooltip: "Solvables en temps polynomial" },
+                            { name: "Exemples", tooltip: "Tri, recherche, plus court chemin" },
+                            { name: "Fermeture", tooltip: "Propriétés de fermeture" }
+                          ]
+                        },
+                        { 
+                          name: "NP",
+                          tooltip: "Nondeterministic Polynomial",
+                          children: [
+                            { name: "Vérification Poly", tooltip: "Vérifiable en temps polynomial" },
+                            { name: "NP-Complet", tooltip: "Plus difficiles dans NP" },
+                            { name: "Exemples", tooltip: "SAT, Hamiltonian Path, TSP" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Classes Spatiales",
+                      tooltip: "Basées sur l'espace",
+                      children: [
+                        { name: "PSPACE", tooltip: "Polynomial Space" },
+                        { name: "L", tooltip: "Logarithmic Space" },
+                        { name: "NL", tooltip: "Nondeterministic L" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              name: "Structures de Données",
+              tooltip: "Organisation et stockage des données",
+              children: [
+                { 
+                  name: "Arbres", 
+                  tooltip: "Structures hiérarchiques",
+                  children: [
+                    {
+                      name: "Arbres Binaires",
+                      tooltip: "Chaque nœud a au plus 2 enfants",
+                      children: [
+                        { 
+                          name: "BST",
+                          tooltip: "Binary Search Tree",
+                          children: [
+                            { name: "Insertion", tooltip: "O(log n) en moyenne" },
+                            { name: "Recherche", tooltip: "O(log n) en moyenne" },
+                            { name: "Suppression", tooltip: "O(log n) en moyenne" }
+                          ]
+                        },
+                        { 
+                          name: "Arbres Équilibrés",
+                          tooltip: "Garantie de hauteur logarithmique",
+                          children: [
+                            { name: "AVL", tooltip: "Adelson-Velsky and Landis" },
+                            { name: "Red-Black", tooltip: "Arbres rouge-noir" },
+                            { name: "B-Tree", tooltip: "Arbres multichemin" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Structures Spécialisées",
+                      tooltip: "Arbres à usage spécifique",
+                      children: [
+                        { name: "Heap", tooltip: "Tas binaire pour priorités" },
+                        { name: "Trie", tooltip: "Arbre préfixe pour chaînes" },
+                        { name: "Segment Tree", tooltip: "Requêtes sur intervalles" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Graphes", 
+                  tooltip: "Structures relationnelles",
+                  children: [
+                    {
+                      name: "Représentations",
+                      tooltip: "Méthodes de stockage",
+                      children: [
+                        { 
+                          name: "Matrice d'Adjacence",
+                          tooltip: "Matrice n×n",
+                          children: [
+                            { name: "Espace O(n²)", tooltip: "Toujours quadratique" },
+                            { name: "Accès O(1)", tooltip: "Vérification d'arête constante" },
+                            { name: "Dense Graphs", tooltip: "Efficace pour graphes denses" }
+                          ]
+                        },
+                        { 
+                          name: "Liste d'Adjacence",
+                          tooltip: "Listes de voisins",
+                          children: [
+                            { name: "Espace O(V+E)", tooltip: "Proportionnel aux arêtes" },
+                            { name: "Sparse Graphs", tooltip: "Efficace pour graphes creux" },
+                            { name: "Parcours Facile", tooltip: "Itération naturelle" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Types de Graphes",
+                      tooltip: "Catégories de graphes",
+                      children: [
+                        { name: "Orienté/Non-orienté", tooltip: "Direction des arêtes" },
+                        { name: "Pondéré/Non-pondéré", tooltip: "Poids sur les arêtes" },
+                        { name: "Connexe/Déconnecté", tooltip: "Connectivité globale" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Hash Tables", 
+                  tooltip: "Accès en temps constant",
+                  children: [
+                    {
+                      name: "Fonctions de Hachage",
+                      tooltip: "Transformation clé → index",
+                      children: [
+                        { name: "Division", tooltip: "h(k) = k mod m" },
+                        { name: "Multiplication", tooltip: "Méthode multiplicative" },
+                        { name: "Hachage Universel", tooltip: "Famille de fonctions" }
+                      ]
+                    },
+                    {
+                      name: "Gestion Collisions",
+                      tooltip: "Résolution des conflits",
+                      children: [
+                        { name: "Chaînage", tooltip: "Listes liées par slot" },
+                        { name: "Adressage Ouvert", tooltip: "Sondage dans la table" },
+                        { name: "Double Hashing", tooltip: "Deux fonctions de hachage" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              name: "Algorithmes Fondamentaux",
+              tooltip: "Algorithmes de base en informatique",
+              children: [
+                { 
+                  name: "Tri et Recherche", 
+                  tooltip: "Algorithmes de base",
+                  children: [
+                    {
+                      name: "Algorithmes de Tri",
+                      tooltip: "Méthodes d'ordonnancement",
+                      children: [
+                        { 
+                          name: "Comparaison",
+                          tooltip: "Basés sur comparaisons",
+                          children: [
+                            { name: "Merge Sort", tooltip: "O(n log n) garanti" },
+                            { name: "Quick Sort", tooltip: "O(n log n) en moyenne" },
+                            { name: "Heap Sort", tooltip: "O(n log n) garanti" }
+                          ]
+                        },
+                        { 
+                          name: "Non-Comparaison",
+                          tooltip: "Exploitent structure des données",
+                          children: [
+                            { name: "Counting Sort", tooltip: "Tri par comptage" },
+                            { name: "Radix Sort", tooltip: "Tri par base" },
+                            { name: "Bucket Sort", tooltip: "Tri par seaux" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Recherche",
+                      tooltip: "Algorithmes de recherche",
+                      children: [
+                        { name: "Linéaire", tooltip: "O(n) parcours séquentiel" },
+                        { name: "Binaire", tooltip: "O(log n) sur données triées" },
+                        { name: "Interpolation", tooltip: "Recherche par interpolation" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Graphes", 
+                  tooltip: "Parcours et plus courts chemins",
+                  children: [
+                    {
+                      name: "Parcours",
+                      tooltip: "Exploration de graphes",
+                      children: [
+                        { 
+                          name: "DFS",
+                          tooltip: "Depth-First Search",
+                          children: [
+                            { name: "Récursif", tooltip: "Implémentation récursive" },
+                            { name: "Itératif", tooltip: "Avec pile explicite" },
+                            { name: "Applications", tooltip: "Détection cycles, composantes" }
+                          ]
+                        },
+                        { 
+                          name: "BFS",
+                          tooltip: "Breadth-First Search",
+                          children: [
+                            { name: "File FIFO", tooltip: "Utilise une file" },
+                            { name: "Plus Court Chemin", tooltip: "Pour graphes non-pondérés" },
+                            { name: "Niveaux", tooltip: "Exploration par niveaux" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Plus Courts Chemins",
+                      tooltip: "Algorithmes de chemins optimaux",
+                      children: [
+                        { name: "Dijkstra", tooltip: "Poids positifs uniquement" },
+                        { name: "Bellman-Ford", tooltip: "Détecte cycles négatifs" },
+                        { name: "Floyd-Warshall", tooltip: "Tous les plus courts chemins" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Optimisation", 
+                  tooltip: "Programmation dynamique",
+                  children: [
+                    {
+                      name: "Principe",
+                      tooltip: "Fondements de la PD",
+                      children: [
+                        { name: "Sous-structure Optimale", tooltip: "Solutions optimales des sous-problèmes" },
+                        { name: "Chevauchement", tooltip: "Sous-problèmes répétés" },
+                        { name: "Mémorisation", tooltip: "Cache des résultats" }
+                      ]
+                    },
+                    {
+                      name: "Problèmes Classiques",
+                      tooltip: "Exemples célèbres",
+                      children: [
+                        { name: "Fibonacci", tooltip: "Suite de Fibonacci" },
+                        { name: "Sac à Dos", tooltip: "Knapsack Problem" },
+                        { name: "LCS", tooltip: "Longest Common Subsequence" },
+                        { name: "Edit Distance", tooltip: "Distance d'édition" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          name: "Applications Sectorielles",
+          tooltip: "Applications de l'IA par secteur",
+          children: [
+            {
+              name: "Santé",
+              tooltip: "IA appliquée à la médecine",
+              children: [
+                { 
+                  name: "Diagnostic Médical", 
+                  tooltip: "Aide au diagnostic",
+                  children: [
+                    {
+                      name: "Diagnostic par Image",
+                      tooltip: "Analyse d'imagerie médicale",
+                      children: [
+                        { 
+                          name: "Radiologie",
+                          tooltip: "Analyse d'images radiologiques",
+                          children: [
+                            { name: "Scanner CT", tooltip: "Tomodensitométrie" },
+                            { name: "IRM", tooltip: "Imagerie par résonance magnétique" },
+                            { name: "Radiographie", tooltip: "Images radiographiques" },
+                            { name: "Échographie", tooltip: "Imagerie ultrasonore" }
+                          ]
+                        },
+                        { 
+                          name: "Pathologie",
+                          tooltip: "Analyse de tissus",
+                          children: [
+                            { name: "Histopathologie", tooltip: "Analyse de coupes tissulaires" },
+                            { name: "Cytologie", tooltip: "Analyse cellulaire" },
+                            { name: "Biomarqueurs", tooltip: "Marqueurs biologiques" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Diagnostic Clinique",
+                      tooltip: "Aide à la décision clinique",
+                      children: [
+                        { name: "Systèmes Experts", tooltip: "Bases de connaissances médicales" },
+                        { name: "Aide à la Décision", tooltip: "Support décisionnel" },
+                        { name: "Diagnostic Différentiel", tooltip: "Exploration des hypothèses" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Drug Discovery", 
+                  tooltip: "Découverte de médicaments",
+                  children: [
+                    {
+                      name: "Design Moléculaire",
+                      tooltip: "Conception de molécules",
+                      children: [
+                        { 
+                          name: "Structure-Based",
+                          tooltip: "Basé sur la structure",
+                          children: [
+                            { name: "Docking Moléculaire", tooltip: "Amarrage protéine-ligand" },
+                            { name: "Dynamique Moléculaire", tooltip: "Simulation des interactions" },
+                            { name: "Pharmacophore", tooltip: "Modèles pharmacophoriques" }
+                          ]
+                        },
+                        { 
+                          name: "Ligand-Based",
+                          tooltip: "Basé sur les ligands",
+                          children: [
+                            { name: "QSAR", tooltip: "Relation structure-activité" },
+                            { name: "Similarity Search", tooltip: "Recherche par similarité" },
+                            { name: "Machine Learning", tooltip: "Prédiction d'activité" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Criblage Virtuel",
+                      tooltip: "Sélection computationnelle",
+                      children: [
+                        { name: "Libraries Chimiques", tooltip: "Bases de données moléculaires" },
+                        { name: "Filtres ADMET", tooltip: "Absorption, Distribution, Métabolisme" },
+                        { name: "Toxicité Prédictive", tooltip: "Prédiction de toxicité" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Médecine Personnalisée", 
+                  tooltip: "Traitement individualisé",
+                  children: [
+                    {
+                      name: "Génomique",
+                      tooltip: "Analyse génétique",
+                      children: [
+                        { name: "Séquençage", tooltip: "Analyse de l'ADN" },
+                        { name: "Variants Génétiques", tooltip: "Polymorphismes" },
+                        { name: "Pharmacogénomique", tooltip: "Réponse aux médicaments" }
+                      ]
+                    },
+                    {
+                      name: "Biomarqueurs",
+                      tooltip: "Indicateurs biologiques",
+                      children: [
+                        { name: "Prédictifs", tooltip: "Prédiction de réponse" },
+                        { name: "Prognostiques", tooltip: "Evolution de la maladie" },
+                        { name: "Théranostiques", tooltip: "Thérapie et diagnostic" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              name: "Finance",
+              tooltip: "IA dans le secteur financier",
+              children: [
+                { 
+                  name: "Trading Algorithmique", 
+                  tooltip: "Négociation automatisée",
+                  children: [
+                    {
+                      name: "Stratégies de Trading",
+                      tooltip: "Approches algorithmiques",
+                      children: [
+                        { 
+                          name: "High-Frequency Trading",
+                          tooltip: "Trading haute fréquence",
+                          children: [
+                            { name: "Market Making", tooltip: "Fourniture de liquidité" },
+                            { name: "Arbitrage", tooltip: "Exploitation d'écarts de prix" },
+                            { name: "Statistical Arbitrage", tooltip: "Arbitrage statistique" }
+                          ]
+                        },
+                        { 
+                          name: "Trend Following",
+                          tooltip: "Suivi de tendances",
+                          children: [
+                            { name: "Momentum", tooltip: "Stratégies momentum" },
+                            { name: "Mean Reversion", tooltip: "Retour à la moyenne" },
+                            { name: "Breakout", tooltip: "Cassures de niveaux" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Analyse Technique",
+                      tooltip: "Analyse des prix",
+                      children: [
+                        { name: "Indicateurs Techniques", tooltip: "RSI, MACD, Bollinger" },
+                        { name: "Pattern Recognition", tooltip: "Reconnaissance de motifs" },
+                        { name: "Signal Processing", tooltip: "Traitement du signal" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Détection de Fraude", 
+                  tooltip: "Identification des anomalies",
+                  children: [
+                    {
+                      name: "Types de Fraude",
+                      tooltip: "Catégories de fraudes",
+                      children: [
+                        { name: "Cartes de Crédit", tooltip: "Fraude aux paiements" },
+                        { name: "Blanchiment d'Argent", tooltip: "Anti-Money Laundering" },
+                        { name: "Fraude Interne", tooltip: "Employés malveillants" }
+                      ]
+                    },
+                    {
+                      name: "Techniques de Détection",
+                      tooltip: "Méthodes d'identification",
+                      children: [
+                        { name: "Anomaly Detection", tooltip: "Détection d'anomalies" },
+                        { name: "Graph Analysis", tooltip: "Analyse de réseaux" },
+                        { name: "Behavioral Analytics", tooltip: "Analyse comportementale" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Évaluation de Risque", 
+                  tooltip: "Analyse de crédit",
+                  children: [
+                    {
+                      name: "Crédit Scoring",
+                      tooltip: "Notation du risque crédit",
+                      children: [
+                        { name: "Modèles Traditionnels", tooltip: "Régression logistique" },
+                        { name: "Machine Learning", tooltip: "Forêts aléatoires, boosting" },
+                        { name: "Alternative Data", tooltip: "Données non traditionnelles" }
+                      ]
+                    },
+                    {
+                      name: "Risque de Marché",
+                      tooltip: "Gestion des risques financiers",
+                      children: [
+                        { name: "VaR", tooltip: "Value at Risk" },
+                        { name: "Stress Testing", tooltip: "Tests de résistance" },
+                        { name: "Portfolio Optimization", tooltip: "Optimisation de portefeuille" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              name: "Transport",
+              tooltip: "IA dans les transports",
+              children: [
+                { 
+                  name: "Véhicules Autonomes", 
+                  tooltip: "Conduite automatisée",
+                  children: [
+                    {
+                      name: "Perception",
+                      tooltip: "Compréhension de l'environnement",
+                      children: [
+                        { 
+                          name: "Vision Computer",
+                          tooltip: "Analyse d'images",
+                          children: [
+                            { name: "Détection d'Objets", tooltip: "Véhicules, piétons, panneaux" },
+                            { name: "Segmentation", tooltip: "Route, trottoir, obstacles" },
+                            { name: "Depth Estimation", tooltip: "Estimation de profondeur" }
+                          ]
+                        },
+                        { 
+                          name: "Fusion de Capteurs",
+                          tooltip: "Combinaison de données",
+                          children: [
+                            { name: "LiDAR", tooltip: "Télémétrie laser" },
+                            { name: "Radar", tooltip: "Détection radio" },
+                            { name: "Caméras", tooltip: "Vision stéréoscopique" }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Décision et Contrôle",
+                      tooltip: "Planification et exécution",
+                      children: [
+                        { name: "Path Planning", tooltip: "Planification de trajectoire" },
+                        { name: "Behavior Planning", tooltip: "Planification comportementale" },
+                        { name: "Vehicle Control", tooltip: "Contrôle du véhicule" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Optimisation Logistique", 
+                  tooltip: "Gestion des flux",
+                  children: [
+                    {
+                      name: "Planification d'Itinéraires",
+                      tooltip: "Optimisation des trajets",
+                      children: [
+                        { name: "VRP", tooltip: "Vehicle Routing Problem" },
+                        { name: "TSP", tooltip: "Traveling Salesman Problem" },
+                        { name: "Dynamic Routing", tooltip: "Routage dynamique" }
+                      ]
+                    },
+                    {
+                      name: "Gestion de Flotte",
+                      tooltip: "Optimisation des ressources",
+                      children: [
+                        { name: "Allocation Véhicules", tooltip: "Attribution optimale" },
+                        { name: "Planification Horaires", tooltip: "Scheduling optimal" },
+                        { name: "Demand Forecasting", tooltip: "Prédiction de demande" }
+                      ]
+                    }
+                  ]
+                },
+                { 
+                  name: "Maintenance Prédictive", 
+                  tooltip: "Prévention des pannes",
+                  children: [
+                    {
+                      name: "Surveillance Continue",
+                      tooltip: "Monitoring en temps réel",
+                      children: [
+                        { name: "IoT Sensors", tooltip: "Capteurs connectés" },
+                        { name: "Condition Monitoring", tooltip: "Surveillance d'état" },
+                        { name: "Vibration Analysis", tooltip: "Analyse vibratoire" }
+                      ]
+                    },
+                    {
+                      name: "Prédiction de Pannes",
+                      tooltip: "Anticipation des défaillances",
+                      children: [
+                        { name: "Time Series Analysis", tooltip: "Analyse temporelle" },
+                        { name: "Anomaly Detection", tooltip: "Détection d'anomalies" },
+                        { name: "Remaining Useful Life", tooltip: "Durée de vie résiduelle" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    let root;
+    const duration = 750; // Durée de l'animation
+
+    const tooltip = d3.select('#tooltip');
+    const svgElement = d3.select("svg");
+    const svgG = svgElement.append("g"); 
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    const margin = { top: 80, right: 120, bottom: 80, left: 220 }; 
+
+    const treeLayout = d3.tree().nodeSize([35, 280]); 
+
+    const zoom = d3.zoom()
+        .scaleExtent([0.1, 3]) 
+        .on("zoom", (event) => {
+            svgG.attr("transform", event.transform);
+        });
+    svgElement.call(zoom);
+    
+    function initialTransform() {
+        const initialScale = 0.6; 
+        svgElement.call(zoom.transform, d3.zoomIdentity.translate(margin.left, height / 2).scale(initialScale));
+    }
+
+    function loadAndDrawMap() {
+      root = d3.hierarchy(masterMindMapData, d => d.children);
+      root.x0 = height / 2; 
+      root.y0 = 0;          
+
+      root.descendants().forEach((d, idx) => {
+        d.id = `node-${idx}`; 
+        // Initialement, replier TOUS les nœuds en dessous de la racine "xAI".
+        // Cela inclut les nœuds des cartes mentales et tous leurs descendants.
+        if (d.depth > 0) { // Tous les nœuds sauf la racine (xAI) elle-même
+          if (d.children) { 
+            d._children = d.children; // Stocker les enfants pour les déplier plus tard
+            d.children = null;       // Mettre les enfants à null pour les replier
+          }
+        }
+      });
+      
+      update(root);
+      initialTransform(); 
+      applySearchFilter(); 
+    }
+
+    function update(source) {
+      const treeData = treeLayout(root);
+      let nodes = treeData.descendants();
+      let links = root.links(); 
+
+      nodes.forEach(d => { d.y = d.depth * (d.depth === 1 ? 320 : 220) ; }); 
+
+      const node = svgG.selectAll("g.node")
+        .data(nodes, d => d.id);
+
+      const nodeEnter = node.enter().append("g")
+        .attr("class", d => `node ${d._children ? 'collapsed' : ''} ${d.data.isRoot ? 'root-node' : ''}`)
+        .attr("transform", d => `translate(${source.y0},${source.x0})`)
+        .on("click", click)
+        .on("mouseover", (event, d) => {
+          tooltip.transition().duration(200).style("opacity", .95);
+          tooltip.html(d.data.tooltip || d.data.name)
+            .style("left", (event.pageX + 15) + "px")
+            .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseout", () => {
+          tooltip.transition().duration(300).style("opacity", 0);
+        });
+
+      nodeEnter.append("circle")
+        .attr("r", 1e-6) 
+        .style("fill", d => d._children ? "#4a5568" : "#282828"); 
+
+      nodeEnter.append("text")
+        .attr("dy", ".35em")
+        .attr("x", d => d.children || d._children ? (d.data.isRoot ? -20 : -13) : (d.data.isRoot ? 20 : 13))
+        .attr("text-anchor", d => d.children || d._children ? "end" : "start")
+        .text(d => d.data.name)
+        .style("fill-opacity", 1e-6); 
+
+      const nodeUpdate = nodeEnter.merge(node)
+        .transition()
+        .duration(duration)
+        .attr("transform", d => `translate(${d.y},${d.x})`)
+        .attr("class", d => `node ${d._children ? 'collapsed' : ''} ${d.highlighted ? 'highlighted' : ''} ${d.data.isRoot ? 'root-node' : ''}`);
+
+
+      nodeUpdate.select("circle")
+        .attr("r", d => d.data.isRoot ? 10 : 6.5) 
+        .style("fill", d => d.data.isRoot ? "#007bff" : (d._children ? "#4a5568" : "#282828")) 
+        .style("stroke", d => d.highlighted ? "#00bcd4" : (d.data.isRoot ? "#0056b3" : "#666"));
+
+
+      nodeUpdate.select("text")
+        .style("fill-opacity", 1)
+        .attr("x", d => d.children || d._children ? (d.data.isRoot ? -20 : -13) : (d.data.isRoot ? 20 : 13))
+        .attr("text-anchor", d => d.children || d._children ? "end" : "start")
+        .style("fill", d => d.highlighted ? "#26c6da" : (d.data.isRoot ? "#ffffff" : "#e0e0e0"))
+        .style("font-size", d => d.data.isRoot ? "16px" : "12px")
+        .style("font-weight", d => d.data.isRoot ? "bold" : "normal");
+
+
+      const nodeExit = node.exit().transition()
+        .duration(duration)
+        .attr("transform", d => `translate(${source.y},${source.x})`)
+        .remove();
+
+      nodeExit.select("circle").attr("r", 1e-6);
+      nodeExit.select("text").style("fill-opacity", 1e-6);
+
+      const linkGenerator = d3.linkHorizontal()
+        .x(d => d.y) 
+        .y(d => d.x); 
+
+      const link = svgG.selectAll("path.link")
+        .data(links, d => d.target.id);
+
+      const linkEnter = link.enter().insert("path", "g") 
+        .attr("class", "link")
+        .attr("d", d => { 
+          const o = { x: source.x0, y: source.y0 }; 
+          return linkGenerator({ source: o, target: o }); 
+        });
+
+      linkEnter.merge(link).transition()
+        .duration(duration)
+        .attr("d", linkGenerator); 
+
+      link.exit().transition()
+        .duration(duration)
+        .attr("d", d => {
+          const o = { x: source.x, y: source.y };
+          return linkGenerator({ source: o, target: o }); 
+        })
+        .remove();
+
+      nodes.forEach(d => {
+        d.x0 = d.x;
+        d.y0 = d.y;
+      });
+    }
+
+    function click(event, d) {
+      if (!d.children && !d._children) {
+        return;
+      }
+
+      if (d.children) { 
+        collapseRecursive(d);
+      } else { 
+        expandRecursive(d);
+      }
+      update(d); 
+      applySearchFilter(); 
+    }
+
+    function expandRecursive(d) {
+      if (d._children) {
+        d.children = d._children;
+        d._children = null;
+      }
+      if (d.children) {
+        d.children.forEach(expandRecursive);
+      }
+    }
+
+    function collapseRecursive(d) {
+      if (d.children) {
+        d._children = d.children;
+        d.children = null;
+      }
+      if (d._children) { 
+        d._children.forEach(collapseRecursive);
+      }
+    }
+    
+    const searchInput = d3.select("#search-input");
+    searchInput.on("keyup", applySearchFilter);
+
+    function applySearchFilter() {
+        const query = searchInput.property("value").toLowerCase();
+        if (!root) return; 
+
+        root.descendants().forEach(d => d.highlighted = false);
+
+        if (query.length > 0) {
+            root.descendants().forEach(d => {
+                if (d.data.name.toLowerCase().includes(query)) {
+                    d.highlighted = true;
+                }
+            });
+        }
+        if (root) update(root); 
+    }
+    
+    window.addEventListener('resize', () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      if (root) {
+        initialTransform(); 
+      }
+    });
+
+    loadAndDrawMap();
+
+  </script>
+</body>
+</html>
