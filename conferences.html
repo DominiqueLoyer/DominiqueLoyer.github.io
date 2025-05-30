@@ -29,59 +29,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="msvalidate.01" content="36DCA3D92C79DDE66E87BAC045F726AE" />
   <title>D Ф m i И i q ц e L Ф y e r ~ AI researcher in Montreal</title>
- <style>
-   div {
-  border: 1px solid black;
-  margin-top: 25px;
-  margin-bottom: 25px;
-  margin-right: 25px;
-  margin-left: 25px;
-  background-color: #f4f4f4;
-    }
-    body {
-      font-family: Arial, sans-serif;
-      font-size:9;
-      margin: 0;
-      padding: 0;
-      background: #f4f4f4;
-      color: #333;
-      text-align: center;
-    }
-    header {
-      background: #333;
-      color: #fff;
-      padding: 0.5rem 0;
-    }
-    header h1 {
-      margin: 0;
-      font-size:8;
-    }
-    section {
-      padding: 1rem;
-    }
-    footer {
-      background: #333;
-      a {
-        color:white;
-      }
-      color: #fff;
-      padding: 0.5rem 0;
-      position: fixed;
-      width: 100%;
-      bottom: 0;
-    }
-    ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  width: 100px;
-    } 
-    li a {
-  display: block;
-  background-color: #faf8f5;
-    }
-
-  </style>
+ 
   
     <!-- données structurees -->
   
@@ -144,12 +92,91 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 
+<style>
+  /* Menu principal */
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #faf8f5;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  li {
+    position: relative;
+  }
+
+  li a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #000;
+    background-color: #faf8f5;
+  }
+
+  li a:hover {
+    background-color: #ddd;
+  }
+
+  /* Sous-menu */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 180px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+
+  .dropdown-content a {
+    padding: 10px 16px;
+    display: block;
+    color: black;
+    text-align: left;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  /* Responsive menu mobile */
+  @media screen and (max-width: 768px) {
+    ul {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    li {
+      width: 100%;
+    }
+
+    .dropdown-content {
+      position: relative;
+      box-shadow: none;
+    }
+  }
+</style>
+
 <ul>
-  <li><a href="https://dominiqueloyer.github.io/">Maison</a></li>
+  <li><a href="https://dominiqueloyer.github.io/">About</a></li>
   <li><a href="https://dominiqueloyer.github.io/papers.html">Papers</a></li>
   <li><a href="https://dominiqueloyer.github.io/conferences.html">Conferences</a></li>
   <li><a href="https://dominiqueloyer.github.io/lectures.html">Lectures</a></li>
   <li><a href="https://dominiqueloyer.github.io/ontology.html">Researcher Ontology</a></li>
+  <li class="dropdown">
+    <a href="#">Children's Corner</a>
+    <div class="dropdown-content">
+      <a href="https://dominiqueloyer.github.io/childrenCorner.html">Children's Corner I</a>
+      <a href="https://dominiqueloyer.github.io/childrenCorner2.html">Children's Corner II</a>
+      <a href="https://dominiqueloyer.github.io/pong.html">Children's Corner III</a>
+    </div>
+  </li>
 </ul>
 
 
