@@ -82,25 +82,27 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
 
         /* --- Styles pour le conteneur du canvas --- */
-        .canvas-container {
+    canvas-container {
             border-radius: 12px;
             box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1), 0 5px 10px rgba(255, 255, 255, 0.05);
             overflow: hidden; /* Assure que le canvas reste dans les coins arrondis */
             margin-bottom: 20px;
-        }
+    }
         
         /* --- Styles pour le canvas --- */
-        canvas {
+    canvas {
             display: block; /* Évite les espaces indésirables sous le canvas */
             cursor: pointer;
-        }
+    }
   
-  /* --- Styles pour le canvas --- Importation de la police Google Font "Inter" pour une meilleure typographie --- */
+  /* --- Styles pour le canvas --- Importation de la police Google Font "Inter" pour une meilleure typographie 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet"> --- */
 
   </style>
+
+  
      <!-- données structurees -->
   
 <script type="application/ld+json">
@@ -261,10 +263,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="canvas-container">
         <canvas id="water-canvas"></canvas>
     </div>
-    <p class="credits">
-        Créez des vagues en cliquant et en déplaçant la souris sur l'image.
-    </p>
-
+    
     <script>
         // --- Configuration de l'animation ---
         // Note: L'URL originale a été remplacée pour éviter les erreurs de CORS (Cross-Origin Resource Sharing).
