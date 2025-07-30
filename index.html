@@ -113,7 +113,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     "memberOf": "Consultant en intelligence artificielle : Sherbrooke Informatique Inc."
     "keywords": "Data scientist, AI researcher, PhD research, Intelligence artificielle, Artificial intelligence"
     "image": "https://dominiqueloyer.github.io/si.jpg"
-    "telephone": "(819) 412-3970",
+    "telephone": "(581) 799-0019",
     "foundingDate": "01/01/2013"
     "address": {
       "@type": "PostalAddress",
@@ -239,7 +239,229 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
    <center>
-     <img src="dl.png" alt="Dominique S. Loyer" width="180" height="180">
+<div class="canvas-container">
+        <canvas id="water-canvas"></canvas>
+    </div>
+    <p class="credits">
+        Créez des vagues en cliquant et en déplaçant la souris sur l'image.
+    </p>
+
+    <script>
+        // --- Configuration de l'animation ---
+        // Note: L'URL originale a été remplacée pour éviter les erreurs de CORS (Cross-Origin Resource Sharing).
+        // Vous pouvez utiliser une image hébergée sur un service comme 'imgur' ou 'postimages'.
+        const IMAGE_URL = 'img src="dl.png" alt="Dominique S. Loyer" width="180" height="180'; 
+        const DAMPING = 0.98; // Facteur d'amortissement des vagues (plus proche de 1, plus longtemps elles durent)
+        const RIPPLE_RADIUS = 5; // Rayon des gouttes créées par le clic/mouvement
+
+        // --- Initialisation du Canvas et du Contexte ---
+        const canvas = document.getElementById('water-canvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+        const image = new Image();
+        image.crossOrigin = "Anonymous"; // Nécessaire car l'image vient d'un autre domaine
+        
+        let canvasWidth, canvasHeight;
+        let buffer1, buffer2; // Tampons pour stocker l'état de l'eau
+        let textureData, originalTextureData; // Données de pixels de l'image
+        let isInitialized = false; // Drapeau pour suivre l'état de l'initialisation
+
+        // --- Chargement de l'image ---
+        image.onload = () => {
+            // Ajuste la taille du canvas à celle de l'image
+            canvasWidth = canvas.width = image.width;
+            canvasHeight = canvas.height = image.height;
+
+            // Dessine l'image une première fois pour extraire ses données de pixels
+            ctx.drawImage(image, 0, 0);
+            originalTextureData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+            textureData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+
+            // Initialise les tampons de l'eau (tableaux 2D)
+            const bufferSize = canvasWidth * canvasHeight;
+            buffer1 = new Float32Array(bufferSize).fill(0);
+            buffer2 = new Float32Array(bufferSize).fill(0);
+
+            // Démarre la boucle d'animation
+            animate();
+            
+            // L'initialisation est terminée, on peut autoriser les interactions
+            isInitialized = true;
+        };
+        
+        image.onerror = () => {
+             console.error("L'image n'a pas pu être chargée. Vérifiez l'URL.");
+             // Affiche un message d'erreur directement sur le canvas
+             canvas.width = 180;
+             canvas.height = 180;
+             ctx.fillStyle = 'red';
+             ctx.font = '16px Inter';
+             ctx.fillText("Erreur de chargement de l'image.", 20, 40);
+             ctx.fillText("Veuillez vérifier l'URL dans le code.", 20, 60);
+        }
+
+        image.src = IMAGE_URL;
+
+        // --- Interactivité (Souris) ---
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isInitialized) return; // N'exécute rien si l'animation n'est pas prête
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.floor(e.clientX - rect.left);
+            const y = Math.floor(e.clientY - rect.top);
+            disturb(x, y, 1500); // Crée une perturbation au passage de la souris
+        });
+
+        canvas.addEventListener('mousedown', (e) => {
+            if (!isInitialized) return; // N'exécute rien si l'animation n'est pas prête
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.floor(e.clientX - rect.left);
+            const y = Math.floor(e.clientY - rect.top);
+            disturb(x, y, 4000); // Crée une perturbation plus forte au clic
+        });
+        
+        // --- Interactivité (Tactile) ---
+        canvas.addEventListener('touchstart', (e) => {
+            if (!isInitialized) return; // N'exécute rien si l'animation n'est pas prête
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            for(let i = 0; i < e.touches.length; i++) {
+                const x = Math.floor(e.touches[i].clientX - rect.left);
+                const y = Math.floor(e.touches[i].clientY - rect.top);
+                disturb(x, y, 4000);
+            }
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            if (!isInitialized) return; // N'exécute rien si l'animation n'est pas prête
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            for(let i = 0; i < e.touches.length; i++) {
+                const x = Math.floor(e.touches[i].clientX - rect.left);
+                const y = Math.floor(e.touches[i].clientY - rect.top);
+                disturb(x, y, 1500);
+            }
+        });
+
+
+        /**
+         * Crée une perturbation (une "goutte") dans l'eau à une position donnée.
+         * @param {number} x - Coordonnée X de la perturbation.
+         * @param {number} y - Coordonnée Y de la perturbation.
+         * @param {number} magnitude - Force de la perturbation.
+         */
+        function disturb(x, y, magnitude) {
+            // Vérifie que la perturbation est bien dans les limites du canvas
+            if (x < RIPPLE_RADIUS || x > canvasWidth - RIPPLE_RADIUS || y < RIPPLE_RADIUS || y > canvasHeight - RIPPLE_RADIUS) {
+                return;
+            }
+            // Applique la perturbation en forme de cercle
+            for (let i = -RIPPLE_RADIUS; i < RIPPLE_RADIUS; i++) {
+                for (let j = -RIPPLE_RADIUS; j < RIPPLE_RADIUS; j++) {
+                    if (i * i + j * j < RIPPLE_RADIUS * RIPPLE_RADIUS) {
+                        const index = (x + i) + (y + j) * canvasWidth;
+                        buffer1[index] = magnitude;
+                    }
+                }
+            }
+        }
+
+        /**
+         * La boucle principale d'animation qui s'exécute à chaque frame.
+         */
+        function animate() {
+            // Demande au navigateur d'exécuter cette fonction à la prochaine frame disponible
+            requestAnimationFrame(animate);
+
+            // 1. Calcul de la simulation de l'eau
+            processWater();
+
+            // 2. Rendu de l'image déformée
+            render();
+        }
+
+        /**
+         * Calcule l'état de l'eau pour la frame suivante.
+         * C'est le cœur de l'algorithme de simulation.
+         */
+        function processWater() {
+            // On parcourt chaque "pixel" d'eau, en évitant les bords
+            for (let y = 1; y < canvasHeight - 1; y++) {
+                for (let x = 1; x < canvasWidth - 1; x++) {
+                    const i = y * canvasWidth + x;
+                    
+                    // Calcule la moyenne des hauteurs des 4 voisins directs
+                    const average = (
+                        buffer1[i - 1] +         // Voisin de gauche
+                        buffer1[i + 1] +         // Voisin de droite
+                        buffer1[i - canvasWidth] + // Voisin du haut
+                        buffer1[i + canvasWidth]   // Voisin du bas
+                    ) / 2;
+
+                    // La nouvelle hauteur est calculée en se basant sur les voisins et l'état précédent
+                    let newHeight = average - buffer2[i];
+
+                    // Applique l'amortissement pour que les vagues s'estompent avec le temps
+                    newHeight *= DAMPING;
+
+                    // Stocke la nouvelle hauteur dans le deuxième tampon
+                    buffer2[i] = newHeight;
+                }
+            }
+
+            // Échange les tampons : le tampon qui vient d'être calculé (buffer2) devient le tampon principal (buffer1) pour la prochaine frame.
+            [buffer1, buffer2] = [buffer2, buffer1];
+        }
+
+        /**
+         * Rend l'image déformée sur le canvas.
+         */
+        function render() {
+            const pixels = textureData.data;
+            const originalPixels = originalTextureData.data;
+            
+            // On parcourt chaque pixel de l'image
+            for (let y = 1; y < canvasHeight - 1; y++) {
+                for (let x = 1; x < canvasWidth - 1; x++) {
+                    const i = y * canvasWidth + x;
+
+                    // Calcule le décalage (offset) du pixel en fonction de la hauteur de l'eau chez ses voisins.
+                    // Cela crée l'illusion de réfraction de la lumière.
+                    const xOffset = Math.floor(buffer2[i - 1] - buffer2[i + 1]);
+                    const yOffset = Math.floor(buffer2[i - canvasWidth] - buffer2[i + canvasWidth]);
+
+                    // Calcule la nouvelle position où aller chercher la couleur dans l'image originale
+                    let lookupX = x + xOffset;
+                    let lookupY = y + yOffset;
+
+                    // S'assure que la position de recherche reste dans les limites de l'image
+                    if (lookupX < 0) lookupX = 0;
+                    if (lookupX >= canvasWidth) lookupX = canvasWidth - 1;
+                    if (lookupY < 0) lookupY = 0;
+                    if (lookupY >= canvasHeight) lookupY = canvasHeight - 1;
+
+                    // Trouve l'index de ce pixel dans le tableau de données de l'image
+                    const lookupIndex = (lookupY * canvasWidth + lookupX) * 4;
+                    const targetIndex = i * 4;
+
+                    // Copie la couleur (Rouge, Vert, Bleu) du pixel de l'image originale vers notre image de destination
+                    pixels[targetIndex] = originalPixels[lookupIndex];
+                    pixels[targetIndex + 1] = originalPixels[lookupIndex + 1];
+                    pixels[targetIndex + 2] = originalPixels[lookupIndex + 2];
+                }
+            }
+
+            // Met à jour le canvas avec l'image déformée
+            ctx.putImageData(textureData, 0, 0);
+        }
+
+    </script>
+
+
+
+
+     
+     <!--<img src="dl.png" alt="Dominique S. Loyer" width="180" height="180"> -->
+     
    </center>
   <section>
     
