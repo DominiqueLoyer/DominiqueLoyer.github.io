@@ -1,378 +1,154 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<!DOCTYPE html>
 <html lang="fr">
-<html lang="en">
 <head>
-<link rel="icon" href="peace.png" alt="STOP T H E W A R!" width="16" height="16" type="image/icon type"> 
-
-  <!-- Google Tag Manager -->
-  
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-PRP2NSM4');</script>
-<!-- End Google Tag Manager -->
-  
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-3LQWHW6NDT"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-3LQWHW6NDT');
-</script>
-  <meta robots="YES">
-  <meta keywords="AI researcher,Data scientist, Montreal,Machine learning, Deep learning,xAI,GenAI,PhD UQAM">
-  <meta description="Dominique Loyer is a well-known AI researcher in Montreal. He is doing is PhD in cognitive science at UQAM">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="msvalidate.01" content="36DCA3D92C79DDE66E87BAC045F726AE" />
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>D Ф m i И i q ц e L Ф y e r ~ AI researcher in Montreal</title>
- <style>
-    div {
-     border: 1px solid black;
-     margin-top: 25px;
-     margin-bottom: 25px;
-     margin-right: 5px;
-     margin-left: 5px;
-     background-color: #f4f4f4;
-    }
-      
-    body {
-      font-family: Arial, sans-serif;
-      font-size:9;
-      margin: 0;
-      padding: 0;
-      background: #f4f4f4;
-      color: #333;
-      text-align: center;
-    }
-    header {
-      background: #333;
-      color: #fff;
-      padding: 0.5rem 0;
-    }
-    header h1 {
-      margin: 0;
-      font-size:8;
-    }
-    section {
-      padding: 1rem;
-    }
-    footer {
-      background: #333;
-      a {
-        color:white;
-      }
-      color: #fff;
-      padding: 0.5rem 0;
-      position: fixed;
-      width: 100%;
-      bottom: 0;
-    }
-    ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  width: 100px;
-    } 
-    li a {
-  display: block;
-  background-color: #faf8f5;
-    }
-
-  </style>
-  
-    <!-- données structurees -->
-  
-<script type="application/ld+json">
-{
-  "@context": "http://schema.org",
-  "@type": "Person",
-  "name": "Dominique S. Loyer",
-  "sameAs": "https://www.linkedin.com/en/dominiqueloyer"
-  "sameAs": "Dominique Loyer"     
-  "sameAs": "http://sherbrooke.co"
-  "sameAs": "https://sherbrookeinformatique.com"
-  "jobTitle": "AI researcher",
-  "jobTitle": "PhD candidate",
-  "jobTitle": "Data scientist",
-  "memberOf": "Sherbrooke Informatique"
-  "memberOf": "Doctorat en informatique cognitive, UQAM"
-  "disambiguatingDescription": "Best data scientist profiles in Montreal on LinkedIn for years 2015-2025",
-  "image": "https://dominiqueloyer.github.io/dl.png",
-  "email": "votreconsultant&#64gmail.com",
-  "url": "https://dominiqueloyer.github.io"
-  "alumniOf": "HEC Montréal"
-  "alumniOf": "Université Laval"
-  "hasOccupation": "AI researcher"
-  "hasOccupation": "Data Scientist"
-  <script type="application/ld+json">
-   {
-    "@type": "Organization",
-    "name": "Sherbrooke Informatique Inc.",
-    "memberOf": "Consultant en intelligence artificielle : Sherbrooke Informatique Inc."
-    "keywords": "Data scientist, AI researcher, PhD research, Intelligence artificielle, Artificial intelligence"
-    "image": "https://dominiqueloyer.github.io/si.jpg"
-    "telephone": "(819) 412-3970",
-    "foundingDate": "01/01/2013"
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Montreal, Canada",
-                }
-  }
-}
-</script>
-  
-   <!-- données structurees fin -->
-<!-- mon ontologie OWL -->
-<link rel="alternate" type="application/rdf+xml" href="https://dominiqueloyer.github.io/ontologie.owl" title="Ontology RDF/XML">  
-  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Codes | Dominique Loyer</title>
+    <!-- Tailwind CSS pour un style moderne et épuré -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- highlight.js pour la coloration syntaxique du code -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        /* Style personnalisé pour la zone de dépôt */
+        #drop-zone {
+            border: 4px dashed #cbd5e1;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+        #drop-zone.drag-over {
+            border-color: #2563eb;
+            background-color: #eff6ff;
+        }
+        /* Assurer que le code ne déborde pas */
+        pre code.hljs {
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+    </style>
 </head>
-<body>
-  <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PRP2NSM4"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-  <header>
-    <h1><fontsize:8><center>Consultant en intelligence artificielle : Sherbrooke Informatique Inc.</center> </h1>
-  </header>
- 
-  
-  <section>
-    <h2><fontsize:8><strong>C O D E S </strong></h2>
-<style>
-  /* Menu principal */
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    background-color: #faf8f5;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+<body class="bg-gray-100 font-sans text-gray-800">
 
-  li {
-    position: relative;
-  }
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Portfolio de Codes</h1>
+            <p class="text-lg text-gray-600 mt-2">Une collection de mes projets en Python et autres langages.</p>
+        </header>
 
-  li a {
-    display: block;
-    padding: 10px 15px;
-    text-decoration: none;
-    color: #000;
-    background-color: #faf8f5;
-  }
+        <!-- Zone pour glisser-déposer les fichiers -->
+        <div id="drop-zone" class="w-full rounded-lg p-8 md:p-16 text-center bg-white shadow-md mb-8">
+            <p id="drop-message" class="text-xl text-gray-500">
+                Glissez et déposez vos fichiers de code (.py, .ipynb, etc.) ici.
+            </p>
+        </div>
 
-  li a:hover {
-    background-color: #ddd;
-  }
+        <!-- Conteneur pour afficher le contenu des fichiers -->
+        <main id="output-container" class="space-y-8"></main>
 
-  /* Sous-menu */
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 180px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-  }
-
-  .dropdown-content a {
-    padding: 10px 16px;
-    display: block;
-    color: black;
-    text-align: left;
-  }
-
-  .dropdown-content a:hover {
-    background-color: #f1f1f1;
-  }
-
-  .dropdown:hover .dropdown-content {
-    display: block;
-  }
-
-  /* Responsive menu mobile */
-  @media screen and (max-width: 768px) {
-    ul {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    li {
-      width: 100%;
-    }
-
-    .dropdown-content {
-      position: relative;
-      box-shadow: none;
-    }
-  }
-</style>
-
-<ul>
-  <li><a href="https://dominiqueloyer.github.io/">About</a></li>
-  <li><a href="https://dominiqueloyer.github.io/papers.html">Papers</a></li>
-  <li><a href="https://dominiqueloyer.github.io/papers.html">Codes</a></li>
-  <li><a href="https://dominiqueloyer.github.io/conferences.html">Conferences</a></li>
-  <li><a href="https://dominiqueloyer.github.io/lectures.html">Lectures</a></li>
-  <li><a href="https://dominiqueloyer.github.io/ontology.html">Researcher's Ontology</a></li>
-   <li><a href="https://dominiqueloyer.github.io/mapmind.html">xAI MapMind</a></li>
-  <li class="dropdown">
-    <a href="#">Children's Corner</a>
-    <div class="dropdown-content">
-      <a href="https://dominiqueloyer.github.io/childrenCorner.html">Children's Corner I</a>
-      <a href="https://dominiqueloyer.github.io/childrenCorner2.html">Children's Corner II</a>
-      <a href="https://dominiqueloyer.github.io/pong.html">Children's Corner III</a>
     </div>
-  </li>
-</ul>
 
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const outputContainer = document.getElementById('output-container');
+        const dropMessage = document.getElementById('drop-message');
 
+        // Empêcher le comportement par défaut du navigateur pour le glisser-déposer
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
 
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
 
-</section>
+        // Mettre en évidence la zone de dépôt lorsqu'un fichier est glissé dessus
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.add('drag-over'), false);
+        });
 
-<section>
-   <div>
-     <H2>C O D E S in Python mostly and some in R</H2>
-    <p><span style="font-size:0.6em">Loyer, D. (2024).<i>Neural translation Fr-En (to translate my papers)</i></span>
-      </br>
-      <span style="font-size:0.6em"><small>Neural translation Fr-En (to translate my papers)</br></span>
-      <span style="font-size:0.6em">Université du Québec à Montréal (UQAM)].</small></span>
-      </br>
-     <span style="font-size:0.6em"><small><a href="https://dominiqueloyer.github.io/thesis_dl.pdf">Ébauche de projet de thèse de doctorat</a></small></span>
-      </br></br>
-     <span style="font-size:0.5em"><small><strong>cite\&nbsp--->&nbspCitation Key:&nbsp&nbsp loyerTransparence_responsabilite_algorithme_personnalisation2024</strong></small></span>
-     </br></br>
-     <p><span style="font-size:0.6em">Loyer, D. (2025).<i>Neural translation EE-RU</i></span>
-      </br>
-      <span style="font-size:0.6em"><small>[Traduction Autonmatique Neuronale EE-RU],</br></span>
-      <span style="font-size:0.6em">Université du Québec à Montréal (UQAM)].</small></span>
-      </br>
-     <span style="font-size:0.6em"><small><a href="https://dominiqueloyer.github.io/NeuronalTranslation.pdf">Traduction Autonmatique Neuronale EE-RU</a></small></span>
-      </br></br>
-     <span style="font-size:0.5em"><small><strong>cite\&nbsp--->&nbspCitation Key: loyerDeveloppementEvaluationDun</strong></small></span>
-     </br></br>
-     <p><span style="font-size:0.6em">Loyer, D. (2025).<i>Projet de création d'un moteur de recheche d'information avec Lucene.</i></span>
-      </br>
-      <span style="font-size:0.6em"><small>[Projet de création d'un moteur de recheche d'information avec Lucene]</br></span>
-      <span style="font-size:0.6em">Université du Québec à Montréal (UQAM)].</small></span>
-      </br>
-     <span style="font-size:0.6em"><small><a href="https://dominiqueloyer.github.io/RI_Report.pdf">Projet de création d'un moteur de recheche d'information avec Lucene.</a></small></span>
-      </br></br>
-     <span style="font-size:0.5em"><small><strong>cite\&nbsp--->&nbspCitation Key: loyerEvaluationModelesRecherche</strong></small></span>
-     </br></br>
-     <p><span style="font-size:0.6em">Loyer, D. (2025).<i>Hybrid System for Verifying the Credibility of Information Sources: An Ontology</i></span>
-      </br>
-      <span style="font-size:0.6em"><small>Hybrid System for Verifying the Credibility of Information Sources: An Ontology</br></span>
-      <span style="font-size:0.6em">Université du Québec à Montréal (UQAM)].</small></span>
-      </br>
-     <span style="font-size:0.6em"><small><a href="https://dominiqueloyer.github.io/Ontology_of_a_verification_system_for_liability_of_the_information_may15_2025.pdf">Hybrid System for Verifying the Credibility of Information Sources: An Ontology</a></small></span>
-      </br></br>
-     <span style="font-size:0.5em"><small><strong>cite\&nbsp--->&nbspCitation Key: loyerHybridSystemVerifying2025</strong></small></span>
-     </br></br>
-     <p><span style="font-size:0.6em">Loyer, D. (2025).<i>Modeling an Hybrid System (predicate-logic-based & ML/AI) for Verifying the Credibility of Information Sources</i></span>
-      </br>
-      <span style="font-size:0.6em"><small>[Modeling an Hybrid System (predicate-logic-based & ML/AI) for Verifying the Credibility of Information Sources</br></span>
-      <span style="font-size:0.6em">Université du Québec à Montréal (UQAM)].</small></span>
-      </br>
-     <span style="font-size:0.6em"><small><a href="https://dominiqueloyer.github.io/Modeling and Hybrid System for Verification of sources credibility.pdf">Modeling an Hybrid System (predicate-logic-based & ML/AI) for Verifying the Credibility of Information Sources</a></small></span>
-      </br></br>
-     <span style="font-size:0.5em"><small><strong>cite\&nbsp--->&nbspCitation Key: loyerModelingHybridSystem2025</strong></small></span>
-     </br>
-     <span style="font-size:0.6em">Loyer, D. (2025).<i>Neuronal automatic translation English-Russian</i></span>
-      </br>
-      <span style="font-size:0.6em"><small>Neuronal automatic translation English-Russian</br></span>
-      <span style="font-size:0.6em">Université du Québec à Montréal (UQAM)].</small></span>
-      </br>
-     <span style="font-size:0.6em"><small><a href="https://dominiqueloyer.github.io/NeuronalAutomaticTranslation.pdf">Ébauche de projet de thèse de doctorat</a></small></span>
-      </br></br>
-     </br></br>
-     <span style="font-size:0.5em"><small><strong>cite\&nbsp--->&nbspCitation Key: loyerDeveloppementEvaluationDun</strong></small></span>
-   </div>
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.remove('drag-over'), false);
+        });
 
-</section>
-  
-  
- <style>
-  ul {
-    list-style-type: none;
-    padding: 0.1;
-  }
-  li {
-    margin: 0.4rem 0;
-    font-size:6;
-  }
- a:link {
-  color: #b4b2b0;
-  background-color: #e1dfdc;
-  text-decoration: none;
-  }
+        // Gérer l'événement de dépôt de fichier
+        dropZone.addEventListener('drop', handleDrop, false);
 
-a:visited {
-  color: black;
-  background-color: transparent;
-  text-decoration: none;
-  }
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
 
-a:hover {
-  color: #c3c3c3;
-  background-color: transparent;
-  text-decoration: underline;
-  }
+            // Cacher le message initial une fois que des fichiers sont déposés
+            dropMessage.style.display = 'none';
 
-a:active {
-  color: #faf8f5;
-  background-color: transparent;
-  text-decoration: underline;
-  }
+            // Traiter chaque fichier déposé
+            [...files].forEach(processFile);
+        }
 
+        function processFile(file) {
+            const reader = new FileReader();
 
-</style>
-</br></br></br></br></br></br></br>
- <!-- mon orcid -->
-    
-    <a
-    id="cy-effective-orcid-url"
-    class="underline"
-     href="https://orcid.org/0009-0003-9713-7109"
-     target="orcid.widget"
-     rel="me noopener noreferrer"
-     style="vertical-align: top">
-     <img
-        src="https://orcid.org/sites/default/files/images/orcid_16x16.png"
-        style="width: 1em; margin-inline-start: 0.5em"
-        alt="ORCID iD icon"/> https://orcid.org/0009-0003-9713-7109
-    </a>
-  <!-- mon orcid fin -->
+            reader.onload = function(event) {
+                const content = event.target.result;
+                const fileName = file.name;
+                const fileExtension = fileName.split('.').pop().toLowerCase();
 
+                let codeToDisplay = '';
 
-</section>
-  
- <style>
-     footer {
-      background: #333;
-      a {
-        color:white;
-      }
-      color: #fff;
-      padding: 0.4rem 0;
-      position: fixed;
-      width: 100%;
-      bottom: 0;
-    }
- </style> 
-  <!-- mon email -->
-  <footer>
-    <p><a href="mailto:votreconsultant&#64gmail.com">&copy; MMXXV Dominique S. Loyer (email me!)</a></p>
-  </footer>
+                // Traitement spécifique pour les notebooks Jupyter (.ipynb)
+                if (fileExtension === 'ipynb') {
+                    try {
+                        const notebook = JSON.parse(content);
+                        // Concaténer le code de toutes les cellules de type 'code'
+                        codeToDisplay = notebook.cells
+                            .filter(cell => cell.cell_type === 'code')
+                            .map(cell => cell.source.join(''))
+                            .join('\n# --- Nouvelle Cellule ---\n');
+                    } catch (error) {
+                        console.error("Erreur de parsing du fichier JSON:", error);
+                        codeToDisplay = "Erreur : Impossible de lire ce fichier .ipynb. Est-il bien formaté en JSON ?";
+                    }
+                } else {
+                    // Pour tous les autres fichiers (ex: .py), afficher le contenu tel quel
+                    codeToDisplay = content;
+                }
+
+                displayFileContent(fileName, codeToDisplay);
+            };
+
+            reader.onerror = function() {
+                console.error("Erreur de lecture du fichier:", reader.error);
+                displayFileContent(file.name, "Erreur lors de la lecture de ce fichier.");
+            };
+
+            reader.readAsText(file);
+        }
+
+        function displayFileContent(fileName, codeContent) {
+            // Créer les éléments HTML pour afficher le résultat
+            const fileContainer = document.createElement('div');
+            fileContainer.className = 'bg-white rounded-lg shadow-lg overflow-hidden';
+
+            const header = document.createElement('h2');
+            header.className = 'text-2xl font-semibold p-4 bg-gray-800 text-white';
+            header.textContent = fileName;
+
+            const pre = document.createElement('pre');
+            const code = document.createElement('code');
+            // La classe 'python' aide highlight.js à choisir la bonne coloration
+            code.className = 'language-python'; 
+            code.textContent = codeContent;
+
+            // Appliquer la coloration syntaxique
+            hljs.highlightElement(code);
+
+            pre.appendChild(code);
+            fileContainer.appendChild(header);
+            fileContainer.appendChild(pre);
+
+            // Ajouter le bloc de code au début de la liste pour voir les derniers ajouts en premier
+            outputContainer.prepend(fileContainer);
+        }
+    </script>
 </body>
-
-
-</html>  
+</html>
