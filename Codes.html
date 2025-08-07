@@ -79,10 +79,18 @@
             const files = dt.files;
 
             // Cacher le message initial une fois que des fichiers sont déposés
-            dropMessage.style.display = 'none';
+            if (dropMessage.style.display !== 'none') {
+                dropMessage.style.display = 'none';
+            }
 
             // Traiter chaque fichier déposé
             [...files].forEach(processFile);
+            
+            // AMÉLIORATION : Remonter en haut de la page après le dépôt
+            // On utilise un petit délai pour s'assurer que le DOM est mis à jour
+            setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 100);
         }
 
         function processFile(file) {
@@ -94,6 +102,14 @@
                 const fileExtension = fileName.split('.').pop().toLowerCase();
 
                 let codeToDisplay = '';
+                // Détecter le langage pour une meilleure coloration syntaxique
+                let language = 'plaintext';
+                if (fileExtension === 'py') language = 'python';
+                if (fileExtension === 'js') language = 'javascript';
+                if (fileExtension === 'html') language = 'xml'; // xml pour html
+                if (fileExtension === 'css') language = 'css';
+                if (fileExtension === 'ipynb') language = 'python';
+
 
                 // Traitement spécifique pour les notebooks Jupyter (.ipynb)
                 if (fileExtension === 'ipynb') {
@@ -103,28 +119,28 @@
                         codeToDisplay = notebook.cells
                             .filter(cell => cell.cell_type === 'code')
                             .map(cell => cell.source.join(''))
-                            .join('\n# --- Nouvelle Cellule ---\n');
+                            .join('\n\n# --- Nouvelle Cellule ---\n\n');
                     } catch (error) {
                         console.error("Erreur de parsing du fichier JSON:", error);
                         codeToDisplay = "Erreur : Impossible de lire ce fichier .ipynb. Est-il bien formaté en JSON ?";
                     }
                 } else {
-                    // Pour tous les autres fichiers (ex: .py), afficher le contenu tel quel
+                    // Pour tous les autres fichiers, afficher le contenu tel quel
                     codeToDisplay = content;
                 }
 
-                displayFileContent(fileName, codeToDisplay);
+                displayFileContent(fileName, codeToDisplay, language);
             };
 
             reader.onerror = function() {
                 console.error("Erreur de lecture du fichier:", reader.error);
-                displayFileContent(file.name, "Erreur lors de la lecture de ce fichier.");
+                displayFileContent(file.name, "Erreur lors de la lecture de ce fichier.", 'plaintext');
             };
 
             reader.readAsText(file);
         }
 
-        function displayFileContent(fileName, codeContent) {
+        function displayFileContent(fileName, codeContent, language) {
             // Créer les éléments HTML pour afficher le résultat
             const fileContainer = document.createElement('div');
             fileContainer.className = 'bg-white rounded-lg shadow-lg overflow-hidden';
@@ -134,9 +150,10 @@
             header.textContent = fileName;
 
             const pre = document.createElement('pre');
+            // Le padding est appliqué au conteneur <pre> pour un meilleur rendu visuel
+            pre.className = 'p-4'; 
             const code = document.createElement('code');
-            // La classe 'python' aide highlight.js à choisir la bonne coloration
-            code.className = 'language-python'; 
+            code.className = `language-${language}`; 
             code.textContent = codeContent;
 
             // Appliquer la coloration syntaxique
