@@ -3,14 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes Codes | Dominique Loyer</title>
-    <!-- Tailwind CSS pour un style moderne et épuré -->
+    <title>Générateur de Portfolio de Code</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- highlight.js pour la coloration syntaxique du code -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <style>
-        /* Style personnalisé pour la zone de dépôt */
         #drop-zone {
             border: 4px dashed #cbd5e1;
             transition: border-color 0.3s, background-color 0.3s;
@@ -19,10 +14,9 @@
             border-color: #2563eb;
             background-color: #eff6ff;
         }
-        /* Assurer que le code ne déborde pas */
-        pre code.hljs {
-            white-space: pre-wrap;
-            word-break: break-all;
+        #output-html {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -30,142 +24,205 @@
 
     <div class="container mx-auto p-4 md:p-8">
         <header class="text-center mb-8">
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Portfolio de Codes</h1>
-            <p class="text-lg text-gray-600 mt-2">Une collection de mes projets en Python et autres langages.</p>
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Générateur de Portfolio</h1>
+            <p class="text-lg text-gray-600 mt-2">1. Glissez vos fichiers → 2. Générez → 3. Copiez le code HTML</p>
         </header>
 
-        <!-- Zone pour glisser-déposer les fichiers -->
-        <div id="drop-zone" class="w-full rounded-lg p-8 md:p-16 text-center bg-white shadow-md mb-8">
-            <p id="drop-message" class="text-xl text-gray-500">
-                Glissez et déposez vos fichiers de code (.py, .ipynb, etc.) ici.
-            </p>
+        <!-- Étape 1: Zone de dépôt -->
+        <div id="drop-zone" class="w-full rounded-lg p-8 text-center bg-white shadow-md mb-8">
+            <p id="drop-message" class="text-xl text-gray-500">Glissez tous vos fichiers de code ici (.py, .ipynb, etc.)</p>
+            <div id="preview-container" class="mt-4 text-left"></div>
         </div>
 
-        <!-- Conteneur pour afficher le contenu des fichiers -->
-        <main id="output-container" class="space-y-8"></main>
+        <!-- Étape 2: Bouton de génération -->
+        <div class="text-center mb-8">
+            <button id="generate-btn" class="bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700 transition disabled:bg-gray-400" disabled>
+                Générer le HTML du Portfolio
+            </button>
+        </div>
+
+        <!-- Étape 3: Zone de résultat -->
+        <div id="result-container" class="hidden">
+            <h2 class="text-2xl font-semibold mb-4">Code HTML généré :</h2>
+            <div class="relative">
+                <textarea id="output-html" class="w-full h-96 p-4 border rounded-lg bg-gray-900 text-white" readonly></textarea>
+                <button id="copy-btn" class="absolute top-2 right-2 bg-gray-700 text-white py-1 px-3 rounded hover:bg-gray-600">Copier</button>
+            </div>
+            <p class="mt-4 text-green-700 font-semibold">C'est prêt ! Copiez ce code et collez-le dans le fichier `Codes.html` de votre dépôt GitHub.</p>
+        </div>
 
     </div>
 
     <script>
         const dropZone = document.getElementById('drop-zone');
-        const outputContainer = document.getElementById('output-container');
         const dropMessage = document.getElementById('drop-message');
+        const previewContainer = document.getElementById('preview-container');
+        const generateBtn = document.getElementById('generate-btn');
+        const resultContainer = document.getElementById('result-container');
+        const outputHtml = document.getElementById('output-html');
+        const copyBtn = document.getElementById('copy-btn');
 
-        // Empêcher le comportement par défaut du navigateur pour le glisser-déposer
+        let processedFiles = [];
+
+        // --- Gestion du Glisser-Déposer ---
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, preventDefaults, false);
-            document.body.addEventListener(eventName, preventDefaults, false);
+            dropZone.addEventListener(eventName, e => {
+                e.preventDefault();
+                e.stopPropagation();
+            }, false);
         });
-
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
-        // Mettre en évidence la zone de dépôt lorsqu'un fichier est glissé dessus
         ['dragenter', 'dragover'].forEach(eventName => {
             dropZone.addEventListener(eventName, () => dropZone.classList.add('drag-over'), false);
         });
-
         ['dragleave', 'drop'].forEach(eventName => {
             dropZone.addEventListener(eventName, () => dropZone.classList.remove('drag-over'), false);
         });
 
-        // Gérer l'événement de dépôt de fichier
         dropZone.addEventListener('drop', handleDrop, false);
 
         function handleDrop(e) {
-            const dt = e.dataTransfer;
-            const files = dt.files;
+            const files = e.dataTransfer.files;
+            if (files.length === 0) return;
 
-            // Cacher le message initial une fois que des fichiers sont déposés
-            if (dropMessage.style.display !== 'none') {
-                dropMessage.style.display = 'none';
-            }
+            dropMessage.textContent = "Traitement en cours...";
+            previewContainer.innerHTML = ''; // Réinitialiser l'aperçu
+            processedFiles = []; // Réinitialiser les fichiers traités
 
-            // Traiter chaque fichier déposé
-            [...files].forEach(processFile);
-            
-            // AMÉLIORATION : Remonter en haut de la page après le dépôt
-            // On utilise un petit délai pour s'assurer que le DOM est mis à jour
-            setTimeout(() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 100);
-        }
+            let filesToProcess = files.length;
 
-        function processFile(file) {
-            const reader = new FileReader();
-
-            reader.onload = function(event) {
-                const content = event.target.result;
-                const fileName = file.name;
-                const fileExtension = fileName.split('.').pop().toLowerCase();
-
-                let codeToDisplay = '';
-                // Détecter le langage pour une meilleure coloration syntaxique
-                let language = 'plaintext';
-                if (fileExtension === 'py') language = 'python';
-                if (fileExtension === 'js') language = 'javascript';
-                if (fileExtension === 'html') language = 'xml'; // xml pour html
-                if (fileExtension === 'css') language = 'css';
-                if (fileExtension === 'ipynb') language = 'python';
-
-
-                // Traitement spécifique pour les notebooks Jupyter (.ipynb)
-                if (fileExtension === 'ipynb') {
-                    try {
-                        const notebook = JSON.parse(content);
-                        // Concaténer le code de toutes les cellules de type 'code'
-                        codeToDisplay = notebook.cells
-                            .filter(cell => cell.cell_type === 'code')
-                            .map(cell => cell.source.join(''))
-                            .join('\n\n# --- Nouvelle Cellule ---\n\n');
-                    } catch (error) {
-                        console.error("Erreur de parsing du fichier JSON:", error);
-                        codeToDisplay = "Erreur : Impossible de lire ce fichier .ipynb. Est-il bien formaté en JSON ?";
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    processFile(file, event.target.result);
+                    filesToProcess--;
+                    if (filesToProcess === 0) {
+                        dropMessage.textContent = `${processedFiles.length} fichier(s) prêt(s) à être généré(s).`;
+                        generateBtn.disabled = false;
                     }
-                } else {
-                    // Pour tous les autres fichiers, afficher le contenu tel quel
-                    codeToDisplay = content;
+                };
+                reader.onerror = function() {
+                    console.error("Erreur de lecture du fichier:", file.name);
+                    filesToProcess--;
+                    if (filesToProcess === 0) {
+                        generateBtn.disabled = processedFiles.length === 0;
+                    }
+                };
+                reader.readAsText(file);
+            });
+        }
+
+        function processFile(file, content) {
+            const fileName = file.name;
+            const fileExtension = fileName.split('.').pop().toLowerCase();
+            let codeToDisplay = '';
+            let language = 'plaintext';
+
+            // Détection du langage pour la coloration syntaxique
+            const langMap = { py: 'python', js: 'javascript', html: 'xml', css: 'css', ipynb: 'python' };
+            language = langMap[fileExtension] || 'plaintext';
+
+            // Traitement spécifique pour les notebooks Jupyter (.ipynb)
+            if (fileExtension === 'ipynb') {
+                try {
+                    const notebook = JSON.parse(content);
+                    codeToDisplay = notebook.cells
+                        .filter(cell => cell.cell_type === 'code')
+                        .map(cell => cell.source.join(''))
+                        .join('\n\n# --- Nouvelle Cellule ---\n\n');
+                } catch (error) {
+                    console.error(`Erreur de parsing JSON pour ${fileName}:`, error);
+                    codeToDisplay = `ERREUR: Impossible de lire ce fichier .ipynb. Le fichier est peut-être corrompu.`;
                 }
+            } else {
+                codeToDisplay = content;
+            }
+            
+            // Échapper les caractères HTML dans le code pour un affichage correct
+            const escapedCode = codeToDisplay
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
 
-                displayFileContent(fileName, codeToDisplay, language);
-            };
-
-            reader.onerror = function() {
-                console.error("Erreur de lecture du fichier:", reader.error);
-                displayFileContent(file.name, "Erreur lors de la lecture de ce fichier.", 'plaintext');
-            };
-
-            reader.readAsText(file);
+            processedFiles.push({ name: fileName, lang: language, code: escapedCode });
+            
+            // Afficher un aperçu simple
+            const p = document.createElement('p');
+            p.className = 'text-sm text-gray-600';
+            p.textContent = `✓ ${fileName}`;
+            previewContainer.appendChild(p);
         }
 
-        function displayFileContent(fileName, codeContent, language) {
-            // Créer les éléments HTML pour afficher le résultat
-            const fileContainer = document.createElement('div');
-            fileContainer.className = 'bg-white rounded-lg shadow-lg overflow-hidden';
+        // --- Génération du HTML ---
+        generateBtn.addEventListener('click', () => {
+            const finalHtml = generatePortfolioHtml(processedFiles);
+            outputHtml.value = finalHtml;
+            resultContainer.classList.remove('hidden');
+            window.scrollTo({ top: resultContainer.offsetTop, behavior: 'smooth' });
+        });
 
-            const header = document.createElement('h2');
-            header.className = 'text-2xl font-semibold p-4 bg-gray-800 text-white';
-            header.textContent = fileName;
+        function generatePortfolioHtml(files) {
+            // Utilisation de la concaténation de chaînes pour une robustesse maximale
+            const articles = files.map(file => {
+                return '\n            <!-- Bloc pour ' + file.name + ' -->\n' +
+                       '            <article class="bg-white rounded-lg shadow-lg overflow-hidden">\n' +
+                       '                <header class="p-5 bg-gray-800 text-white">\n' +
+                       '                    <h2 class="text-2xl font-semibold">' + file.name + '</h2>\n' +
+                       '                    <p class="text-gray-300 mt-1">Description du script.</p>\n' +
+                       '                </header>\n' +
+                       '                <div class="p-5">\n' +
+                       '                    <pre><code class="language-' + file.lang + '">' + file.code + '</code></pre>\n' +
+                       '                </div>\n' +
+                       '                <footer class="bg-gray-50 border-t border-gray-200 p-5">\n' +
+                       '                    <h3 class="font-semibold text-gray-700">Pour citer ce code :</h3>\n' +
+                       '                    <div class="mt-2 text-sm text-gray-600 bg-gray-100 p-3 rounded-md">\n' +
+                       '                        <p>Loyer, Dominique. (2024). <em>' + file.name + '</em> [Code source]. Repris de https://dominiqueloyer.github.io/Codes.html</p>\n' +
+                       '                    </div>\n' +
+                       '                </footer>\n' +
+                       '            </article>';
+            }).join('\n\n\n');
 
-            const pre = document.createElement('pre');
-            // Le padding est appliqué au conteneur <pre> pour un meilleur rendu visuel
-            pre.className = 'p-4'; 
-            const code = document.createElement('code');
-            code.className = `language-${language}`; 
-            code.textContent = codeContent;
+            // Concaténation pour le document final pour éviter toute erreur
+            let finalHtml = '';
+            finalHtml += '<!DOCTYPE html>\n';
+            finalHtml += '<html lang="fr">\n';
+            finalHtml += '<head>\n';
+            finalHtml += '    <meta charset="UTF-8">\n';
+            finalHtml += '    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n';
+            finalHtml += '    <title>Portfolio de Codes | Dominique Loyer</title>\n';
+            finalHtml += '    <script src="https://cdn.tailwindcss.com"><\/script>\n';
+            finalHtml += '    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">\n';
+            finalHtml += '    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"><\/script>\n';
+            finalHtml += '    <style>\n';
+            finalHtml += '        pre code.hljs { white-space: pre-wrap; word-break: break-all; }\n';
+            finalHtml += '    </style>\n';
+            finalHtml += '</head>\n';
+            finalHtml += '<body class="bg-gray-100 font-sans text-gray-800">\n';
+            finalHtml += '    <div class="container mx-auto p-4 md:p-8">\n';
+            finalHtml += '        <header class="text-center mb-12">\n';
+            finalHtml += '            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Portfolio de Codes</h1>\n';
+            finalHtml += '            <p class="text-lg text-gray-600 mt-2">Une collection de mes projets partagés publiquement.</p>\n';
+            finalHtml += '        </header>\n';
+            finalHtml += '        <main class="space-y-12">\n';
+            finalHtml += articles;
+            finalHtml += '\n        </main>\n';
+            finalHtml += '    </div>\n';
+            finalHtml += '    <script>\n';
+            finalHtml += '        hljs.highlightAll();\n';
+            finalHtml += '    <\/script>\n';
+            finalHtml += '</body>\n';
+            finalHtml += '</html>';
 
-            // Appliquer la coloration syntaxique
-            hljs.highlightElement(code);
-
-            pre.appendChild(code);
-            fileContainer.appendChild(header);
-            fileContainer.appendChild(pre);
-
-            // Ajouter le bloc de code au début de la liste pour voir les derniers ajouts en premier
-            outputContainer.prepend(fileContainer);
+            return finalHtml;
         }
+        
+        // --- Bouton Copier ---
+        copyBtn.addEventListener('click', () => {
+            outputHtml.select();
+            document.execCommand('copy');
+            copyBtn.textContent = 'Copié !';
+            setTimeout(() => { copyBtn.textContent = 'Copier'; }, 2000);
+        });
+
     </script>
 </body>
 </html>
