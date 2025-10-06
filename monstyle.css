@@ -1,0 +1,67 @@
+div {
+ border: 1px solid black;
+ margin-top: 25px;
+ margin-bottom: 25px;
+ margin-right: 5px;
+ margin-left: 5px;
+ background-color: #f4f4f4;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  font-size: 9pt;
+  margin: 0;
+  padding: 0;
+  background: #f4f4f4;
+  color: #333;
+  text-align: center;
+}
+header {
+  background: #333;
+  color: #fff;
+  padding: 0.5rem 0;
+}
+header h1 {
+  margin: 0;
+  font-size: 8pt;
+}
+section {
+  padding: 1rem;
+}
+footer {
+  background: #333;
+  color: #fff;
+  padding: 0.5rem 0;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
+footer a {
+  color: white;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 100px;
+}
+li a {
+  display: block;
+  background-color: #faf8f5;
+}
+
+.papers-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+  margin: 20px;
+}
+.paper-item {
+  width: 300px;
+  background: #f9f9f9;
+  padding: 12px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px #ddd;
+}
