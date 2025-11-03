@@ -1,14 +1,8 @@
-# Researcher's papers, talks and lectures and 4000 pages of code 
+# my_code_python
+**Code mostly in Python to use at your risk!**
 [![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-FFDD00?logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/dominiqueloyer)
-## Here's few examples that you can find at [!The code](https://dominiqueloyer.github.io/Codes.html)
 
-> [!NOTE] to use at your own risk (Disclaimer!)
-
-
-
-#### Ce script Python configure un environnement complet pour la recherche d'informations, incluant l'installation de dépendances système et Python, l'extraction et le prétraitement de documents, la création d'index Pyserini (Lucene), l'exécution de requêtes (BM25, TF-IDF, RM3) et l'évaluation des performances TREC.</
-###### Mots-clés: Récupération d'informations,Pyserini,Indexation,Prétraitement texte,Évaluation performance</p>
-               
+```Python
 # ===  Étape 0: Configuration Complète # ===
 # =======================================#
 
@@ -34648,8 +34642,6 @@ with open(JSONL_OUTPUT_PATH, 'w') as outfile, tarfile.open(AP_TAR_PATH, "r:") as
         </main>
     </div>
     <script> hljs.highlightAll(); </script>
-</body>
-</html>
 
 
-
+```
