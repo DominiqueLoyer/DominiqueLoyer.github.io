@@ -108,39 +108,43 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
-  "@type": "Person",
-  "name": "Dominique S. Loyer",
-  "sameAs": "https://www.linkedin.com/en/dominiqueloyer"
-  "sameAs": "Dominique Loyer"     
-  "sameAs": "http://sherbrooke.co"
-  "sameAs": "https://sherbrookeinformatique.com"
-  "jobTitle": "AI researcher",
-  "jobTitle": "PhD candidate",
-  "jobTitle": "Data scientist",
-  "memberOf": "Sherbrooke Informatique"
-  "memberOf": "Doctorat en informatique cognitive, UQAM"
-  "disambiguatingDescription": "Best data scientist profiles in Montreal on LinkedIn for years 2015-2025",
-  "image": "https://dominiqueloyer.github.io/dl.png",
-  "email": "votreconsultant&#64gmail.com",
-  "url": "https://dominiqueloyer.github.io"
-  "alumniOf": "HEC Montréal"
-  "alumniOf": "Université Laval"
-  "hasOccupation": "AI researcher"
-  "hasOccupation": "Data Scientist"
-  <script type="application/ld+json">
-   {
-    "@type": "Organization",
-    "name": "Sherbrooke Informatique Inc.",
-    "memberOf": "Consultant en intelligence artificielle : Sherbrooke Informatique Inc."
-    "keywords": "Data scientist, AI researcher, PhD research, Intelligence artificielle, Artificial intelligence"
-    "image": "https://dominiqueloyer.github.io/si.jpg"
-    "telephone": "(581) 799-0019",
-    "foundingDate": "01/01/2013"
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Montreal, Canada",
-                }
-  }
+  "@graph":,
+      "jobTitle":,
+      "worksFor": {
+        "@type": "Organization",
+        "@id": "https://sherbrookeinformatique.com/#organization",
+        "name": "Sherbrooke Informatique Inc.",
+        "image": "https://dominiqueloyer.github.io/si.jpg",
+        "telephone": "(819) 412-3970",
+        "foundingDate": "2013-01-01",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Montreal",
+          "addressCountry": "Canada"
+        }
+      },
+      "affiliation": {
+        "@type": "EducationalOrganization",
+        "name": "Doctorat en informatique cognitive, UQAM"
+      },
+      "alumniOf": [
+        {
+          "@type": "CollegeOrUniversity",
+          "name": "HEC Montréal"
+        },
+        {
+          "@type": "EducationalOrganization",
+          "name": "Université Laval"
+        }
+      ],
+      "disambiguatingDescription": "AI Researcher and PhD candidate based in Montreal, specializing in cognitive computing and data science."
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://sherbrookeinformatique.com/#organization",
+      "name": "Sherbrooke Informatique Inc."
+    }
+  ]
 }
 </script>
   
