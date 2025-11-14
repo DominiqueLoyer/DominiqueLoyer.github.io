@@ -74,7 +74,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   list-style-type: none;
   margin: 0;
   padding: 0;
- /* width: 100px; - Cette ligne a été supprimée ici aussi pour éviter le conflit */
     } 
     li a {
   display: block;
@@ -85,74 +84,56 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     canvas-container {
             border-radius: 12px;
             box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1), 0 5px 10px rgba(255, 255, 255, 0.05);
-            overflow: hidden; /* Assure que le canvas reste dans les coins arrondis */
+            overflow: hidden;
             margin-bottom: 20px;
     }
         
         /* --- Styles pour le canvas --- */
     canvas {
-            display: block; /* Évite les espaces indésirables sous le canvas */
+            display: block;
             cursor: pointer;
     }
-  
-  /* --- Styles pour le canvas --- Importation de la police Google Font "Inter" pour une meilleure typographie 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet"> --- */
 
   </style>
 
-  
-     <!-- données structurees -->
-  
-<script type="application/ld+json">
-{
-  "@context": "http://schema.org",
-  "@graph":,
-      "jobTitle":,
-      "worksFor": {
-        "@type": "Organization",
-        "@id": "https://sherbrookeinformatique.com/#organization",
-        "name": "Sherbrooke Informatique Inc.",
-        "image": "https://dominiqueloyer.github.io/si.jpg",
-        "telephone": "(819) 412-3970",
-        "foundingDate": "2013-01-01",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Montreal",
-          "addressCountry": "Canada"
-        }
-      },
-      "affiliation": {
-        "@type": "EducationalOrganization",
-        "name": "Doctorat en informatique cognitive, UQAM"
-      },
-      "alumniOf": [
-        {
-          "@type": "CollegeOrUniversity",
-          "name": "HEC Montréal"
-        },
-        {
-          "@type": "EducationalOrganization",
-          "name": "Université Laval"
-        }
-      ],
-      "disambiguatingDescription": "AI Researcher and PhD candidate based in Montreal, specializing in cognitive computing and data science."
-    },
+    <!-- Structured Data - Event Schema (balises requises par Google) -->
+    <script type="application/ld+json">
     {
-      "@type": "Organization",
-      "@id": "https://sherbrookeinformatique.com/#organization",
-      "name": "Sherbrooke Informatique Inc."
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": "Dominique Loyer - Recherche en IA et Interprétabilité",
+        "description": "Présentation des recherches en interprétabilité et transparence de l'IA (xAI) par Dominique Loyer, doctorant en informatique cognitive",
+        "startDate": "2025-04-30T14:00:00-04:00",
+        "endDate": "2025-04-30T16:00:00-04:00",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+        "location": {
+            "@type": "VirtualLocation",
+            "url": "https://dominiqueloyer.github.io"
+        },
+        "image": [
+            "https://dominiqueloyer.github.io/peace.png"
+        ],
+        "url": "https://dominiqueloyer.github.io",
+        "organizer": {
+            "@type": "Person",
+            "name": "Dominique Loyer",
+            "url": "https://dominiqueloyer.github.io",
+            "jobTitle": "Chercheur en IA, Doctorant",
+            "affiliation": {
+                "@type": "Organization",
+                "name": "Institut des Sciences Cognitives - UQAM",
+                "url": "https://www.uqam.ca/"
+            }
+        },
+        "performer": {
+            "@type": "Person",
+            "name": "Dominique Loyer",
+            "url": "https://dominiqueloyer.github.io",
+            "jobTitle": "Chercheur en IA, Doctorant"
+        }
     }
-  ]
-}
-</script>
-  
-   <!-- données structurees fin -->
-  <!-- on schema OWL    -->
-<link rel="alternate" type="application/rdf+xml" href="https://dominiqueloyer.github.io/ontologie.owl" title="Ontology RDF/XML">  
-
-  
+    </script>
 
 </head>
 <body>
@@ -264,63 +245,53 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </li>
 </ul>
 
-  <ul style="width: 100%;">
+  <ul style="width: 100%;">
 
 </section>
 
 
 
    <center>
-<!-- <div class="canvas-container"> -->
           <canvas id="water-canvas"></canvas>
-     <!-- </div> -->
     
     <script>
         // --- Configuration de l'animation ---
-        // Note: L'URL originale a été remplacée pour éviter les erreurs de CORS (Cross-Origin Resource Sharing).
-        // Vous pouvez utiliser une image hébergée sur un service comme 'imgur' ou 'postimages'.
         const IMAGE_URL = "https://dominiqueloyer.github.io/dl.png"; 
-        const DAMPING = 0.98; // Facteur d'amortissement des vagues (plus proche de 1, plus longtemps elles durent)
-        const RIPPLE_RADIUS = 5; // Rayon des gouttes créées par le clic/mouvement
+        const DAMPING = 0.98;
+        const RIPPLE_RADIUS = 5;
 
         // --- Initialisation du Canvas et du Contexte ---
         const canvas = document.getElementById('water-canvas');
         const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
         const image = new Image();
-        image.crossOrigin = "Anonymous"; // Nécessaire car l'image vient d'un autre domaine
+        image.crossOrigin = "Anonymous";
         
         let canvasWidth, canvasHeight;
-        let buffer1, buffer2; // Tampons pour stocker l'état de l'eau
-        let textureData, originalTextureData; // Données de pixels de l'image
-        let isInitialized = false; // Drapeau pour suivre l'état de l'initialisation
+        let buffer1, buffer2;
+        let textureData, originalTextureData;
+        let isInitialized = false;
 
         // --- Chargement de l'image ---
         image.onload = () => {
-            // Ajuste la taille du canvas à celle de l'image
             canvasWidth = canvas.width = image.width;
             canvasHeight = canvas.height = image.height;
 
-            // Dessine l'image une première fois pour extraire ses données de pixels
             ctx.drawImage(image, 0, 0);
             originalTextureData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
             textureData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
 
-            // Initialise les tampons de l'eau (tableaux 2D)
             const bufferSize = canvasWidth * canvasHeight;
             buffer1 = new Float32Array(bufferSize).fill(0);
             buffer2 = new Float32Array(bufferSize).fill(0);
 
-            // Démarre la boucle d'animation
             animate();
             
-            // L'initialisation est terminée, on peut autoriser les interactions
             isInitialized = true;
         };
         
         image.onerror = () => {
              console.error("L'image n'a pas pu être chargée. Vérifiez l'URL.");
-             // Affiche un message d'erreur directement sur le canvas
              canvas.width = 180;
              canvas.height = 180;
              ctx.fillStyle = 'red';
@@ -333,24 +304,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         // --- Interactivité (Souris) ---
         canvas.addEventListener('mousemove', (e) => {
-            if (!isInitialized) return; // N'exécute rien si l'animation n'est pas prête
+            if (!isInitialized) return;
             const rect = canvas.getBoundingClientRect();
             const x = Math.floor(e.clientX - rect.left);
             const y = Math.floor(e.clientY - rect.top);
-            disturb(x, y, 1500); // Crée une perturbation au passage de la souris
+            disturb(x, y, 1500);
         });
 
         canvas.addEventListener('mousedown', (e) => {
-            if (!isInitialized) return; // N'exécute rien si l'animation n'est pas prête
+            if (!isInitialized) return;
             const rect = canvas.getBoundingClientRect();
             const x = Math.floor(e.clientX - rect.left);
             const y = Math.floor(e.clientY - rect.top);
-            disturb(x, y, 4000); // Crée une perturbation plus forte au clic
+            disturb(x, y, 4000);
         });
         
         // --- Interactivité (Tactile) ---
         canvas.addEventListener('touchstart', (e) => {
-            if (!isInitialized) return; // N'exécute rien si l'animation n'est pas prête
+            if (!isInitialized) return;
             e.preventDefault();
             const rect = canvas.getBoundingClientRect();
             for(let i = 0; i < e.touches.length; i++) {
@@ -361,7 +332,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         });
 
         canvas.addEventListener('touchmove', (e) => {
-            if (!isInitialized) return; // N'exécute rien si l'animation n'est pas prête
+            if (!isInitialized) return;
             e.preventDefault();
             const rect = canvas.getBoundingClientRect();
             for(let i = 0; i < e.touches.length; i++) {
@@ -371,19 +342,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             }
         });
 
-
-        /**
-         * Crée une perturbation (une "goutte") dans l'eau à une position donnée.
-         * @param {number} x - Coordonnée X de la perturbation.
-         * @param {number} y - Coordonnée Y de la perturbation.
-         * @param {number} magnitude - Force de la perturbation.
-         */
         function disturb(x, y, magnitude) {
-            // Vérifie que la perturbation est bien dans les limites du canvas
             if (x < RIPPLE_RADIUS || x > canvasWidth - RIPPLE_RADIUS || y < RIPPLE_RADIUS || y > canvasHeight - RIPPLE_RADIUS) {
                 return;
             }
-            // Applique la perturbation en forme de cercle
             for (let i = -RIPPLE_RADIUS; i < RIPPLE_RADIUS; i++) {
                 for (let j = -RIPPLE_RADIUS; j < RIPPLE_RADIUS; j++) {
                     if (i * i + j * j < RIPPLE_RADIUS * RIPPLE_RADIUS) {
@@ -394,103 +356,66 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             }
         }
 
-        /**
-         * La boucle principale d'animation qui s'exécute à chaque frame.
-         */
         function animate() {
-            // Demande au navigateur d'exécuter cette fonction à la prochaine frame disponible
             requestAnimationFrame(animate);
-
-            // 1. Calcul de la simulation de l'eau
             processWater();
-
-            // 2. Rendu de l'image déformée
             render();
         }
 
-        /**
-         * Calcule l'état de l'eau pour la frame suivante.
-         * C'est le cœur de l'algorithme de simulation.
-         */
         function processWater() {
-            // On parcourt chaque "pixel" d'eau, en évitant les bords
             for (let y = 1; y < canvasHeight - 1; y++) {
                 for (let x = 1; x < canvasWidth - 1; x++) {
                     const i = y * canvasWidth + x;
                     
-                    // Calcule la moyenne des hauteurs des 4 voisins directs
                     const average = (
-                        buffer1[i - 1] +         // Voisin de gauche
-                        buffer1[i + 1] +         // Voisin de droite
-                        buffer1[i - canvasWidth] + // Voisin du haut
-                        buffer1[i + canvasWidth]   // Voisin du bas
+                        buffer1[i - 1] +
+                        buffer1[i + 1] +
+                        buffer1[i - canvasWidth] +
+                        buffer1[i + canvasWidth]
                     ) / 2;
 
-                    // La nouvelle hauteur est calculée en se basant sur les voisins et l'état précédent
                     let newHeight = average - buffer2[i];
-
-                    // Applique l'amortissement pour que les vagues s'estompent avec le temps
                     newHeight *= DAMPING;
-
-                    // Stocke la nouvelle hauteur dans le deuxième tampon
                     buffer2[i] = newHeight;
                 }
             }
 
-            // Échange les tampons : le tampon qui vient d'être calculé (buffer2) devient le tampon principal (buffer1) pour la prochaine frame.
             [buffer1, buffer2] = [buffer2, buffer1];
         }
 
-        /**
-         * Rend l'image déformée sur le canvas.
-         */
         function render() {
             const pixels = textureData.data;
             const originalPixels = originalTextureData.data;
             
-            // On parcourt chaque pixel de l'image
             for (let y = 1; y < canvasHeight - 1; y++) {
                 for (let x = 1; x < canvasWidth - 1; x++) {
                     const i = y * canvasWidth + x;
 
-                    // Calcule le décalage (offset) du pixel en fonction de la hauteur de l'eau chez ses voisins.
-                    // Cela crée l'illusion de réfraction de la lumière.
                     const xOffset = Math.floor(buffer2[i - 1] - buffer2[i + 1]);
                     const yOffset = Math.floor(buffer2[i - canvasWidth] - buffer2[i + canvasWidth]);
 
-                    // Calcule la nouvelle position où aller chercher la couleur dans l'image originale
                     let lookupX = x + xOffset;
                     let lookupY = y + yOffset;
 
-                    // S'assure que la position de recherche reste dans les limites de l'image
                     if (lookupX < 0) lookupX = 0;
                     if (lookupX >= canvasWidth) lookupX = canvasWidth - 1;
                     if (lookupY < 0) lookupY = 0;
                     if (lookupY >= canvasHeight) lookupY = canvasHeight - 1;
 
-                    // Trouve l'index de ce pixel dans le tableau de données de l'image
                     const lookupIndex = (lookupY * canvasWidth + lookupX) * 4;
                     const targetIndex = i * 4;
 
-                    // Copie la couleur (Rouge, Vert, Bleu) du pixel de l'image originale vers notre image de destination
                     pixels[targetIndex] = originalPixels[lookupIndex];
                     pixels[targetIndex + 1] = originalPixels[lookupIndex + 1];
                     pixels[targetIndex + 2] = originalPixels[lookupIndex + 2];
                 }
             }
 
-            // Met à jour le canvas avec l'image déformée
             ctx.putImageData(textureData, 0, 0);
         }
 
     </script>
 
-
-
-
-     
-     <!--<img src="dl.png" alt="Dominique S. Loyer" width="180" height="180"> -->
-     
    </center>
   <section>
     
