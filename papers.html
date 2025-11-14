@@ -92,44 +92,74 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   
     <!-- données structurees -->
   
+<!-- Structured Data - Corrected JSON-LD (Person + Organization) -->
 <script type="application/ld+json">
 {
-  "@context": "http://schema.org",
-  "@type": "Person",
-  "name": "Dominique S. Loyer",
-  "sameAs": "https://www.linkedin.com/en/dominiqueloyer"
-  "sameAs": "Dominique Loyer"     
-  "sameAs": "http://sherbrooke.co"
-  "sameAs": "https://sherbrookeinformatique.com"
-  "jobTitle": "AI researcher",
-  "jobTitle": "PhD candidate",
-  "jobTitle": "Data scientist",
-  "memberOf": "Sherbrooke Informatique"
-  "memberOf": "Doctorat en informatique cognitive, UQAM"
-  "disambiguatingDescription": "Best data scientist profiles in Montreal on LinkedIn for years 2015-2025",
-  "image": "https://dominiqueloyer.github.io/dl.png",
-  "email": "votreconsultant&#64gmail.com",
-  "url": "https://dominiqueloyer.github.io"
-  "alumniOf": "HEC Montréal"
-  "alumniOf": "Université Laval"
-  "hasOccupation": "AI researcher"
-  "hasOccupation": "Data Scientist"
-  <script type="application/ld+json">
-   {
-    "@type": "Organization",
-    "name": "Sherbrooke Informatique Inc.",
-    "memberOf": "Consultant en intelligence artificielle : Sherbrooke Informatique Inc."
-    "keywords": "Data scientist, AI researcher, PhD research, Intelligence artificielle, Artificial intelligence"
-    "image": "https://dominiqueloyer.github.io/si.jpg"
-    "telephone": "(819) 412-3970",
-    "foundingDate": "01/01/2013"
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Montreal, Canada",
-                }
-  }
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "name": "Dominique S. Loyer",
+      "jobTitle": [
+        "AI researcher",
+        "PhD candidate",
+        "Data scientist"
+      ],
+      "image": "https://dominiqueloyer.github.io/dl.png",
+      "email": "votreconsultant@gmail.com",
+      "url": "https://dominiqueloyer.github.io",
+      "sameAs": [
+        "https://www.linkedin.com/in/dominiqueloyer",
+        "https://www.researchgate.net/profile/Dominique-Loyer",
+        "https://orcid.org/0009-0003-9713-7109",
+        "https://scholar.google.com/citations?user=JmRd6U0AAAAJ"
+      ],
+      "affiliation": [
+        {
+          "@type": "Organization",
+          "name": "Sherbrooke Informatique Inc.",
+          "url": "https://dominiqueloyer.github.io"
+        },
+        {
+          "@type": "EducationalOrganization",
+          "name": "Institut des Sciences Cognitives - UQAM",
+          "url": "https://www.uqam.ca/"
+        }
+      ],
+      "alumniOf": [
+        {
+          "@type": "EducationalOrganization",
+          "name": "HEC Montréal"
+        },
+        {
+          "@type": "EducationalOrganization",
+          "name": "Université Laval"
+        }
+      ],
+      "disambiguatingDescription": "AI researcher and PhD candidate in cognitive informatics at UQAM, specializing in xAI (Explainable AI) and data science in Montreal"
+    },
+    {
+      "@type": "Organization",
+      "name": "Sherbrooke Informatique Inc.",
+      "description": "AI consulting and research services",
+      "image": "https://dominiqueloyer.github.io/si.jpg",
+      "telephone": "(819) 412-3970",
+      "foundingDate": "2013-01-01",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Montreal",
+        "addressRegion": "Quebec",
+        "addressCountry": "Canada"
+      },
+      "url": "https://dominiqueloyer.github.io",
+      "sameAs": [
+        "https://dominiqueloyer.github.io"
+      ]
+    }
+  ]
 }
 </script>
+
   
    <!-- données structurees fin -->
 <!-- mon ontologie OWL -->
