@@ -51,7 +51,7 @@ d = twitteR::twListToDF(ytw)
 oauth_endpoint(authorize = "https://api.twitter.com/oauth",
                access = "https://api.twitter.com/oauth/access_token")
 
-[[connect]] to API
+# connect to API
 download.file(url='http://curl.haxx.se/ca/cacert.pem', destfile='cacert.pem')
 reqURL <- 'https://api.twitter.com/oauth/request_token'
 accessURL <- 'https://api.twitter.com/oauth/access_token'
