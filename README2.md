@@ -45,7 +45,7 @@ access_secret=""
 
 
 setup_twitter_oauth(consumer_key, consumer_secret, access_token, access_secret)
-ytw = twitteR::searchTwitter('#realDonaldTrump + [[HillaryClinton]]', n = 100000, since = '2016-11-06', retryOnRateLimit = 1e3)
+tw = twitteR::searchTwitter('#realDonaldTrump + #HillaryClinton', n = 100000, since = '2016-11-06', retryOnRateLimit = 1e3)
 d = twitteR::twListToDF(tw)
 
 oauth_endpoint(authorize = "https://api.twitter.com/oauth",
