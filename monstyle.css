@@ -1,10 +1,10 @@
 div {
- border: 1px solid black;
- margin-top: 25px;
- margin-bottom: 25px;
- margin-right: 5px;
- margin-left: 5px;
- background-color: #f4f4f4;
+  border: 1px solid black;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  margin-right: 5px;
+  margin-left: 5px;
+  background-color: #f4f4f4;
 }
 
 body {
@@ -16,18 +16,22 @@ body {
   color: #333;
   text-align: center;
 }
+
 header {
   background: #333;
   color: #fff;
   padding: 0.5rem 0;
 }
+
 header h1 {
   margin: 0;
   font-size: 8pt;
 }
+
 section {
   padding: 1rem;
 }
+
 footer {
   background: #333;
   color: #fff;
@@ -36,15 +40,18 @@ footer {
   width: 100%;
   bottom: 0;
 }
+
 footer a {
   color: white;
 }
+
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   width: 100px;
 }
+
 li a {
   display: block;
   background-color: #faf8f5;
@@ -58,10 +65,58 @@ li a {
   align-items: flex-start;
   margin: 20px;
 }
+
 .paper-item {
   width: 300px;
   background: #f9f9f9;
   padding: 12px;
   border-radius: 6px;
   box-shadow: 0 2px 6px #ddd;
+}
+
+/* Publication Identifiers - ISBN & DOI */
+.publication-identifiers {
+  display: block;
+  margin-top: 0.75em;
+  margin-bottom: 0;
+  padding-top: 0.5em;
+  border-top: 1px solid #ddd;
+  font-size: 0.9em;
+  color: #666;
+  text-align: left;
+}
+
+.publication-identifiers code {
+  background-color: #f0f0f0;
+  padding: 3px 6px;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.5px;
+  font-size: 0.95em;
+}
+
+.publication-identifiers a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #0066cc;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-bottom 0.2s ease;
+}
+
+.publication-identifiers a:hover {
+  border-bottom: 1px solid #0066cc;
+}
+
+.publication-identifiers a img {
+  vertical-align: middle;
+  margin-right: 2px;
+}
+
+/* Séparateur entre ISBN et DOI */
+.publication-identifiers span + span::before {
+  content: " · ";
+  margin: 0 6px;
+  color: #999;
 }
