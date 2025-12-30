@@ -120,3 +120,28 @@ li a {
   margin: 0 6px;
   color: #999;
 }
+.share-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.share-link {
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  color: white;
+}
+
+/* Couleurs rapides par réseau */
+.share-reddit   { background: #ff4500; }
+.share-bluesky  { background: #1185fe; }
+.share-linkedin { background: #0a66c2; }
+.share-x        { background: #000000; }
+.share-facebook { background: #1877f2; }
+.share-discord  { background: #5865f2; }
+.share-obsidian { background: #4b3b8f; }
+.share-notion   { background: #333333; }
+.share-instagram{ background: #e1306c; }
+.share-tiktok   { background: #000000; }
