@@ -1,133 +1,368 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Animation de Classification</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dominique Loyer | Précision en recherche d'information</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
-    canvas { border: 1px solid #ccc; margin-top: 10px; }
-    button { margin: 5px; padding: 10px 20px; }
+    :root{
+      --green:#00ff41;--green-dim:#00cc33;--green-dark:#004d1a;
+      --bg:#0a0a0a;--bg-card:#0f1a0f;--bg-card2:#0d150d;
+      --border:#00ff41;--border-dim:#005511;
+      --font:'Courier New',Courier,monospace;
+      --header-h:42px;--nav-h:34px;--footer-h:36px;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+
+    body::before{content:"";pointer-events:none;position:fixed;inset:0;
+      background:repeating-linear-gradient(to bottom,transparent 0px,transparent 3px,rgba(0,0,0,0.07) 3px,rgba(0,0,0,0.07) 4px);
+      z-index:9999}
+
+    body{
+      font-family:var(--font);font-size:13px;
+      background:var(--bg);color:var(--green);
+      margin:0;padding:0;
+    }
+
+    /* HEADER */
+    #site-header{
+      position:fixed;top:0;left:0;width:100%;height:var(--header-h);
+      background:var(--bg);border-bottom:1px solid var(--border);
+      display:flex;align-items:center;justify-content:center;z-index:500;
+      padding:0 1rem;
+    }
+    #site-header h1{
+      margin:0;font-size:.8rem;letter-spacing:.08em;
+      color:var(--green);text-shadow:0 0 8px var(--green);
+      font-family:var(--font);text-align:center;line-height:1.3;
+    }
+    #site-header h1::before{content:"$ ";color:var(--green-dim)}
+
+    /* NAV */
+    #site-nav{
+      position:fixed;top:var(--header-h);left:0;width:100%;height:var(--nav-h);
+      background:var(--bg-card);border-bottom:1px solid var(--border-dim);
+      z-index:500;display:flex;align-items:center;justify-content:center;
+    }
+    #site-nav ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center}
+    #site-nav ul li{position:relative}
+    #site-nav ul li a{
+      display:block;padding:5px 11px;color:var(--green-dim);text-decoration:none;
+      font-size:.72rem;letter-spacing:.04em;
+      transition:color .2s,background .2s;
+      border-right:1px solid var(--border-dim);font-family:var(--font);
+    }
+    #site-nav ul li a:hover{color:var(--green);background:var(--green-dark);text-shadow:0 0 6px var(--green)}
+    .dropdown-content{display:none;position:absolute;top:100%;left:0;background:var(--bg-card2);border:1px solid var(--border-dim);min-width:200px;z-index:600}
+    .dropdown-content a{border-right:none!important;border-bottom:1px solid var(--border-dim)}
+    .dropdown:hover .dropdown-content{display:block}
+
+    /* FOOTER */
+    #site-footer{
+      position:fixed;bottom:0;left:0;width:100%;height:var(--footer-h);
+      background:var(--bg-card);border-top:1px solid var(--border-dim);
+      display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;padding:0 .8rem;
+      font-size:.65rem;z-index:500;
+    }
+    #site-footer a{color:var(--green-dim);text-decoration:none;font-family:var(--font)}
+    #site-footer a:hover{color:var(--green)}
+    .footer-divider{color:var(--border-dim)}
+    .shields-row{display:flex;align-items:center;gap:.35rem}
+    .shields-row img{height:16px;border:none}
+
+    /* MAIN CONTENT */
+    main{
+      max-width:860px;margin:0 auto;
+      padding:calc(var(--header-h) + var(--nav-h) + 1.5rem) 1rem calc(var(--footer-h) + 1.5rem);
+      text-align:center;
+    }
+
+    /* PAGE TITLE */
+    .page-title{
+      font-size:.88rem;font-weight:bold;color:var(--green);
+      text-shadow:0 0 8px var(--green);
+      border-bottom:1px solid var(--border-dim);
+      padding-bottom:.5rem;margin-bottom:1.5rem;
+      letter-spacing:.06em;text-align:left;
+    }
+    .page-title::before{content:">> ";color:var(--green-dim)}
+
+    /* CANVAS */
+    canvas{
+      border:1px solid var(--border-dim);
+      box-shadow:0 0 16px rgba(0,255,65,.12);
+      background:#000;
+      margin-top:.6rem;
+      max-width:100%;
+      display:block;margin-left:auto;margin-right:auto;
+    }
+
+    /* BUTTONS */
+    .btn-row{
+      margin:.8rem 0;
+      display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;
+    }
+    .btn-row button{
+      padding:.5rem 1.2rem;font-size:.75rem;cursor:pointer;
+      border:1px solid var(--border-dim);color:var(--green-dim);
+      background:var(--bg-card);font-family:var(--font);
+      border-radius:2px;letter-spacing:.04em;
+      transition:background .2s,color .2s,box-shadow .2s;
+    }
+    .btn-row button:hover{
+      background:var(--green-dark);color:var(--green);
+      border-color:var(--green);box-shadow:0 0 8px rgba(0,255,65,.25);
+      text-shadow:0 0 6px var(--green);
+    }
+
+    /* EXPLAINER CARDS */
+    .cards{display:flex;gap:.8rem;margin-top:1.2rem;flex-wrap:wrap;justify-content:center}
+    .card{
+      background:var(--bg-card);border:1px solid var(--border-dim);
+      border-left:3px solid var(--green-dim);
+      padding:.8rem 1rem;border-radius:2px;
+      text-align:left;font-size:.75rem;line-height:1.65;
+      flex:1;min-width:200px;max-width:260px;color:var(--green-dim);
+    }
+    .card strong{color:var(--green);display:block;margin-bottom:.3rem;letter-spacing:.04em}
+    .formula{
+      background:var(--bg-card2);border:1px solid var(--border-dim);
+      padding:.6rem 1rem;margin-top:.9rem;
+      font-size:.82rem;color:var(--green);
+      letter-spacing:.05em;text-align:center;
+    }
+    .formula::before{content:"// formule  ";color:var(--border-dim);font-size:.68rem}
+
+    @media screen and (max-width:768px){
+      #site-nav ul{flex-direction:column;align-items:flex-start}
+      #site-nav ul li a{border-right:none;border-bottom:1px solid var(--border-dim);width:100%}
+      .dropdown-content{position:relative}
+      #site-nav{height:auto}
+      canvas{width:100%!important}
+    }
   </style>
-  <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
-  <link rel="icon" type="image/png" href="/peace.png"/>
 </head>
 <body>
-  <h1>Animation de Classification</h1>
+
+<!-- FIXED HEADER -->
+<header id="site-header">
+  <h1>Comment mesure t-on la précision quand on recherche de l'information sur Google&nbsp;?</h1>
+</header>
+
+<!-- FIXED NAV -->
+<nav id="site-nav">
+  <ul>
+    <li><a href="https://dominiqueloyer.github.io/">About</a></li>
+    <li><a href="https://github.com/DominiqueLoyer">Github Projects</a></li>
+    <li><a href="https://dominiqueloyer.github.io/papers.html">Papers</a></li>
+    <li><a href="https://dominiqueloyer.github.io/conferences.html">Conferences</a></li>
+    <li><a href="https://dominiqueloyer.github.io/lectures.html">Lectures</a></li>
+    <li><a href="https://dominiqueloyer.github.io/Codes.html">My Coding</a></li>
+    <li><a href="https://dominiqueloyer.github.io/ontology.html">Researcher's Ontology</a></li>
+    <li><a href="https://dominiqueloyer.github.io/mapmind.html">xAI MapMind</a></li>
+    <li><a href="https://plateforme-isc.uqam.ca">Plateforme UQAM</a></li>
+    <li class="dropdown">
+      <a href="#">Children's Corner &#9662;</a>
+      <div class="dropdown-content">
+        <a href="https://dominiqueloyer.github.io/childrenCorner.html">Children's Corner I</a>
+        <a href="https://dominiqueloyer.github.io/childrenCorner2.html">Children's Corner II</a>
+        <a href="https://dominiqueloyer.github.io/pong.html">Children's Corner III</a>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+<main>
+  <div class="page-title">Animation de Classification</div>
+
   <canvas id="myCanvas" width="800" height="400"></canvas>
-  <div>
-    <button onclick="drawSlide1()">Cas équilibré</button>
-    <button onclick="drawSlide2()">Cas déséquilibré</button>
+
+  <div class="btn-row">
+    <button onclick="drawSlide1()">&#9654; Cas équilibré</button>
+    <button onclick="drawSlide2()">&#9654; Cas déséquilibré</button>
   </div>
 
-  <script>
+  <div class="formula">
+    Précision = Vrais Positifs / (Vrais Positifs + Faux Positifs)
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <strong>// Cas équilibré</strong>
+      Quand les deux classes (ex. oranges et pommes) sont représentées en nombre égal.
+      La précision globale reflète bien les performances du modèle.
+    </div>
+    <div class="card">
+      <strong>// Cas déséquilibré</strong>
+      Quand une classe domine (ex. 9 oranges pour 1 pomme).
+      Un modèle peut prédire toujours «&nbsp;orange&nbsp;» et avoir 90% de précision
+      sans jamais détecter la pomme !
+    </div>
+    <div class="card">
+      <strong>// Leçon pour Google</strong>
+      Un moteur de recherche doit équilibrer précision et rappel :
+      trouver les bons résultats <em>et</em> ne pas en manquer d'importants.
+    </div>
+  </div>
+</main>
+
+<!-- FIXED FOOTER -->
+<footer id="site-footer">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0">
+    <img alt="CC License" style="border-width:0;height:14px;" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/>
+  </a>
+  <a href="mailto:votreconsultant&#64;gmail.com">(ↄ) MMXXVI Dominique S. Loyer &#9993;</a>
+  <span class="footer-divider">|</span>
+  <div class="shields-row">
+    <a href="https://orcid.org/0009-0003-9713-7109" target="_blank" rel="me noopener noreferrer">
+      <img src="https://img.shields.io/badge/ORCID-0009--0003--9713--7109-green.svg" alt="ORCID"/>
+    </a>
+    <a href="https://scholar.google.com/citations?user=JmRd6U0AAAAJ" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/Google%20Scholar-Profile-blue" alt="Google Scholar"/>
+    </a>
+    <a href="https://www.researchgate.net/profile/Dominique-Loyer" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/ResearchGate-Profile-00CCBB" alt="ResearchGate"/>
+    </a>
+    <a href="https://dominiqueloyer.github.io" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/Website-dominiqueloyer.github.io-orange" alt="Website"/>
+    </a>
+  </div>
+</footer>
+
+<script>
     const canvas = document.getElementById('myCanvas');
     const ctx = canvas.getContext('2d');
 
     function clearCanvas() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // terminal grid background
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'rgba(0,255,65,0.03)';
+      for(let y = 0; y < canvas.height; y += 4) ctx.fillRect(0, y, canvas.width, 1);
     }
 
-    // Fonction pour dessiner un fruit (type : "orange" ou "pomme")
     function drawFruit(x, y, type, highlight = false) {
       ctx.beginPath();
       if (type === "orange") {
-        ctx.fillStyle = highlight ? "#FFA500" : "#FF8C00"; // orange clair ou foncé
+        ctx.fillStyle = highlight ? "#00ff41" : "#00882a";
       } else if (type === "pomme") {
-        ctx.fillStyle = highlight ? "#FF6347" : "#DC143C"; // rouge clair ou foncé
+        ctx.fillStyle = highlight ? "#ff4400" : "#882200";
       }
       ctx.arc(x, y, 20, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = "black";
+      ctx.strokeStyle = highlight ? "#00ff41" : "#005511";
+      ctx.lineWidth = highlight ? 2 : 1;
       ctx.stroke();
-      ctx.fillStyle = "white";
-      ctx.font = "16px Arial";
+      ctx.fillStyle = highlight ? "#000" : "#00cc33";
+      ctx.font = "bold 13px 'Courier New'";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText(type === "orange" ? "O" : "P", x, y);
     }
 
-    // Slide 1 : Cas équilibré (10 oranges, 10 pommes)
+    function drawLabel(text, x, y, color) {
+      ctx.fillStyle = color || "#00cc33";
+      ctx.font = "13px 'Courier New'";
+      ctx.textAlign = "center";
+      ctx.fillText(text, x, y);
+    }
+
     function drawSlide1() {
       clearCanvas();
-      ctx.fillStyle = "black";
-      ctx.font = "24px Arial";
+      ctx.fillStyle = "#00ff41";
+      ctx.font = "bold 15px 'Courier New'";
       ctx.textAlign = "center";
-      ctx.fillText("Cas équilibré : 10 oranges et 10 pommes", canvas.width / 2, 30);
+      ctx.fillText(">> Cas équilibré : 10 oranges et 10 pommes", canvas.width / 2, 30);
+      drawLabel("// Étape 1 : affichage initial — attendre 2s pour voir la classification", canvas.width / 2, 55, "#005511");
 
-      // Positions : deux rangées de 10 fruits
       let positionsOrange = [];
       let positionsPomme = [];
       for (let i = 0; i < 10; i++) {
-        positionsOrange.push({ x: 70 + i * 70, y: 100 });
-        positionsPomme.push({ x: 70 + i * 70, y: 200 });
+        positionsOrange.push({ x: 60 + i * 70, y: 110 });
+        positionsPomme.push({ x: 60 + i * 70, y: 210 });
       }
-      
-      // Dessine toutes les oranges et pommes sans surlignage
+
+      // Labels gauche
+      ctx.fillStyle = "#00cc33"; ctx.font = "11px 'Courier New'"; ctx.textAlign = "right";
+      ctx.fillText("O :", 35, 115);
+      ctx.fillText("P :", 35, 215);
+      ctx.textAlign = "center";
+
       positionsOrange.forEach(pos => drawFruit(pos.x, pos.y, "orange", false));
       positionsPomme.forEach(pos => drawFruit(pos.x, pos.y, "pomme", false));
 
-      // Après 2 secondes, surligne les fruits correctement classifiés
       setTimeout(() => {
-        // Pour oranges : 4 sur 5 = 80% → 8/10 oranges bien classifiées
         let indicesOrange = [0,1,2,3,4,5,6,7,8,9];
         indicesOrange.sort(() => 0.5 - Math.random());
         let highlightOrange = indicesOrange.slice(0, 8);
         for (let i = 0; i < 10; i++) {
-          let pos = positionsOrange[i];
-          let hl = highlightOrange.includes(i);
-          drawFruit(pos.x, pos.y, "orange", hl);
+          drawFruit(positionsOrange[i].x, positionsOrange[i].y, "orange", highlightOrange.includes(i));
         }
-        // Pour pommes : 3 sur 5 = 60% → 6/10 pommes bien classifiées
         let indicesPomme = [0,1,2,3,4,5,6,7,8,9];
         indicesPomme.sort(() => 0.5 - Math.random());
         let highlightPomme = indicesPomme.slice(0, 6);
         for (let i = 0; i < 10; i++) {
-          let pos = positionsPomme[i];
-          let hl = highlightPomme.includes(i);
-          drawFruit(pos.x, pos.y, "pomme", hl);
+          drawFruit(positionsPomme[i].x, positionsPomme[i].y, "pomme", highlightPomme.includes(i));
         }
-        // Affiche la précision globale
-        ctx.fillStyle = "black";
-        ctx.font = "20px Arial";
-        ctx.fillText("Précision globale : 70%", canvas.width / 2, 300);
+        // Legend
+        ctx.fillStyle = "#00ff41"; ctx.font = "12px 'Courier New'"; ctx.textAlign = "left";
+        ctx.fillText("● = bien classifié", 40, 290);
+        ctx.fillStyle = "#005511";
+        ctx.fillText("● = mal classifié",  40, 310);
+        // Result
+        ctx.fillStyle = "#00ff41"; ctx.font = "bold 16px 'Courier New'"; ctx.textAlign = "center";
+        ctx.fillText("Précision globale : (8+6)/20 = 70%", canvas.width / 2, 355);
+        ctx.fillStyle = "#005511"; ctx.font = "12px 'Courier New'";
+        ctx.fillText("// 8 oranges + 6 pommes correctement identifiées sur 20", canvas.width / 2, 380);
       }, 2000);
     }
 
-    // Slide 2 : Cas déséquilibré (9 oranges, 1 pomme)
     function drawSlide2() {
       clearCanvas();
-      ctx.fillStyle = "black";
-      ctx.font = "24px Arial";
+      ctx.fillStyle = "#00ff41";
+      ctx.font = "bold 15px 'Courier New'";
       ctx.textAlign = "center";
-      ctx.fillText("Cas déséquilibré : 9 oranges et 1 pomme", canvas.width / 2, 30);
+      ctx.fillText(">> Cas déséquilibré : 9 oranges et 1 pomme", canvas.width / 2, 30);
+      drawLabel("// Étape 1 : affichage initial — attendre 2s pour voir la prédiction du modèle", canvas.width / 2, 55, "#005511");
 
-      // Positions pour 10 fruits sur une rangée
       let positions = [];
-      for (let i = 0; i < 10; i++) {
-        positions.push({ x: 70 + i * 70, y: 100 });
-      }
-      // Dessine 9 oranges et 1 pomme (position 10 pour la pomme)
-      for (let i = 0; i < 9; i++) {
-        drawFruit(positions[i].x, positions[i].y, "orange", false);
-      }
+      for (let i = 0; i < 10; i++) positions.push({ x: 60 + i * 70, y: 130 });
+
+      for (let i = 0; i < 9; i++) drawFruit(positions[i].x, positions[i].y, "orange", false);
       drawFruit(positions[9].x, positions[9].y, "pomme", false);
 
-      // Après 2 secondes, simule le modèle prédisant toutes les oranges
       setTimeout(() => {
-        // Dessine une coche verte sur chaque fruit prédit comme orange
-        positions.forEach(pos => {
-          ctx.fillStyle = "green";
-          ctx.fillRect(pos.x - 10, pos.y - 10, 20, 20);
-        });
-        ctx.fillStyle = "black";
-        ctx.font = "20px Arial";
-        ctx.fillText("Le modèle prédit 10 oranges. Pomme ignorée.", canvas.width / 2, 300);
+        // Model predicts all as orange — draw green checkmarks on oranges
+        for (let i = 0; i < 9; i++) {
+          drawFruit(positions[i].x, positions[i].y, "orange", true);
+          ctx.fillStyle = "#00ff41";
+          ctx.font = "bold 14px 'Courier New'";
+          ctx.textAlign = "center";
+          ctx.fillText("✓", positions[i].x, positions[i].y + 35);
+        }
+        // Pomme — predicted as orange = wrong
+        drawFruit(positions[9].x, positions[9].y, "pomme", false);
+        ctx.fillStyle = "#ff4400";
+        ctx.font = "bold 14px 'Courier New'";
+        ctx.textAlign = "center";
+        ctx.fillText("✗", positions[9].x, positions[9].y + 35);
+
+        ctx.fillStyle = "#ff4400"; ctx.font = "bold 14px 'Courier New'"; ctx.textAlign = "center";
+        ctx.fillText("Le modèle prédit 10 oranges → pomme ignorée !", canvas.width / 2, 230);
+
+        ctx.fillStyle = "#00ff41"; ctx.font = "bold 16px 'Courier New'";
+        ctx.fillText("Précision trompeuse : 9/10 = 90%", canvas.width / 2, 290);
+
+        ctx.fillStyle = "#005511"; ctx.font = "12px 'Courier New'";
+        ctx.fillText("// Pourtant le modèle n'a JAMAIS détecté la pomme.", canvas.width / 2, 315);
+        ctx.fillText("// C'est le piège des données déséquilibrées !", canvas.width / 2, 335);
+        ctx.fillText("// → Utiliser aussi le Rappel et le score F1.", canvas.width / 2, 355);
       }, 2000);
     }
 
-    // Affiche par défaut le slide 1
     drawSlide1();
-  </script>
+</script>
+
 </body>
 </html>
