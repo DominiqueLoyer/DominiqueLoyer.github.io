@@ -1,159 +1,196 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Carte Mentale Unifiée - xAI</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dominique Loyer | xAI MapMind — Le Léviathan Algorithmique</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #121212;
-      color: #f0f0f0;
-      font-family: 'Inter', Arial, sans-serif;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+    :root{
+      --green:#00ff41;--green-dim:#00cc33;--green-dark:#004d1a;
+      --bg:#0a0a0a;--bg-card:#0f1a0f;--bg-card2:#0d150d;
+      --border:#00ff41;--border-dim:#005511;
+      --font:'Courier New',Courier,monospace;
+      --header-h:40px;--nav-h:34px;--footer-h:34px;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+
+    /* scanlines overlay */
+    body::before{content:"";pointer-events:none;position:fixed;inset:0;
+      background:repeating-linear-gradient(to bottom,transparent 0px,transparent 3px,rgba(0,0,0,0.07) 3px,rgba(0,0,0,0.07) 4px);
+      z-index:9999}
+
+    body{
+      margin:0;padding:0;
+      background-color:var(--bg);
+      color:var(--green);
+      font-family:var(--font);
+      overflow:hidden;
     }
 
-    #controls-container {
-      position: fixed;
-      top: 1rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1000;
-      background-color: rgba(40, 40, 40, 0.9);
-      padding: 0.75rem 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      display: flex;
-      gap: 1rem;
-      align-items: center;
+    /* ===== FIXED HEADER ===== */
+    #site-header{
+      position:fixed;top:0;left:0;width:100%;
+      height:var(--header-h);
+      background:var(--bg);
+      border-bottom:1px solid var(--border);
+      display:flex;align-items:center;justify-content:center;
+      z-index:500;
+    }
+    #site-header h1{
+      margin:0;font-size:.85rem;letter-spacing:.1em;
+      color:var(--green);text-shadow:0 0 8px var(--green);
+      font-family:var(--font);
+    }
+    #site-header h1::before{content:"$ ";color:var(--green-dim)}
+
+    /* ===== FIXED NAV ===== */
+    #site-nav{
+      position:fixed;top:var(--header-h);left:0;width:100%;
+      height:var(--nav-h);
+      background:var(--bg-card);
+      border-bottom:1px solid var(--border-dim);
+      z-index:500;
+      display:flex;align-items:center;justify-content:center;
+    }
+    #site-nav ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center}
+    #site-nav ul li{position:relative}
+    #site-nav ul li a{
+      display:block;padding:5px 11px;
+      color:var(--green-dim);text-decoration:none;
+      font-size:.72rem;letter-spacing:.04em;
+      transition:color .2s,background .2s;
+      border-right:1px solid var(--border-dim);
+      font-family:var(--font);
+    }
+    #site-nav ul li a:hover{color:var(--green);background:var(--green-dark);text-shadow:0 0 6px var(--green)}
+    .dropdown-content{display:none;position:absolute;top:100%;left:0;background:var(--bg-card2);border:1px solid var(--border-dim);min-width:200px;z-index:600}
+    .dropdown-content a{border-right:none!important;border-bottom:1px solid var(--border-dim)}
+    .dropdown:hover .dropdown-content{display:block}
+
+    /* ===== FIXED FOOTER ===== */
+    #site-footer{
+      position:fixed;bottom:0;left:0;width:100%;
+      height:var(--footer-h);
+      background:var(--bg-card);
+      border-top:1px solid var(--border-dim);
+      display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;
+      padding:0 .8rem;
+      font-size:.65rem;
+      z-index:500;
+    }
+    #site-footer a{color:var(--green-dim);text-decoration:none;font-family:var(--font)}
+    #site-footer a:hover{color:var(--green)}
+    .footer-divider{color:var(--border-dim)}
+    .shields-row{display:flex;align-items:center;gap:.35rem}
+    .shields-row img{height:16px;border:none}
+
+    /* ===== SVG (full screen, overlapped by fixed bars) ===== */
+    svg{
+      width:100vw;
+      height:100vh;
+      display:block;
     }
 
-    #search-input {
-      padding: 0.6rem 1rem;
-      font-size: 0.95rem;
-      border-radius: 8px;
-      border: 1px solid #555;
-      background-color: #2f2f2f;
-      color: #f0f0f0;
-      outline: none;
-      min-width: 250px;
+    /* ===== CONTROLS (floating, shifted below header+nav) ===== */
+    #controls-container{
+      position:fixed;
+      top:calc(var(--header-h) + var(--nav-h) + 10px);
+      left:50%;
+      transform:translateX(-50%);
+      z-index:400;
+      background:rgba(10,20,10,0.92);
+      padding:.5rem 1.2rem;
+      border-radius:3px;
+      border:1px solid var(--border-dim);
+      box-shadow:0 0 10px rgba(0,255,65,.12);
+      display:flex;gap:.8rem;align-items:center;
     }
-    #search-input:focus {
-        border-color: #00bcd4;
-        box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.3);
+    label{font-size:.78rem;color:var(--green-dim);font-family:var(--font);letter-spacing:.04em}
+    #search-input{
+      padding:.4rem .8rem;font-size:.8rem;
+      border-radius:2px;border:1px solid var(--border-dim);
+      background:var(--bg);color:var(--green);
+      font-family:var(--font);outline:none;min-width:220px;
     }
-    
-    label {
-        font-size: 0.95rem;
-        color: #c0c0c0;
+    #search-input:focus{border-color:var(--green);box-shadow:0 0 6px rgba(0,255,65,.2)}
+    #search-input::placeholder{color:#004d1a}
+
+    /* ===== NODES & LINKS (terminal palette) ===== */
+    .node{cursor:pointer;transition:transform .3s ease}
+    .node circle{fill:#0a0a0a;stroke:var(--border-dim);stroke-width:1.5px;transition:fill .3s ease,stroke .3s ease,r .3s ease}
+    .node.collapsed > circle{fill:var(--bg-card2)}
+    .node.root-node > circle{fill:var(--green);stroke:var(--green-dim)}
+    .node.root-node:hover > circle{r:12}
+    .node:hover circle{stroke:var(--green);stroke-width:2.5px}
+    .node.highlighted circle{stroke:var(--green)!important;stroke-width:3px;fill:var(--green-dark);filter:drop-shadow(0 0 5px var(--green))}
+    .node text{font-size:11px;fill:var(--green-dim);pointer-events:none;font-family:var(--font);transition:fill .3s ease}
+    .node.root-node > text{font-size:15px;font-weight:bold;fill:var(--green)}
+    .node.highlighted text{fill:var(--green);font-weight:bold}
+    .link{fill:none;stroke:var(--border-dim);stroke-width:1.2px;stroke-opacity:.8;transition:stroke-opacity .3s ease}
+
+    /* ===== TOOLTIP ===== */
+    .tooltip{
+      position:absolute;text-align:center;
+      padding:7px 12px;font-size:12px;
+      background:rgba(10,20,10,.95);color:var(--green);
+      border:1px solid var(--border-dim);border-radius:2px;
+      pointer-events:none;opacity:0;
+      transition:opacity .3s ease;
+      box-shadow:0 0 10px rgba(0,255,65,.1);
+      max-width:240px;font-family:var(--font);
     }
 
-    .node {
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-
-    .node circle {
-      fill: #282828;
-      stroke: #666;
-      stroke-width: 2px;
-      transition: fill 0.3s ease, stroke 0.3s ease, r 0.3s ease;
-    }
-    
-    .node.collapsed > circle {
-        fill: #4a5568; 
-    }
-    /* Style pour le noeud racine "xAI" */
-    .node.root-node > circle {
-        fill: #007bff; /* Couleur distinctive pour la racine */
-        stroke: #0056b3;
-        r: 10; /* Plus grand rayon */
-    }
-    .node.root-node:hover > circle {
-        r: 12;
-    }
-
-
-    .node:hover circle {
-      stroke: #00bcd4;
-      stroke-width: 3px;
-      r: 8;
-    }
-    
-    .node.highlighted circle {
-        stroke: #00bcd4;
-        stroke-width: 3px;
-        fill: #006064;
-    }
-
-
-    .node text {
-      font-size: 12px;
-      fill: #e0e0e0;
-      pointer-events: none;
-      text-shadow: 0 0 3px rgba(0,0,0,0.7);
-      transition: fill 0.3s ease;
-    }
-     /* Style pour le texte du noeud racine "xAI" */
-    .node.root-node > text {
-        font-size: 16px;
-        font-weight: bold;
-        fill: #ffffff;
-    }
-    
-    .node.highlighted text {
-        fill: #26c6da;
-        font-weight: bold;
-    }
-
-    .link {
-      fill: none;
-      stroke: #555;
-      stroke-width: 1.5px;
-      stroke-opacity: 0.7;
-      transition: stroke-opacity 0.3s ease, stroke-width 0.3s ease;
-    }
-
-    .tooltip {
-      position: absolute;
-      text-align: center;
-      padding: 8px 12px;
-      font-size: 13px;
-      background: rgba(20, 20, 20, 0.95);
-      color: #fff;
-      border: 1px solid #444;
-      border-radius: 6px;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      max-width: 250px;
-    }
-
-    svg {
-      width: 100vw;
-      height: 100vh;
+    @media screen and (max-width:768px){
+      #site-nav ul{flex-direction:column;align-items:flex-start}
+      #site-nav ul li a{border-right:none;border-bottom:1px solid var(--border-dim);width:100%}
+      #site-nav{height:auto;position:fixed;top:var(--header-h)}
+      .dropdown-content{position:relative}
     }
   </style>
 </head>
 <body>
+
+<!-- FIXED HEADER -->
+<header id="site-header">
+  <h1>Map Mind de : Le Léviathan Algorithmique (Examen de synthèse doctoral DIC-9401)</h1>
+</header>
+
+<!-- FIXED NAV -->
+<nav id="site-nav">
+  <ul>
+    <li><a href="https://dominiqueloyer.github.io/">About</a></li>
+    <li><a href="https://github.com/DominiqueLoyer">Github Projects</a></li>
+    <li><a href="https://dominiqueloyer.github.io/papers.html">Papers</a></li>
+    <li><a href="https://dominiqueloyer.github.io/conferences.html">Conferences</a></li>
+    <li><a href="https://dominiqueloyer.github.io/lectures.html">Lectures</a></li>
+    <li><a href="https://dominiqueloyer.github.io/Codes.html">My Coding</a></li>
+    <li><a href="https://dominiqueloyer.github.io/ontology.html">Researcher's Ontology</a></li>
+    <li><a href="https://dominiqueloyer.github.io/mapmind.html">xAI MapMind</a></li>
+    <li><a href="https://plateforme-isc.uqam.ca">Plateforme UQAM</a></li>
+    <li class="dropdown">
+      <a href="#">Children's Corner &#9662;</a>
+      <div class="dropdown-content">
+        <a href="https://dominiqueloyer.github.io/childrenCorner.html">Children's Corner I</a>
+        <a href="https://dominiqueloyer.github.io/childrenCorner2.html">Children's Corner II</a>
+        <a href="https://dominiqueloyer.github.io/pong.html">Children's Corner III</a>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+  <!-- CONTROLS (floating) -->
   <div id="controls-container">
     <div>
-      <label for="search-input">Recherche :</label>
+      <label for="search-input">// filtrer :</label>
       <input id="search-input" type="text" placeholder="Filtrer les nœuds...">
     </div>
   </div>
-  
+
   <div id="tooltip" class="tooltip"></div>
   <svg></svg>
 
-  <script>
+<script>
     // --- Données pour la Carte Mentale Unifiée ---
     const masterMindMapData = {
       name: "xAI",
@@ -3337,7 +3374,28 @@
 
   </script>
 
-  
-  
+<!-- FIXED FOOTER -->
+<footer id="site-footer">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0">
+    <img alt="CC License" style="border-width:0;height:14px;" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/>
+  </a>
+  <a href="mailto:votreconsultant&#64;gmail.com">(ↄ) MMXXVI Dominique S. Loyer &#9993;</a>
+  <span class="footer-divider">|</span>
+  <div class="shields-row">
+    <a href="https://orcid.org/0009-0003-9713-7109" target="_blank" rel="me noopener noreferrer">
+      <img src="https://img.shields.io/badge/ORCID-0009--0003--9713--7109-green.svg" alt="ORCID"/>
+    </a>
+    <a href="https://scholar.google.com/citations?user=JmRd6U0AAAAJ" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/Google%20Scholar-Profile-blue" alt="Google Scholar"/>
+    </a>
+    <a href="https://www.researchgate.net/profile/Dominique-Loyer" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/ResearchGate-Profile-00CCBB" alt="ResearchGate"/>
+    </a>
+    <a href="https://dominiqueloyer.github.io" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/Website-dominiqueloyer.github.io-orange" alt="Website"/>
+    </a>
+  </div>
+</footer>
+
 </body>
 </html>
