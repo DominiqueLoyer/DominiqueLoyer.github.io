@@ -1,12 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
 <head>
-  <link rel="icon" href="peace.png" alt="STOP T H E W A R!" width="16" height="16" type="image/icon type">
+  <link rel="icon" href="peace.png" alt="STOP T H E W A R!" width="16" height="16" type="image/icon type"/>
+
+  <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer','GTM-PRP2NSM4');</script>
+
+  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3LQWHW6NDT"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -14,14 +18,16 @@
     gtag('js', new Date());
     gtag('config', 'G-3LQWHW6NDT');
   </script>
+
   <meta name="robots" content="YES"/>
   <meta name="keywords" content="AI researcher,Data scientist, Montreal,Machine learning, Deep learning,xAI,GenAI,PhD UQAM"/>
-  <meta name="description" content="Dominique Loyer is a well-known AI researcher in Montreal. He is doing is PhD in cognitive science at UQAM"/>
+  <meta name="description" content="Dominique Loyer is a well-known AI researcher in Montreal. He is doing his PhD in cognitive informatics at UQAM"/>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="msvalidate.01" content="36DCA3D92C79DDE66E87BAC045F726AE"/>
   <title>Dominique Loyer | AI Researcher and PhD candidate | UQÀM</title>
 
+  <!-- Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -62,8 +68,7 @@
           "addressRegion": "Quebec",
           "addressCountry": "Canada"
         },
-        "url": "https://dominiqueloyer.github.io",
-        "sameAs": ["https://dominiqueloyer.github.io"]
+        "url": "https://dominiqueloyer.github.io"
       }
     ]
   }
@@ -96,6 +101,7 @@
       text-align: left;
     }
 
+    /* Scanlines */
     body::before {
       content: "";
       pointer-events: none;
@@ -109,6 +115,7 @@
       z-index: 9999;
     }
 
+    /* HEADER */
     header {
       background: var(--bg);
       border-bottom: 1px solid var(--border);
@@ -124,6 +131,7 @@
     }
     header h1::before { content: "$ "; color: var(--green-dim); }
 
+    /* NAV */
     nav {
       background: var(--bg-card);
       border-bottom: 1px solid var(--border-dim);
@@ -164,128 +172,51 @@
     .dropdown-content a { border-right: none !important; border-bottom: 1px solid var(--border-dim); }
     .dropdown:hover .dropdown-content { display: block; }
 
+    /* MAIN */
     main {
       max-width: 900px;
       margin: 0 auto;
-      padding: 1rem 1rem 4rem;
+      padding: 2rem 1rem 4rem;
+      text-align: center;
     }
 
-    .section-title {
-      font-size: 1rem;
-      font-weight: bold;
-      color: var(--green);
-      text-shadow: 0 0 8px var(--green);
-      border-bottom: 1px solid var(--border-dim);
-      padding-bottom: 0.3rem;
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-      letter-spacing: 0.1em;
-    }
-    .section-title::before { content: ">> "; color: var(--green-dim); }
-
-    .citation-card {
+    /* DESCRIPTION */
+    .bio {
       background: var(--bg-card);
       border: 1px solid var(--border-dim);
       border-left: 3px solid var(--green-dim);
-      padding: 0.75rem 1rem;
-      margin-bottom: 0.9rem;
-      border-radius: 2px;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .citation-card:hover {
-      border-color: var(--green);
-      box-shadow: 0 0 10px rgba(0,255,65,0.12);
-    }
-
-    .cit-authors {
-      font-size: 0.8rem;
-      color: var(--green-dim);
-      margin-bottom: 0.15rem;
-    }
-    .cit-title {
+      padding: 1.2rem 1.4rem;
+      margin: 0 auto 2rem auto;
+      max-width: 780px;
+      text-align: left;
       font-size: 0.88rem;
-      font-weight: bold;
+      line-height: 1.7;
       color: var(--green);
-      margin-bottom: 0.35rem;
-      line-height: 1.4;
     }
-    .cit-meta {
-      font-size: 0.75rem;
-      color: #006622;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      align-items: center;
-      margin-bottom: 0.4rem;
-    }
-    .cit-meta a {
+    .bio::before {
+      content: "// about";
+      display: block;
       color: var(--green-dim);
-      text-decoration: none;
-    }
-    .cit-meta a:hover {
-      color: var(--green);
-      text-decoration: underline;
-    }
-
-    /* Badge générique */
-    .badge {
-      background: var(--green-dark);
-      color: var(--green-dim);
-      border: 1px solid var(--border-dim);
-      padding: 1px 6px;
-      border-radius: 2px;
-      font-size: 0.7rem;
-      letter-spacing: 0.04em;
-    }
-
-    /* Code monospace vert — même style pour ISBN et DOI */
-    .id-code {
-      font-family: var(--font);
-      background: #0a150a;
-      border: 1px solid var(--border-dim);
-      padding: 1px 6px;
-      border-radius: 2px;
       font-size: 0.72rem;
-      color: #33aa55;
-      letter-spacing: 0.05em;
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.08em;
     }
 
-    /* Label avant le code (ISBN :, DOI :) */
-    .id-label {
-      color: #006622;
-      font-size: 0.72rem;
-    }
-
-    .bibtex-toggle {
-      background: none;
-      border: 1px solid var(--border-dim);
-      color: var(--green-dim);
-      font-family: var(--font);
-      font-size: 0.7rem;
-      padding: 2px 8px;
+    /* CANVAS */
+    #water-canvas {
+      display: block;
       cursor: pointer;
-      margin-top: 0.35rem;
-      border-radius: 2px;
-      letter-spacing: 0.05em;
-      transition: background 0.2s;
+      margin: 0 auto;
+      max-width: 100%;
     }
-    .bibtex-toggle:hover { background: var(--green-dark); color: var(--green); }
-    .bibtex-block {
-      display: none;
-      margin-top: 0.5rem;
-      background: #060f06;
+    .canvas-wrap {
+      display: inline-block;
       border: 1px solid var(--border-dim);
-      padding: 0.6rem 0.8rem;
-      font-size: 0.72rem;
-      line-height: 1.5;
-      color: #33aa55;
-      white-space: pre;
-      overflow-x: auto;
-      border-radius: 2px;
+      box-shadow: 0 0 20px rgba(0,255,65,0.15);
+      margin-bottom: 2rem;
     }
-    .bibtex-block.open { display: block; }
 
-    /* ---- FOOTER ---- */
+    /* FOOTER */
     footer {
       background: var(--bg-card);
       border-top: 1px solid var(--border-dim);
@@ -302,7 +233,6 @@
     }
     footer a { color: var(--green-dim); text-decoration: none; }
     footer a:hover { color: var(--green); text-decoration: underline; }
-    footer img { vertical-align: middle; }
     .footer-divider { color: var(--border-dim); }
     .shields-row {
       display: flex;
@@ -355,386 +285,158 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- MAIN -->
 <main>
 
-  <!-- PhD THESIS -->
-  <h2 class="section-title">PhD Thesis Project</h2>
-
-  <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
-    <div class="cit-authors">
-      <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="name">Loyer, Dominique</span>
-      </span> — <time itemprop="datePublished" datetime="2025-11">November 2025</time>
-    </div>
-    <div class="cit-title" itemprop="name">
-      Le Léviathan algorithmique : pouvoir, opacité et responsabilité à l'ère de l'intelligence artificielle
-    </div>
-    <div class="cit-meta">
-      <span class="badge">fr</span>
-      <span class="badge">Examen de synthèse — DIC-9401</span>
-      <span class="id-label">ISBN :</span> <code class="id-code">978-1-0699904-0-2</code>
-      <span class="id-label">DOI :</span>
-      <a href="https://doi.org/10.13140/RG.2.2.28011.20002" target="_blank" itemprop="sameAs">
-        <code class="id-code">10.13140/RG.2.2.28011.20002</code>
-      </a>
-    </div>
-    <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <pre class="bibtex-block">@article{DominiqueLoyer2025,
-  doi       = {10.13140/RG.2.2.28011.20002},
-  url       = {https://www.researchgate.net/doi/10.13140/RG.2.2.28011.20002},
-  author    = {Loyer, Dominique},
-  language  = {fr},
-  title     = {Le L\'{e}viathan algorithmique : pouvoir, opacit\'{e} et responsabilit\'{e}
-               \`{a} l'{\`e}re de l'intelligence artificielle (ISBN: 978-1-0699904-0-2)},
-  publisher = {Unpublished},
-  year      = {2025},
-}</pre>
+  <!-- BIO -->
+  <div class="bio">
+    Dominique is an AI researcher and candidate for a PhD degree in AI (informatique cognitive) at UQAM.
+    His thesis scope project revolves around AI interpretability and transparency (xAI).
+    He has worked for numerous entreprises over the last 15 years and has offered his AI consulting services
+    under the corporation of Sherbrooke Informatique Inc. Circa MMXIII.
+    Moreover, he is involved in a researcher assistant position for l'Institut des Sciences Cognitives at UQAM.
   </div>
 
-  <!-- PREPRINTS -->
-  <h2 class="section-title">PrePrints</h2>
-
-  <!-- Preprint 1 -->
-  <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
-    <div class="cit-authors">
-      <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="name">Loyer, Dominique S</span>
-      </span> — <time itemprop="datePublished" datetime="2025">2025</time>
-    </div>
-    <div class="cit-title" itemprop="name">
-      Modeling a Hybrid System (predicate-logic-based + ML/AI) for Verifying the Credibility of Information Sources
-    </div>
-    <div class="cit-meta">
-      <span class="badge">en</span>
-      <span class="id-label">ISBN :</span> <code class="id-code">978-1-0699904-2-6</code>
-      <span class="id-label">DOI :</span>
-      <a href="https://doi.org/10.13140/rg.2.2.36348.24961" target="_blank">
-        <code class="id-code">10.13140/RG.2.2.36348.24961</code>
-      </a>
-    </div>
-    <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <pre class="bibtex-block">@article{DominiqueSLoyer2025a,
-  doi       = {10.13140/RG.2.2.36348.24961},
-  url       = {https://www.researchgate.net/doi/10.13140/RG.2.2.36348.24961},
-  author    = {Loyer, Dominique S},
-  language  = {en},
-  title     = {Modeling an Hybrid System (predicate-logic-based + ML/AI) for Verifying
-               the Credibility of Information Sources (ISBN : 978-1-0699904-3-3)},
-  publisher = {Unpublished},
-  year      = {2025},
-}</pre>
+  <!--moi-->
+  <div class="canvas-wrap">
+    <canvas id="water-canvas"></canvas>
   </div>
 
-  <!-- Preprint 2 -->
-  <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
-    <div class="cit-authors">
-      <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="name">Loyer, Dominique S</span>
-      </span> — <time itemprop="datePublished" datetime="2025">2025</time>
-    </div>
-    <div class="cit-title" itemprop="name">
-      Hybrid System for Verifying the Credibility of Information Sources: An Ontology
-    </div>
-    <div class="cit-meta">
-      <span class="badge">en</span>
-      <span class="id-label">ISBN :</span> <code class="id-code">978-1-0699904-3-3</code>
-      <span class="id-label">DOI :</span>
-      <a href="https://doi.org/10.13140/RG.2.2.22926.47680" target="_blank">
-        <code class="id-code">10.13140/RG.2.2.22926.47680</code>
-      </a>
-    </div>
-    <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <pre class="bibtex-block">@article{DominiqueSLoyer2025b,
-  doi       = {10.13140/RG.2.2.22926.47680},
-  url       = {https://www.researchgate.net/doi/10.13140/RG.2.2.22926.47680},
-  author    = {Loyer, Dominique S},
-  language  = {en},
-  title     = {Hybrid System for Verifying the Credibility of Information Sources:
-               An Ontology ISBN : 978-1-0699904-3-3 | DOI 10.13140/RG.2.2.22926.47680},
-  publisher = {Unpublished},
-  year      = {2025},
-}</pre>
-  </div>
+  <script>
+    const IMAGE_URL = "https://dominiqueloyer.github.io/dl.png";
+    const DAMPING = 0.98;
+    const RIPPLE_RADIUS = 5;
 
-  <!-- Preprint 3 -->
-  <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
-    <div class="cit-authors">
-      <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="name">Loyer, Dominique S</span>
-      </span> — <time itemprop="datePublished" datetime="2025">2025</time>
-    </div>
-    <div class="cit-title" itemprop="name">
-      Development and Evaluation of an English-to-Russian Neural Machine Translation System
-    </div>
-    <div class="cit-meta">
-      <span class="badge">en</span>
-      <span class="id-label">ISBN :</span> <code class="id-code">978-1-0699904-4-0</code>
-      <span class="id-label">DOI :</span>
-      <a href="https://doi.org/10.13140/RG.2.2.17980.55687" target="_blank">
-        <code class="id-code">10.13140/RG.2.2.17980.55687</code>
-      </a>
-    </div>
-    <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <pre class="bibtex-block">@article{DominiqueSLoyer2025c,
-  doi       = {10.13140/RG.2.2.17980.55687},
-  url       = {https://www.researchgate.net/doi/10.13140/RG.2.2.17980.55687},
-  author    = {Loyer, Dominique S},
-  language  = {en},
-  title     = {Development and Evaluation of an English-to-Russian Neural Machine
-               Translation System (ISBN : 978-1-0699904-4-0)},
-  publisher = {Unpublished},
-  year      = {2025},
-}</pre>
-  </div>
+    const canvas = document.getElementById('water-canvas');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
-  <!-- Preprint 4 -->
-  <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
-    <div class="cit-authors">
-      <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="name">Loyer, Dominique S</span>
-      </span> — <time itemprop="datePublished" datetime="2025">2025</time>
-    </div>
-    <div class="cit-title" itemprop="name">
-      Evaluation of Information Retrieval Models and Query Expansion on the TREC AP 88-90 Collection
-    </div>
-    <div class="cit-meta">
-      <span class="badge">en</span>
-      <span class="id-label">ISBN :</span> <code class="id-code">978-1-0699904-5-7</code>
-      <span class="id-label">DOI :</span>
-      <a href="https://doi.org/10.13140/RG.2.2.22608.62721" target="_blank">
-        <code class="id-code">10.13140/RG.2.2.22608.62721</code>
-      </a>
-    </div>
-    <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <pre class="bibtex-block">@article{DominiqueSLoyer2025d,
-  doi       = {10.13140/RG.2.2.22608.62721},
-  url       = {https://www.researchgate.net/doi/10.13140/RG.2.2.22608.62721},
-  author    = {Loyer, Dominique S},
-  language  = {en},
-  title     = {Evaluation of Information Retrieval Models and Query Expansion on
-               the TREC AP 88-90 Collection (ISBN : 978-1-0699904-5-7)},
-  publisher = {Unpublished},
-  year      = {2025},
-}</pre>
-  </div>
+    const image = new Image();
+    image.crossOrigin = "Anonymous";
 
-  <!-- Preprint 5 -->
-  <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
-    <div class="cit-authors">
-      <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="name">Loyer, Dominique S</span>
-      </span> — <time itemprop="datePublished" datetime="2025">2025</time>
-    </div>
-    <div class="cit-title" itemprop="name">
-      A Survey and Critical Evaluation of Yoav Shoham's Knowledge Representation Perspective
-    </div>
-    <div class="cit-meta">
-      <span class="badge">en</span>
-      <span class="id-label">ISBN :</span> <code class="id-code">978-1-0699904-6-4</code>
-      <span class="id-label">DOI :</span>
-      <a href="https://doi.org/10.13140/RG.2.2.26691.26400" target="_blank">
-        <code class="id-code">10.13140/RG.2.2.26691.26400</code>
-      </a>
-    </div>
-    <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <pre class="bibtex-block">@article{DominiqueSLoyer2025e,
-  doi       = {10.13140/RG.2.2.26691.26400},
-  url       = {https://www.researchgate.net/doi/10.13140/RG.2.2.26691.26400},
-  author    = {Loyer, Dominique S},
-  language  = {en},
-  title     = {A Survey and Critical Evaluation of Yoav Shoham's Knowledge
-               Representation Perspective (ISBN : 978-1-0699904-6-4)},
-  publisher = {Unpublished},
-  year      = {2025},
-}</pre>
-  </div>
+    let canvasWidth, canvasHeight;
+    let buffer1, buffer2;
+    let textureData, originalTextureData;
+    let isInitialized = false;
 
-  <!-- Preprint 6 — FR TREC -->
-  <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
-    <div class="cit-authors">
-      <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="name">Loyer, Dominique</span>
-      </span> — <time itemprop="datePublished" datetime="2025-06">June 2025</time>
-    </div>
-    <div class="cit-title" itemprop="name">
-      Évaluation de Modèles de Recherche d'Information et d'Expansion de Requêtes sur la Collection TREC AP 88-90
-    </div>
-    <div class="cit-meta">
-      <span class="badge">fr</span>
-      <span class="id-label">DOI :</span>
-      <a href="https://doi.org/10.13140/RG.2.2.23572.00647" target="_blank">
-        <code class="id-code">10.13140/RG.2.2.23572.00647</code>
-      </a>
-    </div>
-    <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <pre class="bibtex-block">@article{DominiqueLoyer2025fr,
-  doi       = {10.13140/RG.2.2.23572.00647},
-  url       = {https://www.researchgate.net/doi/10.13140/RG.2.2.23572.00647},
-  author    = {Loyer, Dominique},
-  language  = {fr},
-  title     = {{\'E}valuation de Mod\`{e}les de Recherche d'Information et
-               d'Expansion de Requ\^{e}tes sur la Collection TREC AP 88-90},
-  publisher = {Unpublished},
-  year      = {2025},
-}</pre>
-  </div>
+    image.onload = () => {
+      canvasWidth = canvas.width = image.width;
+      canvasHeight = canvas.height = image.height;
+      ctx.drawImage(image, 0, 0);
+      originalTextureData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+      textureData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+      const bufferSize = canvasWidth * canvasHeight;
+      buffer1 = new Float32Array(bufferSize).fill(0);
+      buffer2 = new Float32Array(bufferSize).fill(0);
+      animate();
+      isInitialized = true;
+    };
 
-  <!-- CONFERENCES -->
-  <h2 class="section-title">Conferences &amp; Course Papers</h2>
+    image.onerror = () => {
+      console.error("L'image n'a pas pu être chargée. Vérifiez l'URL.");
+      canvas.width = 180;
+      canvas.height = 180;
+      ctx.fillStyle = 'red';
+      ctx.font = '16px Inter';
+      ctx.fillText("Erreur de chargement de l'image.", 20, 40);
+      ctx.fillText("Veuillez vérifier l'URL dans le code.", 20, 60);
+    };
 
-  <!-- Conf 1 -->
-  <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
-    <div class="cit-authors">
-      <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="name">Loyer, Dominique</span>
-      </span> — <time itemprop="datePublished" datetime="2025">2025</time>
-    </div>
-    <div class="cit-title" itemprop="name">
-      Le Léviathan algorithmique : Pouvoir, opacité et responsabilité à l'ère de l'intelligence artificielle
-    </div>
-    <div class="cit-meta">
-      <span class="badge">fr</span>
-      <span class="id-label">ISBN :</span> <code class="id-code">978-1-0699904-7-1</code>
-      <span class="id-label">DOI :</span>
-      <a href="https://doi.org/10.13140/RG.2.2.19196.60806" target="_blank">
-        <code class="id-code">10.13140/RG.2.2.19196.60806</code>
-      </a>
-    </div>
-    <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <pre class="bibtex-block">@article{DominiqueLoyer2025conf1,
-  doi       = {10.13140/RG.2.2.19196.60806},
-  url       = {https://www.researchgate.net/doi/10.13140/RG.2.2.19196.60806},
-  author    = {Loyer, Dominique},
-  language  = {fr},
-  title     = {Le L\'{e}viathan algorithmique : Pouvoir, opacit\'{e} et responsabilit\'{e}
-               \`{a} l'{\`e}re de l'intelligence artificielle (ISBN : 978-1-0699904-7-1)},
-  publisher = {Unpublished},
-  year      = {2025},
-}</pre>
-  </div>
+    image.src = IMAGE_URL;
 
-  <!-- Conf 2 -->
-  <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
-    <div class="cit-authors">
-      <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="name">Loyer, Dominique S</span>
-      </span> — <time itemprop="datePublished" datetime="2025">2025</time>
-    </div>
-    <div class="cit-title" itemprop="name">
-      Ontologie — Système de Vérification de la Crédibilité de l'Information — DIC-9335 Sciences du Web
-    </div>
-    <div class="cit-meta">
-      <span class="badge">fr</span>
-      <span class="badge">DIC-9335 · Petko Valchev</span>
-      <span class="id-label">DOI :</span>
-      <a href="https://doi.org/10.13140/RG.2.2.25249.72807" target="_blank">
-        <code class="id-code">10.13140/RG.2.2.25249.72807</code>
-      </a>
-    </div>
-    <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <pre class="bibtex-block">@article{DominiqueSLoyer2025conf2,
-  doi       = {10.13140/RG.2.2.25249.72807},
-  url       = {https://www.researchgate.net/doi/10.13140/RG.2.2.25249.72807},
-  author    = {Loyer, Dominique S},
-  language  = {fr},
-  title     = {Ontologie - Sys. de V\'{e}rification de la Cr\'{e}dibilit\'{e}
-               de l'Information Projet Final pr\'{e}sent\'{e} \`{a} Petko Valchev,
-               DIC-9335 Sciences du Web},
-  publisher = {Unpublished},
-  year      = {2025},
-}</pre>
-  </div>
+    canvas.addEventListener('mousemove', (e) => {
+      if (!isInitialized) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = Math.floor(e.clientX - rect.left);
+      const y = Math.floor(e.clientY - rect.top);
+      disturb(x, y, 1500);
+    });
 
-  <!-- Conf 3 -->
-  <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
-    <div class="cit-authors">
-      <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="name">Loyer, Dominique S</span>
-      </span> — <time itemprop="datePublished" datetime="2025">2025</time>
-    </div>
-    <div class="cit-title" itemprop="name">
-      Évaluation de modèles de pondération pour la recherche d'information sur TREC AP 88-90 — DIC-9345 TALN
-    </div>
-    <div class="cit-meta">
-      <span class="badge">fr</span>
-      <span class="badge">DIC-9345 · Ngoc Tan Lê</span>
-      <span class="id-label">DOI :</span>
-      <a href="https://doi.org/10.13140/RG.2.2.18538.84162" target="_blank">
-        <code class="id-code">10.13140/RG.2.2.18538.84162</code>
-      </a>
-    </div>
-    <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <pre class="bibtex-block">@article{DominiqueSLoyer2025conf3,
-  doi       = {10.13140/RG.2.2.18538.84162},
-  url       = {https://www.researchgate.net/doi/10.13140/RG.2.2.18538.84162},
-  author    = {Loyer, Dominique S},
-  language  = {fr},
-  title     = {{\'E}valuation de mod\`{e}les de pond\'{e}ration pour la recherche
-               d'information sur TREC AP 88-90 Cours DIC-9345 TALN
-               Pr\'{e}sent\'{e} \`{a} Ngoc Tan L\^{e}},
-  publisher = {Unpublished},
-  year      = {2025},
-}</pre>
-  </div>
+    canvas.addEventListener('mousedown', (e) => {
+      if (!isInitialized) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = Math.floor(e.clientX - rect.left);
+      const y = Math.floor(e.clientY - rect.top);
+      disturb(x, y, 4000);
+    });
 
-  <!-- Conf 4 -->
-  <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
-    <div class="cit-authors">
-      <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="name">Loyer, Dominique.</span>
-      </span> — <time itemprop="datePublished" datetime="2025">2025</time>
-    </div>
-    <div class="cit-title" itemprop="name">
-      Traduction automatique neuronale du Russe-Anglais
-    </div>
-    <div class="cit-meta">
-      <span class="badge">fr</span>
-      <span class="id-label">DOI :</span>
-      <a href="https://doi.org/10.13140/RG.2.2.21668.18563" target="_blank">
-        <code class="id-code">10.13140/RG.2.2.21668.18563</code>
-      </a>
-    </div>
-    <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <pre class="bibtex-block">@article{DominiqueLoyer2025conf4,
-  doi       = {10.13140/RG.2.2.21668.18563},
-  url       = {https://www.researchgate.net/doi/10.13140/RG.2.2.21668.18563},
-  author    = {Loyer, Dominique},
-  language  = {fr},
-  title     = {Traduction automatique neuronal du Russe-Anglais},
-  publisher = {Unpublished},
-  year      = {2025},
-}</pre>
-  </div>
+    canvas.addEventListener('touchstart', (e) => {
+      if (!isInitialized) return;
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      for (let i = 0; i < e.touches.length; i++) {
+        const x = Math.floor(e.touches[i].clientX - rect.left);
+        const y = Math.floor(e.touches[i].clientY - rect.top);
+        disturb(x, y, 4000);
+      }
+    });
 
-  <!-- SOFTWARE -->
-  <h2 class="section-title">Software / Open Source</h2>
+    canvas.addEventListener('touchmove', (e) => {
+      if (!isInitialized) return;
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      for (let i = 0; i < e.touches.length; i++) {
+        const x = Math.floor(e.touches[i].clientX - rect.left);
+        const y = Math.floor(e.touches[i].clientY - rect.top);
+        disturb(x, y, 1500);
+      }
+    });
 
-  <div class="citation-card" itemscope itemtype="http://schema.org/SoftwareSourceCode">
-    <div class="cit-authors">
-      <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="name">Loyer, Dominique.</span>
-      </span> — <time itemprop="datePublished" datetime="2026">2026</time>
-    </div>
-    <div class="cit-title" itemprop="name">
-      DominiqueLoyer/systemFactChecking: v2.2.1 — PyPI Publication
-    </div>
-    <div class="cit-meta">
-      <span class="badge">Zenodo</span>
-      <span class="badge">CC BY 4.0</span>
-      <span class="id-label">DOI :</span>
-      <a href="https://zenodo.org/doi/10.5281/zenodo.18436691" target="_blank">
-        <code class="id-code">10.5281/ZENODO.18436691</code>
-      </a>
-    </div>
-    <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <pre class="bibtex-block">@misc{Dominique2026,
-  doi       = {10.5281/ZENODO.18436691},
-  url       = {https://zenodo.org/doi/10.5281/zenodo.18436691},
-  author    = {Dominique},
-  title     = {DominiqueLoyer/systemFactChecking: v2.2.1 - PyPI Publication},
-  publisher = {Zenodo},
-  year      = {2026},
-  copyright = {Creative Commons Attribution 4.0 International},
-}</pre>
-  </div>
+    function disturb(x, y, magnitude) {
+      if (x < RIPPLE_RADIUS || x > canvasWidth - RIPPLE_RADIUS ||
+          y < RIPPLE_RADIUS || y > canvasHeight - RIPPLE_RADIUS) return;
+      for (let i = -RIPPLE_RADIUS; i < RIPPLE_RADIUS; i++) {
+        for (let j = -RIPPLE_RADIUS; j < RIPPLE_RADIUS; j++) {
+          if (i * i + j * j < RIPPLE_RADIUS * RIPPLE_RADIUS) {
+            const index = (x + i) + (y + j) * canvasWidth;
+            buffer1[index] = magnitude;
+          }
+        }
+      }
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      processWater();
+      render();
+    }
+
+    function processWater() {
+      for (let y = 1; y < canvasHeight - 1; y++) {
+        for (let x = 1; x < canvasWidth - 1; x++) {
+          const i = y * canvasWidth + x;
+          const average = (
+            buffer1[i - 1] + buffer1[i + 1] +
+            buffer1[i - canvasWidth] + buffer1[i + canvasWidth]
+          ) / 2;
+          let newHeight = average - buffer2[i];
+          newHeight *= DAMPING;
+          buffer2[i] = newHeight;
+        }
+      }
+      [buffer1, buffer2] = [buffer2, buffer1];
+    }
+
+    function render() {
+      const pixels = textureData.data;
+      const originalPixels = originalTextureData.data;
+      for (let y = 1; y < canvasHeight - 1; y++) {
+        for (let x = 1; x < canvasWidth - 1; x++) {
+          const i = y * canvasWidth + x;
+          const xOffset = Math.floor(buffer2[i - 1] - buffer2[i + 1]);
+          const yOffset = Math.floor(buffer2[i - canvasWidth] - buffer2[i + canvasWidth]);
+          let lookupX = x + xOffset;
+          let lookupY = y + yOffset;
+          if (lookupX < 0) lookupX = 0;
+          if (lookupX >= canvasWidth) lookupX = canvasWidth - 1;
+          if (lookupY < 0) lookupY = 0;
+          if (lookupY >= canvasHeight) lookupY = canvasHeight - 1;
+          const lookupIndex = (lookupY * canvasWidth + lookupX) * 4;
+          const targetIndex = i * 4;
+          pixels[targetIndex]     = originalPixels[lookupIndex];
+          pixels[targetIndex + 1] = originalPixels[lookupIndex + 1];
+          pixels[targetIndex + 2] = originalPixels[lookupIndex + 2];
+        }
+      }
+      ctx.putImageData(textureData, 0, 0);
+    }
+  </script>
 
 </main>
 
@@ -760,15 +462,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </a>
   </div>
 </footer>
-
-<!-- SCRIPT -->
-<script>
-  function toggleBibtex(btn) {
-    var pre = btn.nextElementSibling;
-    pre.classList.toggle('open');
-    btn.textContent = pre.classList.contains('open') ? '\u2716 Fermer' : '\u{1F3F7} BibTeX';
-  }
-</script>
 
 </body>
 </html>
