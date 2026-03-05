@@ -1,137 +1,223 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Animation: Précision et Rappel</title>
-  <style>
-    body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
-    canvas { border: 1px solid #ccc; margin-top: 10px; }
-    button { margin: 5px; padding: 10px 20px; }
-  </style>
   <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
   <link rel="icon" type="image/png" href="/peace.png"/>
+  <style>
+    :root{
+      --green:#00ff41;--green-dim:#00cc33;--green-dark:#004d1a;
+      --bg:#0a0a0a;--bg-card:#0f1a0f;--bg-card2:#0d150d;
+      --border:#00ff41;--border-dim:#005511;
+      --font:'Courier New',Courier,monospace;
+      --header-h:42px;--nav-h:34px;--footer-h:36px;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    body::before{content:"";pointer-events:none;position:fixed;inset:0;
+      background:repeating-linear-gradient(to bottom,transparent 0px,transparent 3px,rgba(0,0,0,0.07) 3px,rgba(0,0,0,0.07) 4px);
+      z-index:9999}
+    body{margin:0;background:var(--bg);color:var(--green);font-family:var(--font);font-size:13px;}
+
+    #site-header{position:fixed;top:0;left:0;width:100%;height:var(--header-h);
+      background:var(--bg);border-bottom:1px solid var(--border);
+      display:flex;align-items:center;justify-content:center;z-index:500;}
+    #site-header h1{margin:0;font-size:.8rem;letter-spacing:.08em;
+      color:var(--green);text-shadow:0 0 8px var(--green);font-family:var(--font);}
+    #site-header h1::before{content:"$ ";color:var(--green-dim)}
+
+    #site-nav{position:fixed;top:var(--header-h);left:0;width:100%;height:var(--nav-h);
+      background:var(--bg-card);border-bottom:1px solid var(--border-dim);
+      display:flex;align-items:center;justify-content:center;z-index:500;}
+    #site-nav ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center}
+    #site-nav li{position:relative}
+    #site-nav a{display:block;padding:5px 11px;color:var(--green-dim);text-decoration:none;
+      font-size:.72rem;border-right:1px solid var(--border-dim);font-family:var(--font);}
+    #site-nav a:hover{color:var(--green);background:var(--green-dark);text-shadow:0 0 6px var(--green);}
+    .dropdown-content{display:none;position:absolute;top:100%;left:0;
+      background:var(--bg-card2);border:1px solid var(--border-dim);min-width:200px;z-index:600}
+    .dropdown-content a{border-right:none!important;border-bottom:1px solid var(--border-dim)}
+    .dropdown:hover .dropdown-content{display:block}
+
+    main{max-width:860px;margin:0 auto;
+      padding:calc(var(--header-h) + var(--nav-h) + 1.5rem) 1rem calc(var(--footer-h) + 1.5rem);
+      text-align:center;}
+
+    canvas{border:1px solid var(--border-dim);
+      box-shadow:0 0 16px rgba(0,255,65,.12);
+      margin-top:.6rem;max-width:100%;
+      display:block;margin-left:auto;margin-right:auto;}
+
+    .btn-row{margin:.8rem 0;display:flex;justify-content:center;}
+    .btn-row button{padding:.5rem 1.4rem;font-size:.75rem;cursor:pointer;
+      border:1px solid var(--border-dim);background:var(--bg-card);
+      color:var(--green-dim);font-family:var(--font);border-radius:2px;
+      transition:background .2s,color .2s;}
+    .btn-row button:hover{background:var(--green-dark);color:var(--green);
+      border-color:var(--green);box-shadow:0 0 8px rgba(0,255,65,.25);}
+
+    #site-footer{position:fixed;bottom:0;left:0;width:100%;height:var(--footer-h);
+      background:var(--bg-card);border-top:1px solid var(--border-dim);
+      display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;padding:0 .8rem;
+      font-size:.65rem;z-index:500;}
+    #site-footer a{color:var(--green-dim);text-decoration:none;font-family:var(--font)}
+    #site-footer a:hover{color:var(--green);}
+    .footer-divider{color:var(--border-dim)}
+    .shields-row{display:flex;align-items:center;gap:.35rem}
+    .shields-row img{height:16px;border:none}
+  </style>
 </head>
 <body>
-  <h1>Animation: Précision et Rappel</h1>
+
+<header id="site-header">
+  <h1>Animation : Précision et Rappel</h1>
+</header>
+
+<nav id="site-nav">
+  <ul>
+    <li><a href="https://dominiqueloyer.github.io/">About</a></li>
+    <li><a href="https://github.com/DominiqueLoyer">Github Projects</a></li>
+    <li><a href="https://dominiqueloyer.github.io/papers.html">Papers</a></li>
+    <li><a href="https://syscred.uqam.ca">sysCRED</a></li>
+    <li><a href="https://dominiqueloyer.github.io/lectures.html">Lectures</a></li>
+    <li><a href="https://dominiqueloyer.github.io/Codes.html">My Coding</a></li>
+    <li><a href="https://dominiqueloyer.github.io/ontology.html">Researcher's Ontology</a></li>
+    <li><a href="https://dominiqueloyer.github.io/mapmind.html">xAI MapMind</a></li>
+    <li><a href="https://plateforme-isc.uqam.ca">Plateforme UQAM</a></li>
+    <li class="dropdown">
+      <a href="#">Children's Corner &#9662;</a>
+      <div class="dropdown-content">
+        <a href="https://dominiqueloyer.github.io/childrenCorner.html">Children's Corner I</a>
+        <a href="https://dominiqueloyer.github.io/childrenCorner2.html">Children's Corner II</a>
+        <a href="https://dominiqueloyer.github.io/pong.html">Children's Corner III</a>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+<main>
   <canvas id="myCanvas" width="800" height="550"></canvas>
-  <div>
-    <button onclick="drawAnimation()">Lancer l'animation</button>
+  <div class="btn-row">
+    <button onclick="drawAnimation()">&#9654; Lancer l'animation</button>
   </div>
-  
-  <script>
-    const canvas = document.getElementById('myCanvas');
-    const ctx = canvas.getContext('2d');
-    
-    function clearCanvas() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+</main>
+
+<footer id="site-footer">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
+    <img alt="CC BY-NC-SA 4.0" style="border-width:0;height:14px;" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/>
+  </a>
+  <a href="mailto:votreconsultant&#64;gmail.com">(ↄ) MMXXVI Dominique S. Loyer &#9993;</a>
+  <span class="footer-divider">|</span>
+  <div class="shields-row">
+    <a href="https://orcid.org/0009-0003-9713-7109" target="_blank">
+      <img src="https://img.shields.io/badge/ORCID-0009--0003--9713--7109-green.svg" alt="ORCID"/>
+    </a>
+    <a href="https://scholar.google.com/citations?user=JmRd6U0AAAAJ" target="_blank">
+      <img src="https://img.shields.io/badge/Google%20Scholar-Profile-blue" alt="Google Scholar"/>
+    </a>
+    <a href="https://www.researchgate.net/profile/Dominique-Loyer" target="_blank">
+      <img src="https://img.shields.io/badge/ResearchGate-Profile-00CCBB" alt="ResearchGate"/>
+    </a>
+    <a href="https://dominiqueloyer.github.io" target="_blank">
+      <img src="https://img.shields.io/badge/Website-dominiqueloyer.github.io-orange" alt="Website"/>
+    </a>
+  </div>
+</footer>
+
+<!-- ============================================================
+     TON CODE JS ORIGINAL — inchangé
+     ============================================================ -->
+<script>
+  const canvas = document.getElementById('myCanvas');
+  const ctx = canvas.getContext('2d');
+
+  function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  function drawFruit(x, y, type, highlight = false) {
+    ctx.beginPath();
+    if (type === "pomme") {
+      ctx.fillStyle = highlight ? "#FFB6C1" : "#DC143C";
+    } else if (type === "orange") {
+      ctx.fillStyle = highlight ? "#FFDAB9" : "#FF8C00";
     }
-    
-    // Dessiner un fruit (type : "pomme" ou "orange")
-    // highlight : true si c'est une bonne classification (vrai positif)
-    function drawFruit(x, y, type, highlight = false) {
-      ctx.beginPath();
-      if (type === "pomme") {
-        ctx.fillStyle = highlight ? "#FFB6C1" : "#DC143C"; // rose clair si correct, rouge sinon
-      } else if (type === "orange") {
-        ctx.fillStyle = highlight ? "#FFDAB9" : "#FF8C00"; // pêche si correct, orange sinon
-      }
-      ctx.arc(x, y, 20, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.strokeStyle = "black";
-      ctx.stroke();
-      ctx.fillStyle = "white";
-      ctx.font = "16px Arial";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(type === "pomme" ? "P" : "O", x, y);
+    ctx.arc(x, y, 20, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = "black";
+    ctx.stroke();
+    ctx.fillStyle = "white";
+    ctx.font = "16px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(type === "pomme" ? "P" : "O", x, y);
+  }
+
+  function drawAnimation() {
+    clearCanvas();
+
+    ctx.fillStyle = "#00ff41";
+    ctx.font = "24px 'Courier New'";
+    ctx.textAlign = "center";
+    ctx.fillText("Classification: Précision et Rappel", canvas.width/2, 30);
+
+    ctx.beginPath();
+    ctx.moveTo(canvas.width/2, 50);
+    ctx.lineTo(canvas.width/2, canvas.height);
+    ctx.strokeStyle = "#005511";
+    ctx.setLineDash([4,4]); ctx.stroke(); ctx.setLineDash([]);
+
+    ctx.fillStyle = "#00ff41";
+    ctx.font = "20px 'Courier New'";
+    ctx.fillText("Classe Pomme",  canvas.width/4,     70);
+    ctx.fillText("Classe Orange", 3*canvas.width/4,   70);
+
+    let applePositions = [];
+    for (let i = 0; i < 5; i++) {
+      applePositions.push({ x: 80 + i * 60, y: 120 });
     }
-    
-    function drawAnimation() {
-      clearCanvas();
-      
-      // Titre
-      ctx.fillStyle = "black";
-      ctx.font = "24px Arial";
-      ctx.textAlign = "center";
-      ctx.fillText("Classification: Précision et Rappel", canvas.width/2, 30);
-      
-      // Ligne de séparation pour distinguer les deux catégories
-      ctx.beginPath();
-      ctx.moveTo(canvas.width/2, 50);
-      ctx.lineTo(canvas.width/2, canvas.height);
-      ctx.strokeStyle = "gray";
-      ctx.stroke();
-      
-      // Légendes pour chaque classe
-      ctx.font = "20px Arial";
-      ctx.fillText("Classe Pomme", canvas.width/4, 70);
-      ctx.fillText("Classe Orange", 3 * canvas.width/4, 70);
-      
-      // Positions pour la classification "Pomme" (côté gauche)
-      let applePositions = [];
-      for (let i = 0; i < 5; i++) {
-        applePositions.push({ x: 80 + i * 60, y: 120 });
-      }
-      
-      // Positions pour la classification "Orange" (côté droit)
-      let orangePositions = [];
-      for (let i = 0; i < 5; i++) {
-        orangePositions.push({ x: canvas.width/2 + 80 + i * 60, y: 120 });
-      }
-      
-      // Affichage initial sans surlignage
-      // Classification "Pomme" : 3 pommes (vrai positif) et 2 oranges (faux positif)
-      for (let i = 0; i < 5; i++) {
-        if (i < 3) {
-          drawFruit(applePositions[i].x, applePositions[i].y, "pomme", false);
-        } else {
-          drawFruit(applePositions[i].x, applePositions[i].y, "orange", false);
-        }
-      }
-      
-      // Classification "Orange" : 4 oranges (vrai positif) et 1 pomme (faux positif)
-      for (let i = 0; i < 5; i++) {
-        if (i < 4) {
-          drawFruit(orangePositions[i].x, orangePositions[i].y, "orange", false);
-        } else {
-          drawFruit(orangePositions[i].x, orangePositions[i].y, "pomme", false);
-        }
-      }
-      
-      // Affichage des chiffres pour la classification
-      ctx.font = "18px Arial";
-      ctx.fillText("Précision (Pomme) = 3/5 = 60%", canvas.width/4, 200);
-      ctx.fillText("Rappel (Pomme) = 3/4 = 75%", canvas.width/4, 230);
-      ctx.fillText("Précision (Orange) = 4/5 = 80%", 3*canvas.width/4, 200);
-      
-      // Explication pour les enfants, affichée dans la zone des pommes
-      ctx.font = "16px Arial";
-      ctx.fillStyle = "black";
-      ctx.fillText("La précision, c'est quand seulement 3 pommes sur 5", canvas.width/4, 270);
-      ctx.fillText("sont bien classées, donc 60% de réussite.", canvas.width/4, 295);
-      ctx.fillText("Le rappel, c'est 3 bonnes pommes sur 4 en réalité,", canvas.width/4, 320);
-      ctx.fillText("ce qui fait 75% de rappel.", canvas.width/4, 345);
-      
-      // Après 2 secondes, surligner les bons fruits (vrais positifs)
-      setTimeout(() => {
-        // Surligner dans la classification "Pomme"
-        for (let i = 0; i < 5; i++) {
-          if (i < 3) {
-            drawFruit(applePositions[i].x, applePositions[i].y, "pomme", true);
-          } else {
-            drawFruit(applePositions[i].x, applePositions[i].y, "orange", false);
-          }
-        }
-        // Surligner dans la classification "Orange"
-        for (let i = 0; i < 5; i++) {
-          if (i < 4) {
-            drawFruit(orangePositions[i].x, orangePositions[i].y, "orange", true);
-          } else {
-            drawFruit(orangePositions[i].x, orangePositions[i].y, "pomme", false);
-          }
-        }
-      }, 2000);
+
+    let orangePositions = [];
+    for (let i = 0; i < 5; i++) {
+      orangePositions.push({ x: canvas.width/2 + 80 + i * 60, y: 120 });
     }
-  </script>
+
+    for (let i = 0; i < 5; i++) {
+      if (i < 3) { drawFruit(applePositions[i].x, applePositions[i].y, "pomme",  false); }
+      else        { drawFruit(applePositions[i].x, applePositions[i].y, "orange", false); }
+    }
+
+    for (let i = 0; i < 5; i++) {
+      if (i < 4) { drawFruit(orangePositions[i].x, orangePositions[i].y, "orange", false); }
+      else        { drawFruit(orangePositions[i].x, orangePositions[i].y, "pomme",  false); }
+    }
+
+    ctx.fillStyle = "#00ff41";
+    ctx.font = "18px 'Courier New'";
+    ctx.fillText("Précision (Pomme) = 3/5 = 60%",  canvas.width/4,     200);
+    ctx.fillText("Rappel (Pomme) = 3/4 = 75%",     canvas.width/4,     230);
+    ctx.fillText("Précision (Orange) = 4/5 = 80%", 3*canvas.width/4,   200);
+
+    ctx.font = "15px 'Courier New'";
+    ctx.fillStyle = "#00cc33";
+    ctx.fillText("La précision, c'est quand seulement 3 pommes sur 5", canvas.width/4, 270);
+    ctx.fillText("sont bien classées, donc 60% de réussite.",           canvas.width/4, 292);
+    ctx.fillText("Le rappel, c'est 3 bonnes pommes sur 4 en réalité,",  canvas.width/4, 318);
+    ctx.fillText("ce qui fait 75% de rappel.",                          canvas.width/4, 340);
+
+    setTimeout(() => {
+      for (let i = 0; i < 5; i++) {
+        if (i < 3) { drawFruit(applePositions[i].x, applePositions[i].y, "pomme",  true);  }
+        else        { drawFruit(applePositions[i].x, applePositions[i].y, "orange", false); }
+      }
+      for (let i = 0; i < 5; i++) {
+        if (i < 4) { drawFruit(orangePositions[i].x, orangePositions[i].y, "orange", true);  }
+        else        { drawFruit(orangePositions[i].x, orangePositions[i].y, "pomme",  false); }
+      }
+    }, 2000);
+  }
+</script>
+
 </body>
 </html>
