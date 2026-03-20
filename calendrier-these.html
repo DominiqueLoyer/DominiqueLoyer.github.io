@@ -295,6 +295,7 @@ Aucune plage commune calculée pour l’instant.
   </main>
 
   <script>
+    const API_BASE = "https://calendrier-these-backend.onrender.com/api/slots";
     const SLOTS = ["09:00","10:00","11:00","13:00","14:00","15:00"];
     const DAYS = [];
     const today = new Date();
@@ -309,9 +310,34 @@ Aucune plage commune calculée pour l’instant.
       const weekday = d.toLocaleDateString("fr-CA",{weekday:"short"});
       DAYS.push({iso, weekday});
     }
+	// État global
+	let availabilities = {};
 
-    // état en mémoire (page) : { "YYYY-MM-DD|HH:MM": { dom:true, rog:false, jan:true } }
-    const state = {};
+	async function loadAvailabilities() {
+  	try {
+    	const res = await fetch(API_BASE);
+    	if (!res.ok) throw new Error('HTTP ' + res.status);
+   	 const data = await res.json();
+   	 availabilities = data.slots || {};
+    	render(); // et pas renderTable()
+  	} catch (err) {
+  	  console.error(err);
+   	 msg.textContent = "Impossible de charger les disponibilités depuis le serveur.";
+	  }
+}
+
+
+// Sauvegarder un clic sur une case
+async function saveAvailability(participant, date, period, available) {
+  const res = await fetch(API_BASE, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ participant, date, period, available })
+  });
+  if (!res.ok) throw new Error("HTTP " + res.status);
+}
+
+    
     let currentCommon = null;
 
     const tbody   = document.querySelector("#cal tbody");
@@ -348,7 +374,7 @@ Aucune plage commune calculée pour l’instant.
           td.dataset.time = t;
 
           const k = key(day.iso,t);
-          const s = state[k] || {dom:false,rog:false,jan:false};
+          const s = availabilities[k] || {dom:false,rog:false,jan:false};
 
           const content = document.createElement("div");
           content.className = "slot-content";
@@ -387,15 +413,25 @@ Aucune plage commune calculée pour l’instant.
     }
 
     function onClickSlot(e){
-      const td   = e.currentTarget;
-      const date = td.dataset.date;
-      const time = td.dataset.time;
-      const who  = whoSel.value;
-      const k = key(date,time);
-      if(!state[k]) state[k] = {dom:false,rog:false,jan:false};
-      state[k][who] = !state[k][who];
-      render();
-    }
+  	const td   = e.currentTarget;
+  	const date = td.dataset.date;
+ 	 const time = td.dataset.time;
+  	const who  = whoSel.value;
+  	const k = key(date,time);
+
+  	if(!availabilities[k]) availabilities[k] = {dom:false,rog:false,jan:false};
+  	const newVal = !availabilities[k][who];
+  	availabilities[k][who] = newVal;
+
+  	render();
+
+  // Enregistrer sur le backend Render
+  	saveAvailability(who, date, time, newVal).catch(err => {
+   	 console.error(err);
+ 	   msg.textContent = "Erreur de sauvegarde sur le serveur.";
+	  });
+	   }
+
 
     function computeCommon(){
       currentCommon = null;
@@ -403,7 +439,7 @@ Aucune plage commune calculée pour l’instant.
       for(const day of DAYS){
         for(const t of SLOTS){
           const k = key(day.iso,t);
-          const s = state[k] || {dom:false,rog:false,jan:false};
+          const s = availabilities[k] || {dom:false,rog:false,jan:false};
           if(s.dom && s.rog && s.jan){
             currentCommon = {date:day.iso, time:t};
             break outer;
@@ -497,7 +533,7 @@ Aucune plage commune calculée pour l’instant.
     whoSel.onchange = render;
 
     initUserFromQuery();
-    render();
+loadAvailabilities();
   </script>
 </body>
 </html>
