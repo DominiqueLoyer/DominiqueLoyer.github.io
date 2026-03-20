@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
 <head>
+  <link rel="icon" href="peace.png" alt="STOP T H E W A R!" width="16" height="16" type="image/icon type">
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -132,10 +133,6 @@
     .bibtex-toggle:hover { background: var(--green-dark); color: var(--green); }
     .bibtex-block { display: none; margin-top: 0.5rem; background: #060f06; border: 1px solid var(--border-dim); padding: 0.6rem 0.8rem; font-size: 0.72rem; line-height: 1.5; color: #33aa55; white-space: pre; overflow-x: auto; border-radius: 2px; }
     .bibtex-block.open { display: block; }
-    .bibtex-wrap { position: relative; margin-top: 0.5rem; }
-    .btn-copy-bib { position: absolute; top: 6px; right: 8px; background: none; border: 1px solid var(--green-dim); color: var(--green); font-family: var(--font); font-size: 0.7rem; padding: 2px 10px; cursor: pointer; border-radius: 2px; letter-spacing: 0.05em; transition: background 0.2s; z-index: 2; }
-    .btn-copy-bib:hover { background: var(--green-dark); }
-    .btn-copy-bib.copied { background: var(--green-dark); color: var(--green); }
     footer { background: var(--bg-card); border-top: 1px solid var(--border-dim); color: var(--green-dim); padding: 0.4rem 1rem; position: fixed; width: 100%; bottom: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.7rem; }
     footer a { color: var(--green-dim); text-decoration: none; }
     footer a:hover { color: var(--green); text-decoration: underline; }
@@ -149,8 +146,11 @@
       .dropdown-content { position: relative; }
       footer { position: relative; }
     }
+    .btn-copy-bib { display: none; background: none; border: 1px solid var(--green-dim); color: var(--green); font-family: var(--font); font-size: 0.7rem; padding: 2px 10px; cursor: pointer; border-radius: 2px; margin-left: 0.4rem; }
+    .btn-copy-bib:hover { background: var(--green-dark); }
   </style>
   <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
   <link rel="icon" type="image/png" href="/peace.png"/>
 </head>
@@ -212,8 +212,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </a>
   </div>
   <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-  <div class="bibtex-wrap"><button class="btn-copy-bib" onclick="copyBibtex(this)">&#10247; Copier</button>
-    <pre class="bibtex-block">@misc{Loyer2026sysCREDpres,
+  <pre class="bibtex-block">@misc{Loyer2026sysCREDpres,
   author       = {Loyer, Dominique},
   title        = {{sysCRED} : Pr\'esentation du projet de doctorat
                   devant jury et public (DIC-9411)},
@@ -229,7 +228,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   address      = {Montr\'eal, Qu\'ebec, Canada},
   language     = {french}
 }</pre>
-  </div>
 </div>
 
   
@@ -253,7 +251,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
     </div>
     <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <div class="bibtex-wrap"><button class="btn-copy-bib" onclick="copyBibtex(this)">&#10247; Copier</button>
     <pre class="bibtex-block">@misc{Loyer2025Leviathan,
   author       = {Loyer, Dominique},
   title        = {Le {L\'eviathan} algorithmique : pouvoir, opacit\'e
@@ -271,7 +268,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   note         = {Examen de synth\`ese doctoral r\'eussi},
   language     = {french}
 }</pre>
-  </div>
   </div>
 
   <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
@@ -294,7 +290,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
     </div>
     <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <div class="bibtex-wrap"><button class="btn-copy-bib" onclick="copyBibtex(this)">&#10247; Copier</button>
     <pre class="bibtex-block">@inproceedings{Loyer2025LeviathanBeamer,
   author       = {Loyer, Dominique},
   title        = {Le {L\'eviathan} algorithmique : pouvoir, opacit\'e
@@ -310,7 +305,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   address      = {Montr\'eal, Qu\'ebec, Canada},
   language     = {french}
 }</pre>
-  </div>
   </div>
 
   <!-- ============================================================ -->
@@ -337,7 +331,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
     </div>
     <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <div class="bibtex-wrap"><button class="btn-copy-bib" onclick="copyBibtex(this)">&#10247; Copier</button>
     <pre class="bibtex-block">@unpublished{Loyer2025HybridModeling,
   author       = {Loyer, Dominique},
   title        = {Modeling a Hybrid System (predicate-logic-based + {ML/AI})
@@ -352,7 +345,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   note         = {Preprint},
   language     = {english}
 }</pre>
-  </div>
   </div>
 
   <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
@@ -374,7 +366,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
     </div>
     <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <div class="bibtex-wrap"><button class="btn-copy-bib" onclick="copyBibtex(this)">&#10247; Copier</button>
     <pre class="bibtex-block">@unpublished{Loyer2025HybridOntology,
   author       = {Loyer, Dominique},
   title        = {Hybrid System for Verifying the Credibility of Information
@@ -389,7 +380,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   note         = {Preprint},
   language     = {english}
 }</pre>
-  </div>
   </div>
 
   <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
@@ -411,7 +401,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
     </div>
     <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <div class="bibtex-wrap"><button class="btn-copy-bib" onclick="copyBibtex(this)">&#10247; Copier</button>
     <pre class="bibtex-block">@unpublished{Loyer2025NeuralMT,
   author       = {Loyer, Dominique},
   title        = {Development and Evaluation of an {English}-to-{Russian}
@@ -426,7 +415,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   note         = {Preprint},
   language     = {english}
 }</pre>
-  </div>
   </div>
 
   <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
@@ -448,7 +436,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
     </div>
     <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <div class="bibtex-wrap"><button class="btn-copy-bib" onclick="copyBibtex(this)">&#10247; Copier</button>
     <pre class="bibtex-block">@unpublished{Loyer2025NeuralMTfr,
   author       = {Loyer, Dominique},
   title        = {D\'eveloppement et \'Evaluation d'un Syst\`eme de
@@ -463,7 +450,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   note         = {Preprint -- version fran\c{c}aise},
   language     = {french}
 }</pre>
-  </div>
   </div>
 
   <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
@@ -484,7 +470,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
     </div>
     <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <div class="bibtex-wrap"><button class="btn-copy-bib" onclick="copyBibtex(this)">&#10247; Copier</button>
     <pre class="bibtex-block">@unpublished{Loyer2025TREC,
   author       = {Loyer, Dominique},
   title        = {Evaluation of Information Retrieval Models and Query
@@ -498,7 +483,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   note         = {Preprint},
   language     = {english}
 }</pre>
-  </div>
   </div>
 
   <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
@@ -520,7 +504,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
     </div>
     <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <div class="bibtex-wrap"><button class="btn-copy-bib" onclick="copyBibtex(this)">&#10247; Copier</button>
     <pre class="bibtex-block">@unpublished{Loyer2025TRECfr,
   author       = {Loyer, Dominique},
   title        = {\'Evaluation de Mod\`eles de Recherche d'Information
@@ -536,7 +519,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   note         = {Preprint -- version fran\c{c}aise},
   language     = {french}
 }</pre>
-  </div>
   </div>
 
   <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
@@ -558,7 +540,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
     </div>
     <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <div class="bibtex-wrap"><button class="btn-copy-bib" onclick="copyBibtex(this)">&#10247; Copier</button>
     <pre class="bibtex-block">@unpublished{Loyer2025Shoham,
   author       = {Loyer, Dominique},
   title        = {A Survey and Critical Evaluation of {Yoav Shoham}'s
@@ -573,7 +554,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   note         = {Preprint},
   language     = {english}
 }</pre>
-  </div>
   </div>
 
   <!-- ============================================================ -->
@@ -601,7 +581,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
     </div>
     <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <div class="bibtex-wrap"><button class="btn-copy-bib" onclick="copyBibtex(this)">&#10247; Copier</button>
     <pre class="bibtex-block">@inproceedings{Loyer2025Modelisation,
   author       = {Loyer, Dominique},
   title        = {Mod\'elisation d'un Syst\`eme hybride d'\'Evaluation
@@ -617,7 +596,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   address      = {Montr\'eal, Qu\'ebec, Canada},
   language     = {french}
 }</pre>
-  </div>
   </div>
 
   <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
@@ -640,7 +618,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
     </div>
     <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <div class="bibtex-wrap"><button class="btn-copy-bib" onclick="copyBibtex(this)">&#10247; Copier</button>
     <pre class="bibtex-block">@inproceedings{Loyer2025Ontologie,
   author       = {Loyer, Dominique},
   title        = {Ontologie --- Syst\`eme de V\'erification de la
@@ -656,7 +633,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   address      = {Montr\'eal, Qu\'ebec, Canada},
   language     = {french}
 }</pre>
-  </div>
   </div>
 
   <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
@@ -679,7 +655,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
     </div>
     <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <div class="bibtex-wrap"><button class="btn-copy-bib" onclick="copyBibtex(this)">&#10247; Copier</button>
     <pre class="bibtex-block">@inproceedings{Loyer2025EvalTRECconf,
   author       = {Loyer, Dominique},
   title        = {\'Evaluation de mod\`eles de pond\'eration pour la
@@ -695,7 +670,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   address      = {Montr\'eal, Qu\'ebec, Canada},
   language     = {french}
 }</pre>
-  </div>
   </div>
 
   <div class="citation-card" itemscope itemtype="http://schema.org/ScholarlyArticle">
@@ -717,7 +691,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
     </div>
     <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <div class="bibtex-wrap"><button class="btn-copy-bib" onclick="copyBibtex(this)">&#10247; Copier</button>
     <pre class="bibtex-block">@inproceedings{Loyer2025TraductionBeamer,
   author       = {Loyer, Dominique},
   title        = {Syst\`eme de traduction automatique neuronal du
@@ -732,7 +705,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   address      = {Montr\'eal, Qu\'ebec, Canada},
   language     = {french}
 }</pre>
-  </div>
   </div>
 
   <!-- ============================================================ -->
@@ -759,7 +731,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
     </div>
     <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <div class="bibtex-wrap"><button class="btn-copy-bib" onclick="copyBibtex(this)">&#10247; Copier</button>
     <pre class="bibtex-block">@article{Loyer2026TwelveLessons,
   author       = {Loyer, Dominique},
   title        = {Twelve Lessons in Machine Learning: A Survey of Complex
@@ -774,7 +745,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   note         = {Survey},
   language     = {english}
 }</pre>
-  </div>
   </div>
 
   <!-- ============================================================ -->
@@ -800,7 +770,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
     </div>
     <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <div class="bibtex-wrap"><button class="btn-copy-bib" onclick="copyBibtex(this)">&#10247; Copier</button>
     <pre class="bibtex-block">@software{Loyer2026sysCRED,
   author       = {Loyer, Dominique},
   title        = {{systemFactChecking}: A Neuro-Symbolic {AI} System
@@ -813,7 +782,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   repository   = {https://github.com/DominiqueLoyer/systemFactChecking},
   note         = {sysCRED --- UQAM}
 }</pre>
-  </div>
   </div>
 
   <div class="citation-card" itemscope itemtype="http://schema.org/SoftwareSourceCode">
@@ -835,7 +803,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
     </div>
     <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-    <div class="bibtex-wrap"><button class="btn-copy-bib" onclick="copyBibtex(this)">&#10247; Copier</button>
     <pre class="bibtex-block">@software{Loyer2026sysCREDv221,
   author       = {Loyer, Dominique},
   title        = {{DominiqueLoyer/systemFactChecking}: v2.2.1 ---
@@ -849,7 +816,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   repository   = {https://github.com/DominiqueLoyer/systemFactChecking},
   version      = {2.2.1}
 }</pre>
-  </div>
   </div>
 <div class="citation-card" itemscope itemtype="http://schema.org/SoftwareSourceCode">
   <div class="cit-authors">
@@ -880,8 +846,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <img src="https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg" alt="CC BY 4.0"/>
   </div>
   <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-  <div class="bibtex-wrap"><button class="btn-copy-bib" onclick="copyBibtex(this)">&#10247; Copier</button>
-    <pre class="bibtex-block">@software{Loyer2026sysCREDv241,
+  <pre class="bibtex-block">@software{Loyer2026sysCREDv241,
   author       = {Loyer, Dominique},
   title        = {{DominiqueLoyer/systemFactChecking}: v2.4.1 ---
                   Neuro-Symbolic {AI} Credibility System},
@@ -895,7 +860,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   repository   = {https://github.com/DominiqueLoyer/systemFactChecking},
   version      = {2.4.1}
 }</pre>
-  </div>
 </div>
 <div class="citation-card" itemscope itemtype="http://schema.org/SoftwareSourceCode">
   <div class="cit-authors">
@@ -922,8 +886,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <img src="https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg" alt="CC BY 4.0"/>
   </div>
   <button class="bibtex-toggle" onclick="toggleBibtex(this)">&#127991; BibTeX</button>
-  <div class="bibtex-wrap"><button class="btn-copy-bib" onclick="copyBibtex(this)">&#10247; Copier</button>
-    <pre class="bibtex-block">@software{Loyer2026ISCPlatform,
+  <pre class="bibtex-block">@software{Loyer2026ISCPlatform,
   author       = {Loyer, Dominique},
   title        = {Plateforme de diffusion de contenu de l'{Institut
                   des Sciences Cognitives} de l'{UQAM}},
@@ -937,7 +900,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   repository   = {https://github.com/DominiqueLoyer/isc-video-platform},
   version      = {1.0.4}
 }</pre>
-  </div>
 </div>
 
 </main>
@@ -974,19 +936,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- SCRIPT -->
   <script>
+  function toggleBibtex(btn) {
+    var copyBtn = btn.nextElementSibling;
+    var pre = copyBtn.nextElementSibling;
+    pre.classList.toggle('open');
+    copyBtn.style.display = pre.classList.contains('open') ? 'inline-block' : 'none';
+  }
   function copyBibtex(btn) {
     var pre = btn.nextElementSibling;
     navigator.clipboard.writeText(pre.innerText).then(function() {
-      btn.textContent = '✅ Copié!';
-      btn.classList.add('copied');
-      setTimeout(function(){ btn.innerHTML = '&#10247; Copier'; btn.classList.remove('copied'); }, 2000);
+      btn.innerHTML = '&#10003; Copi&eacute;!';
+      setTimeout(function(){ btn.innerHTML = '&#10247; Copier'; }, 2000);
     });
-  }, 2000);
-    });
-  }
-  function toggleBibtex(btn) {
-    var pre = btn.nextElementSibling;
-    pre.classList.toggle('open');
   }
   </script>
 
