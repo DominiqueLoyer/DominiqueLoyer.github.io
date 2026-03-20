@@ -287,10 +287,6 @@
 Aucune plage commune calculée pour l’instant.
       </textarea>
       <div id="msg" class="small"></div>
-      <div class="small">
-        Remarque&nbsp;: cette version GitHub Pages ne sauvegarde pas vos choix entre les visites (pas de serveur).  
-        Pour une vraie sauvegarde et les emails automatiques, il faudra brancher un petit backend (Render/UQAM, etc.).
-      </div>
     </div>
   </main>
 
@@ -434,44 +430,45 @@ async function saveAvailability(participant, date, period, available) {
 
 
     function computeCommon(){
-      currentCommon = null;
-      outer:
-      for(const day of DAYS){
-        for(const t of SLOTS){
-          const k = key(day.iso,t);
-          const s = availabilities[k] || {dom:false,rog:false,jan:false};
-          if(s.dom && s.rog && s.jan){
-            currentCommon = {date:day.iso, time:t};
-            break outer;
-          }
-        }
+  currentCommon = null;
+  outer:
+  for(const day of DAYS){
+    for(const t of SLOTS){
+      const k = key(day.iso,t);
+      const s = availabilities[k] || {dom:false,rog:false,jan:false};
+      if(s.dom && s.rog && s.jan){
+        currentCommon = {date:day.iso, time:t};
+        break outer; // -> 1re occurrence commune seulement
       }
-      if(!currentCommon){
-        summary.value = "Aucune plage commune trouvée sur les deux prochaines semaines.";
-        msg.textContent = "";
-      } else {
-        const d = new Date(currentCommon.date+"T00:00:00");
-        const long = d.toLocaleDateString("fr-CA",{weekday:"long",day:"numeric",month:"long"});
-        const phrase =
-          "Rencontre pour le projet de Doctorat à Dominique Loyer, le "+
-          long+" à "+currentCommon.time+
-          " via Visioconférence. Merci de le noter à vos agendas.";
-        summary.value = phrase;
-        msg.textContent = `Plage commune retenue : ${currentCommon.date} à ${currentCommon.time}.`;
-      }
-      highlightCommon();
     }
+  }
+  if(!currentCommon){
+    summary.value = "Aucune plage commune trouvée sur les deux prochaines semaines.";
+    msg.textContent = "";
+  } else {
+    const d = new Date(currentCommon.date+"T00:00:00");
+    const long = d.toLocaleDateString("fr-CA",{weekday:"long",day:"numeric",month:"long"});
+    const phrase =
+      "Rencontre pour le projet de Doctorat à Dominique Loyer, le " +
+      long + " à " + currentCommon.time +
+      " via visioconférence sur Zoom (https://us02web.zoom.us/launch/chat?src=direct_chat_link&email=loyer.dominique%40uqam.ca). " +
+      "Merci de le noter à vos agendas.";
+    summary.value = phrase;
+    msg.textContent = `Plage commune retenue : ${currentCommon.date} à ${currentCommon.time}.`;
+  }
+  highlightCommon();
+}
 
-    function highlightCommon(){
-      document.querySelectorAll(".slot").forEach(td => {
-        td.classList.remove("slot-common");
-        if(currentCommon &&
-           td.dataset.date === currentCommon.date &&
-           td.dataset.time === currentCommon.time){
-          td.classList.add("slot-common");
-        }
-      });
+function highlightCommon(){
+  document.querySelectorAll(".slot").forEach(td => {
+    td.classList.remove("slot-common");
+    if(currentCommon &&
+       td.dataset.date === currentCommon.date &&
+       td.dataset.time === currentCommon.time){
+      td.classList.add("slot-common");
     }
+  });
+}
 
     function copyText(){
       const txt = summary.value || "";
@@ -490,42 +487,44 @@ async function saveAvailability(participant, date, period, available) {
     }
 
     function downloadICS(){
-      if(!currentCommon){
-        alert("Aucune plage commune calculée.");
-        return;
-      }
-      const date = currentCommon.date; // YYYY-MM-DD
-      const time = currentCommon.time; // HH:MM
-      const start = date.replace(/-/g,"")+"T"+time.replace(":","")+"00";
+  if(!currentCommon){
+    alert("Aucune plage commune calculée.");
+    return;
+  }
+  const date = currentCommon.date; // YYYY-MM-DD
+  const time = currentCommon.time; // HH:MM
+  const start = date.replace(/-/g,"")+"T"+time.replace(":","")+"00";
 
-      const hour = parseInt(time.split(":")[0],10)+1;
-      const endTime = (hour<10?"0"+hour:hour)+time.slice(2);
-      const end = date.replace(/-/g,"")+"T"+endTime.replace(":","")+"00";
+  const hour = parseInt(time.split(":")[0],10)+1;
+  const endTime = (hour<10?"0"+hour:hour)+time.slice(2);
+  const end = date.replace(/-/g,"")+"T"+endTime.replace(":","")+"00";
 
-      const ics =
-        "BEGIN:VCALENDAR\r\n"+
-        "VERSION:2.0\r\n"+
-        "PRODID:-//DominiqueLoyer//ThesisMeeting//FR\r\n"+
-        "BEGIN:VEVENT\r\n"+
-        "UID:"+Date.now()+"@dominiqueloyer\r\n"+
-        "DTSTAMP:"+start+"Z\r\n"+
-        "DTSTART:"+start+"Z\r\n"+
-        "DTEND:"+end+"Z\r\n"+
-        "SUMMARY:Rencontre de thèse - Dominique Loyer\r\n"+
-        "DESCRIPTION:Rencontre pour le projet de Doctorat à Dominique Loyer via visioconférence.\r\n"+
-        "END:VEVENT\r\n"+
-        "END:VCALENDAR\r\n";
+const ics =
+  "BEGIN:VCALENDAR\r\n"+
+  "VERSION:2.0\r\n"+
+  "PRODID:-//DominiqueLoyer//ThesisMeeting//FR\r\n"+
+  "BEGIN:VEVENT\r\n"+
+  "UID:"+Date.now()+"@dominiqueloyer\r\n"+
+  "DTSTAMP:"+start+"Z\r\n"+
+  "DTSTART:"+start+"Z\r\n"+
+  "DTEND:"+end+"Z\r\n"+
+  "SUMMARY:Rencontre de thèse - Dominique Loyer\r\n"+
+  "DESCRIPTION:Rencontre pour le projet de Doctorat à Dominique Loyer via visioconférence sur Zoom (https://us02web.zoom.us/launch/chat?src=direct_chat_link&email=loyer.dominique%40uqam.ca).\r\n"+
+  "END:VEVENT\r\n"+
+  "END:VCALENDAR\r\n";
 
-      const blob = new Blob([ics], {type:"text/calendar;charset=utf-8"});
-      const url  = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "rencontre-these.ics";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
+
+  const blob = new Blob([ics], {type:"text/calendar;charset=utf-8"});
+  const url  = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "rencontre-these.ics";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 
     document.getElementById("btn-common").onclick = computeCommon;
     document.getElementById("btn-copy").onclick   = copyText;
