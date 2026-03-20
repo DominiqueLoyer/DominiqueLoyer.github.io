@@ -1,0 +1,1 @@
+<button class="btn-copy" onclick="copyCode(this)">&#10247; Copier</button>
