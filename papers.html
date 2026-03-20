@@ -146,8 +146,6 @@
       .dropdown-content { position: relative; }
       footer { position: relative; }
     }
-    .btn-copy-bib { display: none; background: none; border: 1px solid var(--green-dim); color: var(--green); font-family: var(--font); font-size: 0.7rem; padding: 2px 10px; cursor: pointer; border-radius: 2px; margin-left: 0.4rem; }
-    .btn-copy-bib:hover { background: var(--green-dark); }
   </style>
   <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
@@ -935,21 +933,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </footer>
 
 <!-- SCRIPT -->
-  <script>
+<script>
   function toggleBibtex(btn) {
-    var copyBtn = btn.nextElementSibling;
-    var pre = copyBtn.nextElementSibling;
-    pre.classList.toggle('open');
-    copyBtn.style.display = pre.classList.contains('open') ? 'inline-block' : 'none';
-  }
-  function copyBibtex(btn) {
     var pre = btn.nextElementSibling;
-    navigator.clipboard.writeText(pre.innerText).then(function() {
-      btn.innerHTML = '&#10003; Copi&eacute;!';
-      setTimeout(function(){ btn.innerHTML = '&#10247; Copier'; }, 2000);
-    });
+    pre.classList.toggle('open');
+    btn.textContent = pre.classList.contains('open') ? '\u2716 Fermer' : '\u{1F3F7} BibTeX';
   }
-  </script>
+</script>
 
 </body>
 </html>
