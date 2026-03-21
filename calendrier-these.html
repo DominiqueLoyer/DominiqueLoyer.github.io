@@ -529,7 +529,16 @@ const ics =
     document.getElementById("btn-common").onclick = computeCommon;
     document.getElementById("btn-copy").onclick   = copyText;
     document.getElementById("btn-ics").onclick    = downloadICS;
-    whoSel.onchange = render;
+  whoSel.onchange = function() {
+  const userMap = { dom: "Dominique", rog: "Roger", jan: "Janie" };
+  const userName = userMap[whoSel.value];
+  // Met à jour l'URL sans recharger la page
+  const url = new URL(window.location.href);
+  url.searchParams.set("user", userName);
+  history.replaceState(null, "", url.toString());
+  render();
+};
+
 
     initUserFromQuery();
 loadAvailabilities();
