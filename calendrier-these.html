@@ -448,12 +448,8 @@ async function saveAvailability(participant, date, period, available) {
   } else {
     const d = new Date(currentCommon.date+"T00:00:00");
     const long = d.toLocaleDateString("fr-CA",{weekday:"long",day:"numeric",month:"long"});
-    const phrase =
-      "Rencontre pour le projet de Doctorat à Dominique Loyer, le " +
-      long + " à " + currentCommon.time +
-      " via visioconférence sur Zoom (https://us02web.zoom.us/launch/chat?src=direct_chat_link&email=loyer.dominique%40uqam.ca). " +
-      "Merci de le noter à vos agendas.";
-    summary.value = phrase;
+    const phrase = `Rencontre pour le projet de Doctorat Dominique Loyer, le ${long} ${currentCommon.time} via visioconférence sur Zoom https://uqam.zoom.us/my/loyerdominique. Merci de le noter vos agendas.`;
+summary.value = phrase;
     msg.textContent = `Plage commune retenue : ${currentCommon.date} à ${currentCommon.time}.`;
   }
   highlightCommon();
@@ -509,7 +505,7 @@ const ics =
   "DTSTART:"+start+"Z\r\n"+
   "DTEND:"+end+"Z\r\n"+
   "SUMMARY:Rencontre de thèse - Dominique Loyer\r\n"+
-  "DESCRIPTION:Rencontre pour le projet de Doctorat à Dominique Loyer via visioconférence sur Zoom (https://us02web.zoom.us/launch/chat?src=direct_chat_link&email=loyer.dominique%40uqam.ca).\r\n"+
+  "DESCRIPTION:Rencontre pour le projet de Doctorat à Dominique Loyer via visioconférence sur Zoom (https://uqam.zoom.us/my/loyerdominique).\r\n"+
   "END:VEVENT\r\n"+
   "END:VCALENDAR\r\n";
 
