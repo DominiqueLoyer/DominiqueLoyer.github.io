@@ -1,0 +1,388 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-PRP2NSM4');</script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3LQWHW6NDT"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-3LQWHW6NDT');
+  </script>
+
+  <meta name="robots" content="YES"/>
+  <meta name="keywords" content="AI researcher,Data scientist, Montreal,Machine learning, Deep learning,xAI,GenAI,PhD UQAM,sysCRED,formules,thèse"/>
+  <meta name="description" content="Index des pages de recherche: formules mathématiques, sysCRED, Léviathan algorithmique et documents de thèse - Dominique Loyer PhD UQAM"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="msvalidate.01" content="36DCA3D92C79DDE66E87BAC045F726AE"/>
+  <title>Index Pages | Formules & Thèse | Dominique Loyer | UQÀM</title>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@graph": [
+      {
+        "@type": "Person",
+        "name": "Dominique S. Loyer",
+        "jobTitle": ["AI researcher","PhD candidate","Data scientist"],
+        "image": "https://dominiqueloyer.github.io/dl.png",
+        "email": "votreconsultant@gmail.com",
+        "url": "https://dominiqueloyer.github.io",
+        "sameAs": [
+          "https://www.linkedin.com/in/dominiqueloyer",
+          "https://www.researchgate.net/profile/Dominique-Loyer",
+          "https://orcid.org/0009-0003-9713-7109",
+          "https://scholar.google.com/citations?user=JmRd6U0AAAAJ"
+        ],
+        "affiliation": [
+          {"@type": "Organization","name": "Sherbrooke Informatique Inc.","url": "https://dominiqueloyer.github.io"},
+          {"@type": "EducationalOrganization","name": "Institut des Sciences Cognitives - UQAM","url": "https://www.uqam.ca/"}
+        ]
+      },
+      {
+        "@type": "CollectionPage",
+        "name": "Index Pages Recherche & Thèse",
+        "description": "Navigation vers formules mathématiques, sysCRED, Léviathan et documents thèse doctorat informatique cognitive UQAM",
+        "author": {"@id": "#person"},
+        "datePublished": "2026-04-13"
+      }
+    ]
+  }
+  </script>
+  <link rel="alternate" type="application/rdf+xml" href="https://dominiqueloyer.github.io/ontologie.owl" title="Ontology RDF/XML"/>
+
+  <style>
+    :root {
+      --green:      #00ff41;
+      --green-dim:  #00cc33;
+      --green-dark: #004d1a;
+      --bg:         #0a0a0a;
+      --bg-card:    #0f1a0f;
+      --bg-card2:   #0d150d;
+      --border:     #00ff41;
+      --border-dim: #005511;
+      --font:       'Courier New', Courier, monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      font-size: 13px;
+      margin: 0;
+      padding: 0 0 70px 0;
+      background: var(--bg);
+      color: var(--green);
+      text-align: left;
+    }
+
+    /* Scanlines */
+    body::before {
+      content: "";
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px, transparent 3px,
+        rgba(0,0,0,0.07) 3px, rgba(0,0,0,0.07) 4px
+      );
+      z-index: 9999;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0.6rem 1rem;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: 0.12em;
+      color: var(--green);
+      text-shadow: 0 0 8px var(--green);
+    }
+    header h1::before { content: "$ "; color: var(--green-dim); }
+
+    /* NAV */
+    nav {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-dim);
+      padding: 0.3rem 0;
+    }
+    nav ul {
+      list-style: none;
+      margin: 0; padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    nav ul li { position: relative; }
+    nav ul li a {
+      display: block;
+      padding: 7px 13px;
+      color: var(--green-dim);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+      transition: color 0.2s, background 0.2s;
+      border-right: 1px solid var(--border-dim);
+    }
+    nav ul li a:hover {
+      color: var(--green);
+      background: var(--green-dark);
+      text-shadow: 0 0 6px var(--green);
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%; left: 0;
+      background: var(--bg-card2);
+      border: 1px solid var(--border-dim);
+      min-width: 200px;
+      z-index: 100;
+    }
+    .dropdown-content a { border-right: none !important; border-bottom: 1px solid var(--border-dim); }
+    .dropdown:hover .dropdown-content { display: block; }
+
+    /* MAIN */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1rem 4rem;
+      text-align: center;
+    }
+
+    /* DESCRIPTION */
+    .bio {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dim);
+      border-left: 3px solid var(--green-dim);
+      padding: 1.2rem 1.4rem;
+      margin: 0 auto 2rem auto;
+      max-width: 780px;
+      text-align: left;
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: var(--green);
+    }
+    .bio::before {
+      content: "// index_research";
+      display: block;
+      color: var(--green-dim);
+      font-size: 0.72rem;
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.08em;
+    }
+
+    /* LINKS GRID */
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .link-card {
+      background: var(--bg-card2);
+      border: 1px solid var(--border-dim);
+      border-left: 3px solid var(--green);
+      padding: 1.5rem;
+      text-align: left;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .link-card:hover {
+      border-left-color: var(--green-dim);
+      box-shadow: 0 0 20px rgba(0,255,65,0.2);
+      transform: translateY(-2px);
+    }
+    .link-card a {
+      color: var(--green);
+      text-decoration: none;
+      font-size: 1.1em;
+      font-weight: bold;
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+    .link-card a:hover { text-shadow: 0 0 8px var(--green); }
+    .link-date {
+      color: var(--green-dim);
+      font-size: 0.85em;
+      margin-top: 0.3rem;
+    }
+    .link-desc {
+      color: var(--green);
+      font-size: 0.88em;
+      line-height: 1.5;
+      margin: 0.6rem 0 0 0;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-dim);
+      color: var(--green-dim);
+      padding: 0.4rem 1rem;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.7rem;
+    }
+    footer a { color: var(--green-dim); text-decoration: none; }
+    footer a:hover { color: var(--green); text-decoration: underline; }
+    .footer-divider { color: var(--border-dim); }
+    .shields-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .shields-row img { height: 18px; border: none; }
+
+    @media screen and (max-width: 768px) {
+      nav ul { flex-direction: column; align-items: flex-start; }
+      nav ul li a { border-right: none; border-bottom: 1px solid var(--border-dim); width: 100%; }
+      .dropdown-content { position: relative; }
+      footer { position: relative; }
+      .links-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  
+  <link rel="icon" type="image/svg+xml" href="favicon.svg?v=1"/>
+  <link rel="apple-touch-icon" href="peace.png?v=1"/>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PRP2NSM4"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<!-- HEADER -->
+<header>
+  <h1>Index Pages | Formules & Thèse | UQÀM</h1>
+</header>
+
+<!-- NAV -->
+<nav>
+  <ul>
+    <li><a href="https://dominiqueloyer.github.io/">About</a></li>
+    <li><a href="https://github.com/DominiqueLoyer">Github Projects</a></li>
+    <li><a href="https://dominiqueloyer.github.io/papers.html">Papers</a></li>
+    <li><a href="https://syscred.uqam.ca">sysCRED</a></li>
+    <li><a href="https://dominiqueloyer.github.io/lectures.html">Lectures</a></li>
+    <li><a href="https://dominiqueloyer.github.io/Codes.html">My Coding</a></li>
+    <li><a href="https://dominiqueloyer.github.io/ontology.html">Researcher's Ontology</a></li>
+    <li><a href="https://dominiqueloyer.github.io/mapmind.html">xAI MapMind</a></li>
+    <li><a href="https://plateforme-isc.uqam.ca">Plateforme UQAM</a></li>
+    <li class="dropdown">
+      <a href="#">Children's Corner &#9662;</a>
+      <div class="dropdown-content">
+        <a href="https://dominiqueloyer.github.io/childrenCorner.html">Children's Corner I</a>
+        <a href="https://dominiqueloyer.github.io/childrenCorner2.html">Children's Corner II</a>
+        <a href="https://dominiqueloyer.github.io/pong.html">Children's Corner III</a>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+<!-- MAIN -->
+<main>
+  <!-- BIO -->
+  <div class="bio">
+    Index complet des pages de recherche technique, formules mathématiques, prototypes sysCRED et documents de thèse doctorat.<br>
+    Architecture hybride neuro-symbolique pour la crédibilité de l'information et raisonnement en informatique cognitive.
+  </div>
+
+  <!-- LINKS GRID -->
+  <div class="links-grid">
+    <div class="link-card">
+      <a href="formules.html">formules.html</a>
+      <div class="link-desc">Formules mathématiques principales du filtrage collaboratif et systèmes de recommandation.</div>
+      <span class="link-date">// Math core</span>
+    </div>
+    <div class="link-card">
+      <a href="magie derriere ecrans.html">magie derriere ecrans.html</a>
+      <div class="link-desc">Explications de l'intelligence artificielle derrière les interfaces utilisateur.</div>
+      <span class="link-date">// AI magic</span>
+    </div>
+    <div class="link-card">
+      <a href="autonomus_reasoning.html">autonomus_reasoning.html</a>
+      <div class="link-desc">Raisonnement autonome en intelligence artificielle.</div>
+      <span class="link-date">// Autonomous AI</span>
+    </div>
+    <div class="link-card">
+      <a href="140326.html">140326.html</a>
+      <div class="link-desc">Notes de recherche du 14 mars 2026.</div>
+      <span class="link-date">// 2026-03-14</span>
+    </div>
+    <div class="link-card">
+      <a href="formules_160326.html">formules_160326.html</a>
+      <div class="link-desc">Formules mathématiques mises à jour du 16 mars 2026.</div>
+      <span class="link-date">// 2026-03-16</span>
+    </div>
+    <div class="link-card">
+      <a href="leviathan_240326.html">leviathan_240326.html</a>
+      <div class="link-desc">Léviathan algorithmique: pouvoir, opacité et responsabilité IA.</div>
+      <span class="link-date">// Examen synthèse</span>
+    </div>
+    <div class="link-card">
+      <a href="dic9411_281125.html">dic9411_281125.html</a>
+      <div class="link-desc">Cours DIC9411 notes du 28 novembre 2025.</div>
+      <span class="link-date">// 2025-11-28</span>
+    </div>
+    <div class="link-card">
+      <a href="sysCRED_210226.html">sysCRED_210226.html</a>
+      <div class="link-desc">Prototype sysCRED du 21 février 2026 - Crédibilité hybride neuro-symbolique.</div>
+      <span class="link-date">// Thèse prototype</span>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0">
+    <img alt="Creative Commons License" style="border-width:0; height:14px;" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/>
+  </a>
+  <a href="mailto:votreconsultant&#64;gmail.com">(ↄ) MMXXVI Dominique S. Loyer &#9993;</a>
+  <span class="footer-divider">|</span>
+  <div class="shields-row">
+    <a href="https://orcid.org/0009-0003-9713-7109" target="_blank" rel="me noopener noreferrer">
+      <img src="https://img.shields.io/badge/ORCID-0009--0003--9713--7109-green.svg" alt="ORCID"/>
+    </a>
+    <a href="https://scholar.google.com/citations?user=JmRd6U0AAAAJ" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/Google%20Scholar-Profile-blue" alt="Google Scholar"/>
+    </a>
+    <a href="https://www.researchgate.net/profile/Dominique-Loyer" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/ResearchGate-Profile-00CCBB" alt="ResearchGate"/>
+    </a>
+    <a href="https://dominiqueloyer.github.io" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/Website-dominiqueloyer.github.io-orange" alt="Website"/>
+    </a>
+    <a href="https://syscred.uqam.ca" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/sysCRED-syscred.uqam.ca-7B2D8B" alt="sysCRED"/>
+    </a>
+    <a href="https://plateforme-isc.uqam.ca" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/Plateforme%20ISC-plateforme--isc.uqam.ca-yellow" alt="Plateforme ISC"/>
+    </a>
+  </div>
+</footer>
+
+</body>
+</html>
