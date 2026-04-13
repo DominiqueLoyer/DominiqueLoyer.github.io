@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fondements Mathématiques : Systèmes de Recommandation</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --slate-950: #020617;
+        }
+        body {
+            background-color: var(--slate-950);
+            color: #f8fafc;
+            font-family: 'Outfit', sans-serif;
+        }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+        }
+        /* Custom scrollbar for pre blocks */
+        pre::-webkit-scrollbar { height: 8px; }
+        pre::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
+        pre::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 4px; }
+    </style>
+</head>
+<body class="antialiased pb-20">
+
+    <header class="py-12 border-b border-slate-800 bg-slate-900/50 sticky top-0 z-50 backdrop-blur-md">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div>
+                    <span class="px-3 py-1 text-xs font-bold tracking-widest bg-indigo-500/20 text-indigo-400 rounded-full border border-indigo-500/30 uppercase">
+                        Filtrage Collaboratif
+                    </span>
+                    <h1 class="text-3xl md:text-4xl font-black mt-4 bg-gradient-to-r from-white via-indigo-200 to-slate-400 bg-clip-text text-transparent">
+                        Fondements Mathématiques (SVD & SGD)
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12 space-y-12">
+
+        <div class="mb-4 border-b border-slate-800 pb-2">
+            <h2 class="text-2xl font-bold text-slate-200">1. Décomposition & Factorisation Matricielle</h2>
+        </div>
+        
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="glass-panel p-8 border-t-4 border-indigo-500">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-bold">8. Factorisation de base</h3>
+                    <span class="text-indigo-400 mono text-sm bg-indigo-500/10 px-2 py-1 rounded">r̂ui = qi^T × pu</span>
+                </div>
+                <div class="bg-slate-950 p-4 rounded-xl mb-6 border border-slate-800">
+                    <p class="mono text-center text-lg text-slate-300">r̂<sub>ui</sub> = q<sub>i</sub><sup>T</sup> p<sub>u</sub> = Σ<sub>(f=1 à k)</sub> [ q<sub>i,f</sub> × p<sub>u,f</sub> ]</p>
+                </div>
+                
+                <h4 class="font-bold text-slate-300 text-sm uppercase tracking-wider mb-2">Variables</h4>
+                <ul class="text-sm text-slate-400 space-y-2 mb-6 mono bg-slate-800/30 p-4 rounded-lg">
+                    <li><span class="text-indigo-300">r̂ui</span> : Note PRÉDITE (user u, item i)</li>
+                    <li><span class="text-indigo-300">qi</span> : Vecteur latents du film i</li>
+                    <li><span class="text-indigo-300">pu</span> : Vecteur latents de l'utilisateur u</li>
+                    <li><span class="text-indigo-300">k</span> : Dimension de l'espace latent</li>
+                </ul>
+
+                <h4 class="font-bold text-slate-300 text-sm uppercase tracking-wider mb-2">Exemple concret (k=3)</h4>
+                <div class="text-sm text-slate-400 space-y-2 bg-indigo-500/5 p-4 rounded-lg border border-indigo-500/20">
+                    <p><strong>pu (toi)</strong> = [2, 9, 7] <span class="text-xs italic">(comédie, action, émotion)</span></p>
+                    <p><strong>qi (Avengers)</strong> = [8, 9, 6]</p>
+                    <p class="mt-2 text-white font-mono border-t border-slate-700 pt-2">r̂ui = (2×8) + (9×9) + (7×6) = 16 + 81 + 42 = <span class="text-emerald-400 font-bold">139</span> (≈ 5 étoiles)</p>
+                </div>
+            </div>
+
+            <div class="glass-panel p-8 border-t-4 border-blue-500">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-bold">9. Modèle avec Biais</h3>
+                    <span class="text-blue-400 mono text-sm bg-blue-500/10 px-2 py-1 rounded">r̂ui = μ + bu + bi + qi^T × pu</span>
+                </div>
+                <div class="bg-slate-950 p-4 rounded-xl mb-6 border border-slate-800">
+                    <p class="mono text-center text-lg text-slate-300">r̂<sub>ui</sub> = μ + b<sub>u</sub> + b<sub>i</sub> + q<sub>i</sub><sup>T</sup> p<sub>u</sub></p>
+                </div>
+                
+                <h4 class="font-bold text-slate-300 text-sm uppercase tracking-wider mb-2">Variables Ajoutées</h4>
+                <ul class="text-sm text-slate-400 space-y-2 mb-6 mono bg-slate-800/30 p-4 rounded-lg">
+                    <li><span class="text-blue-300">μ (mu)</span> : Note moyenne globale</li>
+                    <li><span class="text-blue-300">bu</span> : Biais de l'utilisateur (sévère/généreux)</li>
+                    <li><span class="text-blue-300">bi</span> : Biais du film (popularité)</li>
+                </ul>
+
+                <h4 class="font-bold text-slate-300 text-sm uppercase tracking-wider mb-2">Exemple concret</h4>
+                <div class="text-sm text-slate-400 space-y-2 bg-blue-500/5 p-4 rounded-lg border border-blue-500/20">
+                    <p>μ = 3,5 | bu = +0,7 | bi = +1,0</p>
+                    <p>qi^T × pu = 0,8 (normalisé)</p>
+                    <p class="mt-2 text-white font-mono border-t border-slate-700 pt-2">r̂ui = 3,5 + 0,7 + 1,0 + 0,8 = <span class="text-emerald-400 font-bold">6,0</span> étoiles (max 5)</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="mt-16 mb-4 border-b border-slate-800 pb-2">
+            <h2 class="text-2xl font-bold text-slate-200">2. Modèles SVD Avancés</h2>
+        </div>
+
+        <section class="grid grid-cols-1 gap-8">
+            <div class="glass-panel p-8 border-l-4 border-purple-500">
+                <h3 class="text-xl font-bold mb-4">10. Funk SVD (Singular Value Decomposition)</h3>
+                <div class="bg-slate-950 p-4 rounded-xl mb-6 border border-slate-800 inline-block">
+                    <p class="mono text-lg text-purple-300">A = U × Σ × V<sup>T</sup></p>
+                </div>
+                <p class="text-sm text-slate-300 mb-4">La décomposition SVD casse une grande matrice creuse en trois matrices denses.</p>
+                <div class="overflow-x-auto bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+<pre class="text-xs text-slate-400 mono leading-relaxed">
+Matrice A (grande)           U (Users)     Σ (Poids)    V^T (Films)
+[5  2  ?  4  ...]      [0.2  0.7  ...] [2.5  0    0  ] [0.1  0.2  ...]
+[5  ?  3  ?  ...]   =  [0.2  0.8  ...] [0    1.8  0  ] [0.3  0.1  ...]
+[1  5  5  4  ...]      [0.9  0.2  ...] [0    0    0.9] [0.2  0.4  ...]
+[... ... ... ... ...]  [... ... ...]   [... ... ... ] [... ... ...]
+</pre>
+                </div>
+            </div>
+
+            <div class="glass-panel p-8 border-l-4 border-emerald-500">
+                <h3 class="text-xl font-bold mb-4">11. SVD++ (Améliorations avec Facteurs Implicites)</h3>
+                <div class="bg-slate-950 p-4 rounded-xl mb-6 border border-slate-800">
+                    <p class="mono text-center md:text-lg text-sm text-emerald-300">r̂<sub>ui</sub> = μ + b<sub>u</sub> + b<sub>i</sub> + q<sub>i</sub><sup>T</sup> × [ p<sub>u</sub> + |N(u)|<sup>-1/2</sup> × Σ<sub>(j ∈ N(u))</sub> y<sub>j</sub> ]</p>
+                </div>
+                <p class="text-sm text-slate-300 mb-4">SVD++ ajoute des facteurs implicites (y<sub>j</sub>). L'idée : "Les films que tu as notés disent quelque chose sur tes goûts, même si tu ne les notes pas explicitement."</p>
+                
+                <div class="bg-emerald-500/5 p-4 rounded-lg border border-emerald-500/20 text-sm text-slate-300">
+                    <p class="font-bold text-white mb-2">Exemple de calcul SVD++ :</p>
+                    <ul class="list-disc list-inside space-y-1 ml-2 mono text-xs text-slate-400">
+                        <li>Historique N(u) = {Avengers, Toy Story, Raiponce}. |N(u)| = 3. Normalisation = √(1/3) ≈ 0,577</li>
+                        <li>Explicite pu = [2.0, 9.0, 7.0]</li>
+                        <li>Implicites yj : Avengers=[0.5, 0.8, 0.7], ToyStory=[0.8, 0.1, 0.2], Raiponce=[0.6, 0.2, 0.8]</li>
+                        <li>Somme implicites = [1.9, 1.1, 1.7]</li>
+                        <li>Vecteur ajusté = [2.0 + (0.577×1.9), 9.0 + (0.577×1.1), 7.0 + (0.577×1.7)] = [3.1, 9.63, 7.98]</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <div class="mt-16 mb-4 border-b border-slate-800 pb-2">
+            <h2 class="text-2xl font-bold text-slate-200">3. Optimisation & Apprentissage (SGD)</h2>
+        </div>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="glass-panel p-6">
+                <h3 class="font-bold text-rose-400 mb-2">12. Fonction Coût (Objectif)</h3>
+                <p class="mono text-xs text-slate-300 bg-black/30 p-3 rounded mb-4">min Σ (rui - r̂ui)² + λ(Σ‖pu‖² + Σ‖qi‖² + Σbu² + Σbi²)</p>
+                <p class="text-xs text-slate-400">L'algorithme cherche à minimiser l'erreur d'entraînement tout en gardant les paramètres petits (régularisation λ) pour éviter le surapprentissage.</p>
+            </div>
+
+            <div class="glass-panel p-6 lg:col-span-2">
+                <h3 class="font-bold text-amber-400 mb-2">13. Descente de Gradient Stochastique (SGD)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-slate-800/50 p-3 rounded border border-slate-700">
+                        <span class="text-xs font-bold text-slate-400 block mb-1">1. Calcul de l'erreur</span>
+                        <code class="text-amber-300 text-sm">eui = rui - r̂ui</code>
+                    </div>
+                    <div class="bg-slate-800/50 p-3 rounded border border-slate-700">
+                        <span class="text-xs font-bold text-slate-400 block mb-1">2. Maj Biais (γ = taux app.)</span>
+                        <code class="text-amber-300 text-sm">bu := bu + γ(eui - λ·bu)</code>
+                    </div>
+                    <div class="bg-slate-800/50 p-3 rounded border border-slate-700 md:col-span-2">
+                        <span class="text-xs font-bold text-slate-400 block mb-1">3. Maj Vecteurs Latents</span>
+                        <code class="text-amber-300 text-sm block">pu := pu + γ(eui·qi - λ·pu)</code>
+                        <code class="text-amber-300 text-sm block">qi := qi + γ(eui·pu - λ·qi)</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 md:col-span-2 lg:col-span-3 border-t-4 border-rose-500">
+                <h3 class="font-bold text-white mb-4">14. Le Compromis Biais-Variance (Régularisation λ)</h3>
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div class="flex-1 space-y-2">
+                        <div class="p-3 bg-slate-800/50 rounded border-l-2 border-rose-500">
+                            <strong class="text-rose-400 text-sm">λ = 0 (Surapprentissage)</strong>
+                            <p class="text-xs text-slate-400">Mémorise les données. Biais faible, Variance élevée.</p>
+                        </div>
+                        <div class="p-3 bg-slate-800/50 rounded border-l-2 border-emerald-500">
+                            <strong class="text-emerald-400 text-sm">λ optimal</strong>
+                            <p class="text-xs text-slate-400">Minimise l'erreur sur l'ensemble de test.</p>
+                        </div>
+                        <div class="p-3 bg-slate-800/50 rounded border-l-2 border-blue-500">
+                            <strong class="text-blue-400 text-sm">λ très élevé (Sous-apprentissage)</strong>
+                            <p class="text-xs text-slate-400">Modèle trop simple. Biais élevé, Variance faible.</p>
+                        </div>
+                    </div>
+                    <div class="flex-1 flex items-center justify-center bg-slate-900 rounded p-4 mono text-xs text-slate-500">
+<pre>
+Erreur
+  |       Ensemble test
+  |      /‾‾‾‾‾‾‾‾‾\
+  |     /           \___
+  |    / 
+  |  /‾‾‾‾ Ensemble entraînement
+  |_/___________________ λ
+    λ=0   optimal   élevé
+</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="mt-16 mb-4 border-b border-slate-800 pb-2">
+            <h2 class="text-2xl font-bold text-slate-200">4. Mesurer la Qualité (RMSE vs MAE)</h2>
+        </div>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="glass-panel p-8">
+                <h3 class="text-xl font-bold text-cyan-400 mb-2">15. RMSE</h3>
+                <p class="text-xs text-slate-400 mb-4 uppercase tracking-widest">Root Mean Squared Error</p>
+                <div class="bg-black/30 p-4 rounded-xl mb-4 border border-slate-800">
+                    <p class="mono text-center text-cyan-300">RMSE = √[ (1/|T|) Σ (rui - r̂ui)² ]</p>
+                </div>
+                <ul class="text-sm text-slate-300 space-y-2">
+                    <li><span class="text-cyan-500">✓</span> Pénalise lourdement les grandes erreurs (mise au carré).</li>
+                    <li><span class="text-cyan-500">✓</span> Benchmark Netflix : ~0.8 à 1.0</li>
+                    <li><span class="text-cyan-500">✓</span> À utiliser pour éviter à tout prix les recommandations catastrophiques.</li>
+                </ul>
+            </div>
+
+            <div class="glass-panel p-8">
+                <h3 class="text-xl font-bold text-teal-400 mb-2">16. MAE</h3>
+                <p class="text-xs text-slate-400 mb-4 uppercase tracking-widest">Mean Absolute Error</p>
+                <div class="bg-black/30 p-4 rounded-xl mb-4 border border-slate-800">
+                    <p class="mono text-center text-teal-300">MAE = (1/|T|) Σ |rui - r̂ui|</p>
+                </div>
+                <ul class="text-sm text-slate-300 space-y-2">
+                    <li><span class="text-teal-500">✓</span> Erreur linéaire (une erreur de 2 vaut 2x une erreur de 1).</li>
+                    <li><span class="text-teal-500">✓</span> Plus intuitif pour comprendre l'erreur moyenne réelle.</li>
+                    <li><span class="text-teal-500">✓</span> À utiliser quand toutes les erreurs ont un impact proportionnel.</li>
+                </ul>
+            </div>
+
+            <div class="glass-panel p-6 md:col-span-2 border-l-4 border-slate-400">
+                <h3 class="font-bold text-white mb-4">17. Le duel illustré</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div class="bg-slate-800/40 p-4 rounded">
+                        <strong class="text-rose-400">Modèle A (1 catastrophe)</strong><br>
+                        <span class="text-xs text-slate-400">Erreurs : [0.1, 0.1, 0.1, 0.1, 4.0]</span><br>
+                        <span class="mono">RMSE = 1.79</span> | <span class="mono">MAE = 0.88</span>
+                    </div>
+                    <div class="bg-slate-800/40 p-4 rounded">
+                        <strong class="text-emerald-400">Modèle B (Erreurs constantes)</strong><br>
+                        <span class="text-xs text-slate-400">Erreurs : [1.0, 1.0, 1.0, 1.0, 1.0]</span><br>
+                        <span class="mono">RMSE = 1.00</span> | <span class="mono">MAE = 1.00</span>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-400 mt-4 italic text-center">Le RMSE punit le Modèle A beaucoup plus sévèrement à cause du carré appliqué à l'erreur de 4.0.</p>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="py-8 text-center text-slate-600 border-t border-slate-900 mt-8">
+        <p class="text-sm font-mono tracking-tighter">FILTRAGE_COLLABORATIF // 2026 // MATHÉMATIQUES APPLIQUÉES</p>
+    </footer>
+
+</body>
+</html>

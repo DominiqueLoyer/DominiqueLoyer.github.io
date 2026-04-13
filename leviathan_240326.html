@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Léviathan Algorithmique : Visualisation du DIC-9401</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'lev-dark': '#0F172A',
+                        'lev-card': '#1E293B',
+                        'lev-blue': '#3B82F6',
+                        'lev-purple': '#8B5CF6',
+                        'lev-danger': '#F43F5E',
+                        'lev-text': '#F1F5F9',
+                        'lev-sub': '#94A3B8'
+                    },
+                    fontFamily: {
+                        sans: ['Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0F172A; 
+            color: #F1F5F9;
+            font-family: 'Roboto', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            height: 400px; 
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .material-card {
+            background-color: #1E293B;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+        }
+        .material-card:hover {
+            transform: translateY(-2px);
+        }
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0F172A; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3B82F6; 
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-gradient-to-r from-slate-900 via-indigo-900 to-slate-900 py-16 px-4 mb-8 border-b border-gray-700">
+        <div class="max-w-6xl mx-auto text-center">
+            <h1 class="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 mb-4 tracking-tight">
+                LE LÉVIATHAN ALGORITHMIQUE
+            </h1>
+            <p class="text-xl md:text-2xl text-lev-sub font-light mb-8">
+                Pouvoir, Opacité et Responsabilité à l'ère de l'Intelligence Artificielle
+            </p>
+            <div class="inline-block bg-lev-card px-6 py-3 rounded-full border border-lev-blue shadow-lg">
+                <span class="text-lev-blue font-bold">Source :</span> Rapport d'examen doctoral DIC-9401 | <span class="text-gray-400">Dominique Loyer, UQAM</span>
+            </div>
+            <p class="mt-8 max-w-3xl mx-auto text-gray-300 leading-relaxed">
+                Ce tableau de bord interactif explore la transformation de la <strong>bureaucratie wébérienne</strong> en une <strong>« boîte noire » algorithmique</strong>. 
+                À travers l'analyse des systèmes de recommandation et des scandales d'État (comme l'affaire <em>Toeslagenaffaire</em>), nous visualisons le passage d'une rationalité légale à une domination par le code, et les pistes pour restaurer l'explicabilité (XAI).
+            </p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 pb-20 space-y-16">
+
+        <section>
+            <div class="border-l-4 border-lev-blue pl-6 mb-8">
+                <h2 class="text-3xl font-bold text-white mb-2">1. La Mutation du Pouvoir : Le Wébérisme Numérique</h2>
+                <p class="text-lev-sub text-lg">
+                    L'IA ne rompt pas avec la bureaucratie ; elle l'intensifie. Nous passons de la « Cage de Fer » de Max Weber (règles rigides mais lisibles) à une « Boîte Noire » (règles fluides mais opaques).
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="material-card p-6">
+                    <h3 class="text-xl font-bold text-lev-blue mb-4 border-b border-gray-700 pb-2">Comparaison Structurelle</h3>
+                    <div class="chart-container">
+                        <canvas id="bureaucracyRadar"></canvas>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-400">
+                        <strong>Analyse :</strong> Alors que la bureaucratie traditionnelle excelle en stabilité et prévisibilité, la bureaucratie algorithmique maximise la vitesse et l'échelle, mais au prix d'une opacité totale (le "secret industriel").
+                    </p>
+                </div>
+
+                <div class="material-card p-6 flex flex-col justify-center">
+                    <h3 class="text-xl font-bold text-lev-purple mb-6 border-b border-gray-700 pb-2">Concepts Clés</h3>
+                    <div class="space-y-6">
+                        <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-lev-blue">
+                            <h4 class="font-bold text-white text-lg mb-1">🏛️ Cage de Fer (Weber)</h4>
+                            <p class="text-gray-400 text-sm">Système de règles impersonnelles et universelles. Le pouvoir est basé sur la loi écrite. Rigide mais potentiellement contestable.</p>
+                        </div>
+                        <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-lev-purple">
+                            <h4 class="font-bold text-white text-lg mb-1">📦 Boîte Noire (Pasquale)</h4>
+                            <p class="text-gray-400 text-sm">Système opaque et propriétaire. Le pouvoir est basé sur le secret et la complexité technique. Fluide mais incontestable.</p>
+                        </div>
+                        <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-lev-danger">
+                            <h4 class="font-bold text-white text-lg mb-1">💀 Zone Morte de l'Imagination (Graeber)</h4>
+                            <p class="text-gray-400 text-sm">L'effet psychologique de la bureaucratie qui étouffe la capacité humaine à imaginer des alternatives, renforcé par l'automatisation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="border-l-4 border-lev-danger pl-6 mb-8">
+                <h2 class="text-3xl font-bold text-white mb-2">2. Étude de Cas : Le Scandale des Allocations (Pays-Bas)</h2>
+                <p class="text-lev-sub text-lg">
+                    L'affaire <em>Toeslagenaffaire</em> illustre la violence structurelle de la bureaucratie algorithmique. Un algorithme de détection de fraude a faussement accusé des milliers de familles, souvent sur des bases discriminatoires.
+                </p>
+            </div>
+
+            <div class="material-card p-6">
+                <h3 class="text-xl font-bold text-lev-danger mb-4 text-center">Impact Humain et Financier</h3>
+                <div class="chart-container md:h-96">
+                    <canvas id="scandalChart"></canvas>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 text-center">
+                    <div class="p-4 bg-slate-900 rounded-lg">
+                        <span class="block text-3xl font-black text-lev-danger">26 000+</span>
+                        <span class="text-sm text-gray-400">Familles victimes</span>
+                    </div>
+                    <div class="p-4 bg-slate-900 rounded-lg">
+                        <span class="block text-3xl font-black text-lev-danger">1 000+</span>
+                        <span class="text-sm text-gray-400">Enfants placés</span>
+                    </div>
+                    <div class="p-4 bg-slate-900 rounded-lg">
+                        <span class="block text-3xl font-black text-lev-danger">Discriminatoire</span>
+                        <span class="text-sm text-gray-400">Biais sur la double nationalité</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="border-l-4 border-lev-purple pl-6 mb-8">
+                <h2 class="text-3xl font-bold text-white mb-2">3. Évolution Technique : De la Prédiction au Raisonnement</h2>
+                <p class="text-lev-sub text-lg">
+                    Les systèmes de recommandation ont muté. Nous sommes passés de simples statistiques (Filtrage Collaboratif) à des modèles complexes de Deep Learning, et maintenant aux LLM (Grands Modèles de Langage).
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="md:col-span-2 material-card p-6">
+                    <h3 class="text-xl font-bold text-lev-purple mb-4">Trajectoire de Complexité</h3>
+                    <div class="chart-container">
+                        <canvas id="evolutionChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="material-card p-6">
+                    <h3 class="text-xl font-bold text-lev-blue mb-4">Paradigmes</h3>
+                    <ul class="space-y-4">
+                        <li class="p-3 bg-slate-800 rounded border-l-2 border-green-400">
+                            <strong class="block text-green-400">1. Statistiques (années 2000)</strong>
+                            <span class="text-sm text-gray-300">Filtrage collaboratif. Objectif : Prédire les notes manquantes.</span>
+                        </li>
+                        <li class="p-3 bg-slate-800 rounded border-l-2 border-blue-400">
+                            <strong class="block text-blue-400">2. Deep Learning (années 2010)</strong>
+                            <span class="text-sm text-gray-300">Neural Collaborative Filtering. Objectif : Représentation dense (Embeddings).</span>
+                        </li>
+                        <li class="p-3 bg-slate-800 rounded border-l-2 border-purple-400">
+                            <strong class="block text-purple-400">3. GenAI & LLM (années 2020)</strong>
+                            <span class="text-sm text-gray-300">Reasoning-based. Objectif : Compréhension et génération de justifications.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="border-l-4 border-emerald-500 pl-6 mb-8">
+                <h2 class="text-3xl font-bold text-white mb-2">4. Le Dilemme de l'Explicabilité (XAI)</h2>
+                <p class="text-lev-sub text-lg">
+                    Comment faire confiance à la machine ? Il existe une tension fondamentale entre la performance d'un modèle (précision) et sa capacité à être compris par un humain (explicabilité).
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="material-card p-6">
+                    <h3 class="text-xl font-bold text-emerald-400 mb-4">Le Compromis Performance / Transparence</h3>
+                    <div class="chart-container">
+                        <canvas id="tradeoffChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-400">
+                        <strong>L'objectif de la thèse :</strong> Atteindre le quadrant supérieur droit (Approche Neuro-Symbolique) qui combine la puissance des réseaux de neurones avec la logique de l'IA symbolique.
+                    </p>
+                </div>
+
+                <div class="material-card p-6">
+                    <h3 class="text-xl font-bold text-white mb-4">Taxonomie des Méthodes d'Interprétabilité</h3>
+                    <div id="xaiSunburst" class="w-full h-[400px]"></div>
+                    <p class="mt-2 text-sm text-gray-400 text-center">
+                        Distinction entre les modèles transparents par nature (White Box) et les explications après-coup (Post-hoc).
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="mt-20 border-t border-gray-800 pt-8 text-center text-gray-500 pb-8">
+            <p>© 2025 Dominique Loyer - Visualisation générée par AI Assistant.</p>
+            <p class="text-xs mt-2">Basé sur le rapport de recherche doctoral UQAM DIC-9401.</p>
+            <!-- NEITHER Mermaid JS NOR SVG were used anywhere in the output. -->
+            <!-- Palette: Vibrant Cyber-Academic -->
+        </footer>
+
+    </main>
+
+    <script>
+        function wrapLabel(str, maxChars) {
+            if (str.length <= maxChars) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + 1 + words[i].length <= maxChars) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        Chart.defaults.color = '#94A3B8';
+        Chart.defaults.font.family = 'Roboto';
+        const commonTooltip = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            },
+            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+            titleColor: '#F1F5F9',
+            bodyColor: '#CBD5E1',
+            borderColor: '#3B82F6',
+            borderWidth: 1
+        };
+
+        const ctxRadar = document.getElementById('bureaucracyRadar').getContext('2d');
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: [
+                    'Opacité (Secret)', 
+                    'Vitesse de Décision', 
+                    'Échelle de Traitement', 
+                    'Rigidité des Règles', 
+                    'Contestabilité Humaine'
+                ],
+                datasets: [{
+                    label: 'Bureaucratie Classique (Weber)',
+                    data: [40, 20, 30, 90, 80],
+                    fill: true,
+                    backgroundColor: 'rgba(148, 163, 184, 0.2)', 
+                    borderColor: '#94A3B8',
+                    pointBackgroundColor: '#94A3B8',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#94A3B8'
+                }, {
+                    label: 'Bureaucratie Algorithmique',
+                    data: [100, 100, 100, 60, 10],
+                    fill: true,
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)', 
+                    borderColor: '#3B82F6',
+                    pointBackgroundColor: '#3B82F6',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#3B82F6'
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                elements: { line: { borderWidth: 3 } },
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        pointLabels: {
+                            color: '#F1F5F9',
+                            font: { size: 12, weight: 'bold' }
+                        },
+                        ticks: { backdropColor: 'transparent', color: '#94A3B8' }
+                    }
+                },
+                plugins: {
+                    tooltip: commonTooltip,
+                    legend: { labels: { color: '#F1F5F9' } }
+                }
+            }
+        });
+
+        const ctxBar = document.getElementById('scandalChart').getContext('2d');
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['Familles Accusées (x1000)', 'Enfants Placés (x100)', 'Durée Scandale (Années)'],
+                datasets: [{
+                    label: 'Impact Quantitatif',
+                    data: [26, 11, 6], 
+                    backgroundColor: [
+                        'rgba(244, 63, 94, 0.8)', 
+                        'rgba(244, 63, 94, 0.6)',
+                        'rgba(244, 63, 94, 0.4)'
+                    ],
+                    borderColor: '#F43F5E',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                        ticks: { color: '#94A3B8' }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { color: '#F1F5F9', font: { weight: 'bold' } }
+                    }
+                },
+                plugins: {
+                    tooltip: commonTooltip,
+                    legend: { display: false }
+                }
+            }
+        });
+
+        const ctxLine = document.getElementById('evolutionChart').getContext('2d');
+        const evoLabels = ['2000 (Filtrage Collab.)', '2010 (Deep Learning)', '2018 (GNN)', '2023+ (LLM/Agentique)'];
+        const wrappedEvoLabels = evoLabels.map(l => wrapLabel(l, 16));
+
+        new Chart(ctxLine, {
+            type: 'line',
+            data: {
+                labels: wrappedEvoLabels,
+                datasets: [{
+                    label: 'Capacité de Raisonnement',
+                    data: [10, 30, 50, 95],
+                    borderColor: '#8B5CF6', 
+                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 6,
+                    pointBackgroundColor: '#fff'
+                },
+                {
+                    label: 'Opacité (Boîte Noire)',
+                    data: [20, 80, 85, 90],
+                    borderColor: '#F43F5E', 
+                    borderDash: [5, 5],
+                    tension: 0.4,
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        title: { display: true, text: 'Niveau (0-100)', color: '#64748B' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                },
+                plugins: {
+                    tooltip: commonTooltip,
+                    legend: { labels: { color: '#F1F5F9' } }
+                }
+            }
+        });
+
+        const ctxScatter = document.getElementById('tradeoffChart').getContext('2d');
+        new Chart(ctxScatter, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Modèles Classiques',
+                    data: [
+                        {x: 90, y: 30, method: 'Arbres de Décision'},
+                        {x: 85, y: 40, method: 'Régression Linéaire'}
+                    ],
+                    backgroundColor: '#3B82F6' 
+                }, {
+                    label: 'Deep Learning',
+                    data: [
+                        {x: 10, y: 90, method: 'Réseaux Profonds'},
+                        {x: 20, y: 85, method: 'LLM (Base)'}
+                    ],
+                    backgroundColor: '#F43F5E' 
+                }, {
+                    label: 'Neuro-Symbolique (Cible)',
+                    data: [
+                        {x: 80, y: 95, method: 'Système Hybride'}
+                    ],
+                    backgroundColor: '#10B981', 
+                    pointRadius: 8,
+                    pointBorderWidth: 2,
+                    pointBorderColor: '#fff'
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Explicabilité (XAI)', color: '#F1F5F9' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        min: 0, max: 100
+                    },
+                    y: {
+                        title: { display: true, text: 'Performance Prédictive', color: '#F1F5F9' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        min: 0, max: 100
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                return tooltipItems[0].raw.method;
+                            },
+                            label: function(context) {
+                                return `Exp: ${context.raw.x}, Perf: ${context.raw.y}`;
+                            }
+                        }
+                    },
+                    legend: { labels: { color: '#F1F5F9' } }
+                }
+            }
+        });
+
+        const dataSunburst = [{
+            type: "sunburst",
+            labels: [
+                "XAI", 
+                "Transparent<br>(Ante-hoc)", "Boîte Noire<br>(Post-hoc)", 
+                "Régression", "Arbres", "Règles", "Agnostique", "Spécifique",
+                "LIME", "SHAP", "Attention"
+            ],
+            parents: [
+                "", 
+                "XAI", "XAI", 
+                "Transparent<br>(Ante-hoc)", "Transparent<br>(Ante-hoc)", "Transparent<br>(Ante-hoc)", "Boîte Noire<br>(Post-hoc)", "Boîte Noire<br>(Post-hoc)",
+                "Agnostique", "Agnostique", "Spécifique"
+            ],
+            values:  [100, 40, 60, 10, 15, 15, 30, 30, 15, 15, 30],
+            outsidetextfont: {size: 14, color: "#fff"},
+            leaf: {opacity: 0.8},
+            marker: {
+                line: {width: 2, color: '#1E293B'},
+                colors: [
+                    '#1E293B', 
+                    '#10B981', '#F43F5E', 
+                    '#34D399', '#34D399', '#34D399', '#FB7185', '#FB7185',
+                    '#FDA4AF', '#FDA4AF', '#FDA4AF'
+                ] 
+            },
+            branchvalues: 'total'
+        }];
+
+        const layoutSunburst = {
+            margin: {l: 0, r: 0, b: 0, t: 0},
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            font: {family: 'Roboto', color: '#fff'}
+        };
+
+        const configSunburst = {responsive: true, displayModeBar: false};
+
+        Plotly.newPlot('xaiSunburst', dataSunburst, layoutSunburst, configSunburst);
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+Chosen Palette: "Cyber Neon" (Backgrounds: #0f172a Slate 900, Accents: #f43f5e Rose 500, #06b6d4 Cyan 500, #eab308 Yellow 500, #a855f7 Purple 500)
+Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in the output.
+Narrative Plan:
+1. Executive Summary: High-level overview of AI's paradigm shift from static retrieval to autonomous reasoning.
+2. The 3rd Wave - Neuro-Symbolic AI: Explaining the fusion of neural learning and symbolic logic for trustworthy AI.
+3. Deep Research & Test-Time Scaling: Visualizing the iterative, multi-hop reasoning and web exploration pipeline.
+4. GraphRAG & Knowledge Graphs: Demonstrating how structured knowledge reduces LLM hallucinations.
+5. High-Stakes Applications: Presenting empirical data on biomedical agent success and cybersecurity frameworks.
+Visualization Choices:
+- NeSy Capabilities -> Radar Chart (Chart.js) -> Goal: Compare multi-variable traits (Learning, Reasoning, Safety) between AI models. NO SVG.
+- Deep Research Flow -> CSS/Tailwind Flowchart -> Goal: Organize iterative process steps visually. NO MERMAID, NO SVG.
+- RAG vs GraphRAG -> Grouped Bar Chart (Chart.js) -> Goal: Compare performance metrics across retrieval frameworks. NO SVG.
+- Medical AI Success -> Donut Charts (Chart.js) -> Goal: Inform composition of success/failure modes in biomedical tasks. NO SVG.
+-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Architecture of Discovery: Neuro-Symbolic AI & Deep Research</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        .flow-node {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 2px solid #334155;
+            transition: all 0.3s ease;
+        }
+        .flow-node:hover {
+            border-color: #06b6d4;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+        }
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-rose-500 selection:text-white">
+
+    <nav class="sticky top-0 z-50 glass-card border-b border-slate-700 py-4 px-6 mb-8">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="text-xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">
+                SYNTHESIS // 2026
+            </div>
+            <div class="hidden md:flex space-x-6 text-sm font-semibold text-slate-300">
+                <a href="#exec" class="hover:text-cyan-400 transition-colors">Executive Summary</a>
+                <a href="#nesy" class="hover:text-rose-400 transition-colors">Neuro-Symbolic</a>
+                <a href="#deep-research" class="hover:text-yellow-400 transition-colors">Deep Research</a>
+                <a href="#applications" class="hover:text-purple-400 transition-colors">Applications</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+        
+        <header class="text-center mb-16 pt-8" id="exec">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight">
+                Beyond Prediction: <br>
+                <span class="bg-gradient-to-r from-rose-500 via-purple-500 to-cyan-500 text-gradient">The Era of Autonomous Reasoning</span>
+            </h1>
+            <p class="text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                A synthesis of the paradigm shift from single-query LLMs to multi-agent Neuro-Symbolic frameworks and Deep Research protocols. The bottleneck is no longer parameter count, but test-time scaling and knowledge grounding.
+            </p>
+        </header>
+
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+            <div class="glass-card rounded-2xl p-8 text-center border-t-4 border-t-cyan-500">
+                <div class="text-6xl font-black text-cyan-400 mb-2">3rd</div>
+                <div class="text-lg font-semibold text-slate-200 uppercase tracking-widest">Wave of AI</div>
+                <p class="text-sm text-slate-400 mt-4">Fusing neural learning with symbolic logic to guarantee structural constraints and safety.</p>
+            </div>
+            <div class="glass-card rounded-2xl p-8 text-center border-t-4 border-t-yellow-500">
+                <div class="text-6xl font-black text-yellow-400 mb-2">TTD</div>
+                <div class="text-lg font-semibold text-slate-200 uppercase tracking-widest">Test-Time Diffusion</div>
+                <p class="text-sm text-slate-400 mt-4">Allocating computational resources during inference to iteratively search, refine, and denoise research drafts.</p>
+            </div>
+            <div class="glass-card rounded-2xl p-8 text-center border-t-4 border-t-rose-500">
+                <div class="text-6xl font-black text-rose-400 mb-2">+18%</div>
+                <div class="text-lg font-semibold text-slate-200 uppercase tracking-widest">Biomedical Success</div>
+                <p class="text-sm text-slate-400 mt-4">DeepEvidence multi-agent systems outperform generic LLMs in replicating primary clinical outcomes.</p>
+            </div>
+        </section>
+
+        <section id="nesy" class="mb-24 scroll-mt-24">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold text-white mb-6 border-l-4 border-purple-500 pl-4">The Neuro-Symbolic Shift</h2>
+                    <p class="text-slate-300 mb-6 leading-relaxed">
+                        Traditional neural networks excel at perception and pattern recognition but struggle with multi-hop reasoning and explainability. Symbolic AI offers rigorous logic but lacks the ability to learn from raw data. 
+                        <strong>Neuro-Symbolic (NeSy) AI</strong> represents the "Third Wave," bridging these domains. By mapping low-level inputs into high-level symbolic concepts, NeSy ensures that AI outputs comply with prior knowledge encoding, significantly enhancing trustworthiness and instructibility.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center">
+                            <span class="text-purple-400 text-2xl mr-3">&#10003;</span>
+                            <span class="text-slate-300">Overcomes Reasoning Shortcuts (RSs)</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-purple-400 text-2xl mr-3">&#10003;</span>
+                            <span class="text-slate-300">Enables verifiable, causal reasoning chains</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-purple-400 text-2xl mr-3">&#10003;</span>
+                            <span class="text-slate-300">Mitigates hallucination via explicit grounding</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-center text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Capability Profile Comparison</h3>
+                    <div class="chart-container">
+                        <canvas id="nesyRadarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="deep-research" class="mb-24 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-white mb-8 border-l-4 border-yellow-500 pl-4">Architectural Paradigms of Deep Research</h2>
+            <div class="glass-card rounded-2xl p-8 mb-12">
+                <p class="text-slate-300 mb-10 leading-relaxed text-center max-w-4xl mx-auto">
+                    The primary constraint on AI-augmented research is no longer parameter count, but <strong>test-time scaling</strong>. Systems like Test-Time Diffusion Deep Researcher (TTD-DR) conceptualize research as an iterative diffusion process: drafting an updatable skeleton, executing gap analysis, and denoising through web retrieval.
+                </p>
+                
+                <div class="flex flex-col lg:flex-row items-center justify-center space-y-6 lg:space-y-0 lg:space-x-4">
+                    <div class="flow-node rounded-xl p-6 text-center w-full lg:w-64">
+                        <div class="text-3xl mb-2">&#128221;</div>
+                        <h4 class="font-bold text-yellow-400 mb-2">1. Preliminary Draft</h4>
+                        <p class="text-xs text-slate-400">Generate initial "noisy" hypothesis and skeletal report structure.</p>
+                    </div>
+                    
+                    <div class="text-yellow-500 text-3xl rotate-90 lg:rotate-0">&#10140;</div>
+                    
+                    <div class="flow-node rounded-xl p-6 text-center w-full lg:w-64">
+                        <div class="text-3xl mb-2">&#128269;</div>
+                        <h4 class="font-bold text-yellow-400 mb-2">2. Gap Analysis</h4>
+                        <p class="text-xs text-slate-400">Identify logical gaps, hallucination risks, and missing empirical data.</p>
+                    </div>
+                    
+                    <div class="text-yellow-500 text-3xl rotate-90 lg:rotate-0">&#10140;</div>
+                    
+                    <div class="flow-node rounded-xl p-6 text-center w-full lg:w-64 border-cyan-500 border-2 shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+                        <div class="text-3xl mb-2">&#128208;</div>
+                        <h4 class="font-bold text-cyan-400 mb-2">3. Iterative Retrieval</h4>
+                        <p class="text-xs text-slate-400">Cross-reference Knowledge Graphs and live web data (Test-Time Scaling).</p>
+                    </div>
+
+                    <div class="text-yellow-500 text-3xl rotate-90 lg:rotate-0">&#10140;</div>
+                    
+                    <div class="flow-node rounded-xl p-6 text-center w-full lg:w-64">
+                        <div class="text-3xl mb-2">&#128189;</div>
+                        <h4 class="font-bold text-yellow-400 mb-2">4. Denoising</h4>
+                        <p class="text-xs text-slate-400">Refine the draft, cementing verifiable facts and removing unsupported claims.</p>
+                    </div>
+                </div>
+                <div class="text-center mt-6">
+                    <span class="inline-block bg-slate-800 text-xs text-slate-400 px-4 py-2 rounded-full border border-slate-700">
+                        &#8634; Process loops autonomously until entropy/uncertainty thresholds are met.
+                    </span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-12">
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-center text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">GraphRAG vs Traditional Retrieval</h3>
+                    <div class="chart-container">
+                        <canvas id="ragBarChart"></canvas>
+                    </div>
+                </div>
+                <div class="flex flex-col justify-center">
+                    <h3 class="text-2xl font-bold text-white mb-4">The GraphRAG Advantage</h3>
+                    <p class="text-slate-300 mb-6 leading-relaxed">
+                        Traditional flat-text Retrieval-Augmented Generation (RAG) fails at complex query understanding and multi-hop reasoning. <strong>GraphRAG</strong> explicitly captures entity relationships and domain hierarchies.
+                    </p>
+                    <p class="text-slate-300 leading-relaxed">
+                        By traversing Biomedical Knowledge Graphs (KGs) rather than just vector distances, agents can discover non-obvious therapeutic links, ensuring that generated context is not only semantically similar, but causally and logically related to the source hypothesis.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="applications" class="mb-12 scroll-mt-24">
+            <h2 class="text-3xl font-bold text-white mb-8 border-l-4 border-rose-500 pl-4">High-Stakes Applications</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-xl font-bold text-white mb-2 text-center">Biomedical Outcome Replication</h3>
+                    <p class="text-xs text-slate-400 text-center mb-6">DeepEvidence Agent Framework vs Generalized LLM (ChatGPT 4o)</p>
+                    <div class="chart-container" style="height: 280px;">
+                        <canvas id="medicalSuccessChart"></canvas>
+                    </div>
+                    <p class="text-sm text-slate-300 mt-6 text-center px-4">
+                        The DeepEvidence multi-agent framework successfully replicated <strong>53.3%</strong> of primary clinical outcomes, significantly outperforming the 35.0% baseline of generic LLMs by minimizing statistical hallucinations.
+                    </p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-xl font-bold text-white mb-2 text-center">LLM Failure Modes in Science</h3>
+                    <p class="text-xs text-slate-400 text-center mb-6">Categorization of critical errors during automated clinical analysis</p>
+                    <div class="chart-container" style="height: 280px;">
+                        <canvas id="failureModeChart"></canvas>
+                    </div>
+                    <p class="text-sm text-slate-300 mt-6 text-center px-4">
+                        While Deep Agents struggle primarily with complex <strong>data transformations</strong>, standard LLMs fail catastrophically at applying correct <strong>statistical methods</strong>, often hallucinating alternative tests.
+                    </p>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl p-8 mt-8 border border-slate-700 bg-gradient-to-br from-slate-900 to-slate-800">
+                <h3 class="text-2xl font-bold text-cyan-400 mb-4">Cybersecurity: The G-I-A Framework</h3>
+                <p class="text-slate-300 mb-4 leading-relaxed">
+                    In the cyber domain, traditional AI exhibits inadequate conceptual grounding. Neuro-Symbolic approaches are evaluated using the novel <strong>Grounding-Instructibility-Alignment (G-I-A)</strong> framework:
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                    <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-600">
+                        <h4 class="font-bold text-white mb-1">Grounding</h4>
+                        <p class="text-xs text-slate-400">Anchoring neural pattern recognition in structured threat intelligence rules.</p>
+                    </div>
+                    <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-600">
+                        <h4 class="font-bold text-white mb-1">Instructibility</h4>
+                        <p class="text-xs text-slate-400">Enabling human analysts to guide agent adaptation mid-operation.</p>
+                    </div>
+                    <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-600">
+                        <h4 class="font-bold text-white mb-1">Alignment</h4>
+                        <p class="text-xs text-slate-400">Ensuring autonomous defensive/offensive actions meet strict policy objectives.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-slate-800 py-8 text-center bg-slate-950">
+        <p class="text-slate-500 text-sm">
+            Synthesized from advanced 2024-2026 research literature. AI is no longer a final arbiter, but a <em>creative scientific partner</em>.
+        </p>
+    </footer>
+
+    <script>
+        const wrapLabel = (label) => {
+            if (label.length <= 16) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + words[i].length + 1 > 16) {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                } else {
+                    currentLine += ' ' + words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        };
+
+        const universalTooltipConfig = {
+            tooltip: {
+                backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                titleColor: '#f8fafc',
+                bodyColor: '#cbd5e1',
+                borderColor: '#334155',
+                borderWidth: 1,
+                callbacks: {
+                    title: function(tooltipItems) {
+                        const item = tooltipItems[0];
+                        let label = item.chart.data.labels[item.dataIndex];
+                        if (Array.isArray(label)) {
+                            return label.join(' ');
+                        } else {
+                            return label;
+                        }
+                    }
+                }
+            },
+            legend: {
+                labels: { color: '#cbd5e1', font: { family: 'Inter' } }
+            }
+        };
+
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.font.family = 'Inter';
+
+        const nesyLabels = ["Pattern Recognition", "Multi-hop Reasoning", "Logical Interpretability", "Adaptability to Noise", "Constraint Adherence"].map(wrapLabel);
+        const ctxRadar = document.getElementById('nesyRadarChart').getContext('2d');
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: nesyLabels,
+                datasets: [
+                    {
+                        label: 'Standard Neural AI',
+                        data: [90, 30, 20, 85, 40],
+                        backgroundColor: 'rgba(244, 63, 94, 0.2)',
+                        borderColor: '#f43f5e',
+                        pointBackgroundColor: '#f43f5e',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Pure Symbolic AI',
+                        data: [20, 95, 100, 10, 100],
+                        backgroundColor: 'rgba(234, 179, 8, 0.2)',
+                        borderColor: '#eab308',
+                        pointBackgroundColor: '#eab308',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Neuro-Symbolic (3rd Wave)',
+                        data: [85, 90, 85, 80, 95],
+                        backgroundColor: 'rgba(6, 182, 212, 0.3)',
+                        borderColor: '#06b6d4',
+                        pointBackgroundColor: '#06b6d4',
+                        borderWidth: 3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        pointLabels: { color: '#cbd5e1', font: { size: 11 } },
+                        ticks: { display: false, min: 0, max: 100 }
+                    }
+                },
+                plugins: universalTooltipConfig
+            }
+        });
+
+        const ragLabels = ["Query Understanding", "Multi-Source Integration", "Context Preservation", "Hallucination Reduction"].map(wrapLabel);
+        const ctxBar = document.getElementById('ragBarChart').getContext('2d');
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ragLabels,
+                datasets: [
+                    {
+                        label: 'Traditional Flat RAG',
+                        data: [45, 30, 40, 50],
+                        backgroundColor: '#a855f7',
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'GraphRAG (KG Integrated)',
+                        data: [85, 90, 88, 92],
+                        backgroundColor: '#06b6d4',
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { 
+                        beginAtZero: true, 
+                        max: 100,
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' } 
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                },
+                plugins: universalTooltipConfig
+            }
+        });
+
+        const ctxMedical = document.getElementById('medicalSuccessChart').getContext('2d');
+        new Chart(ctxMedical, {
+            type: 'doughnut',
+            data: {
+                labels: ['Replicated Primary Outcomes', 'Failed Replication'].map(wrapLabel),
+                datasets: [
+                    {
+                        data: [53.3, 46.7],
+                        backgroundColor: ['#06b6d4', '#1e293b'],
+                        borderColor: '#0f172a',
+                        borderWidth: 2,
+                        weight: 2
+                    },
+                    {
+                        data: [35.0, 65.0],
+                        backgroundColor: ['#f43f5e', '#1e293b'],
+                        borderColor: '#0f172a',
+                        borderWidth: 2,
+                        weight: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                plugins: {
+                    ...universalTooltipConfig,
+                    subtitle: {
+                        display: true,
+                        text: 'Inner: ChatGPT 4o | Outer: DeepEvidence',
+                        color: '#94a3b8',
+                        font: { family: 'Inter', style: 'italic' },
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        const failLabels = ["Data Transformation Issues", "Analysis Code Errors", "Incorrect Statistical Method", "Other"].map(wrapLabel);
+        const ctxFail = document.getElementById('failureModeChart').getContext('2d');
+        new Chart(ctxFail, {
+            type: 'bar',
+            data: {
+                labels: failLabels,
+                datasets: [
+                    {
+                        label: 'DeepEvidence Agent',
+                        data: [46.4, 21.4, 0, 32.2],
+                        backgroundColor: '#06b6d4',
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Standard LLM',
+                        data: [45.6, 10, 38.4, 6.0], 
+                        backgroundColor: '#f43f5e',
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                scales: {
+                    x: { 
+                        beginAtZero: true, 
+                        max: 50,
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                        title: { display: true, text: '% of Failures', color: '#cbd5e1' }
+                    },
+                    y: {
+                        grid: { display: false }
+                    }
+                },
+                plugins: universalTooltipConfig
+            }
+        });
+    </script>
+</body>
+</html>
