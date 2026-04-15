@@ -1,0 +1,807 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+    <link rel="icon" href="peace.png" alt="STOP T H E W A R!" width="16" height="16" type="image/icon type"/>
+    <meta name="robots" content="YES"/>
+    <meta name="keywords" content="AI researcher,Data scientist,Montreal,Machine learning,xAI,PhD UQAM,Enseignant,Instructor"/>
+    <meta name="description" content="Planification d’une rencontre de thèse – Dominique Loyer"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Rencontre de thèse – Dominique Loyer</title>
+
+    <style>
+    :root {
+        --green: #00ff41;
+        --green-dim: #00cc33;
+        --green-dark: #004d1a;
+        --bg: #0a0a0a;
+        --bg-card: #0f1a0f;
+        --bg-card2: #0d150d;
+        --border: #00ff41;
+        --border-dim: #005511;
+        --font: 'Courier New', Courier, monospace;
+
+        --dom-color: #00ff41;
+        --rog-color: #66ff99;
+        --jan-color: #33cc66;
+        --common-red: #b71c1c;
+    }
+
+    *, *::before, *::after { box-sizing: border-box }
+
+    html { scroll-behavior: smooth }
+
+    body {
+        font-family: var(--font);
+        font-size: 13px;
+        margin: 0;
+        padding: 0 0 70px 0;
+        background: var(--bg);
+        color: var(--green);
+        text-align: left;
+    }
+
+    body::before {
+        content: "";
+        pointer-events: none;
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(
+            to bottom,
+            transparent 0px,
+            transparent 3px,
+            rgba(0, 0, 0, 0.07) 3px,
+            rgba(0, 0, 0, 0.07) 4px
+        );
+        z-index: 9999;
+    }
+
+    header {
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+        padding: .6rem 1rem;
+        text-align: center;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 1rem;
+        letter-spacing: .12em;
+        color: var(--green);
+        text-shadow: 0 0 8px var(--green);
+    }
+
+    header h1::before {
+        content: "$ ";
+        color: var(--green-dim);
+    }
+
+    nav {
+        background: var(--bg-card);
+        border-bottom: 1px solid var(--border-dim);
+        padding: .3rem 0;
+    }
+
+    nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    nav ul li { position: relative }
+
+    nav ul li a {
+        display: block;
+        padding: 7px 13px;
+        color: var(--green-dim);
+        text-decoration: none;
+        font-size: .78rem;
+        letter-spacing: .05em;
+        transition: color .2s, background .2s;
+        border-right: 1px solid var(--border-dim);
+    }
+
+    nav ul li a:hover {
+        color: var(--green);
+        background: var(--green-dark);
+        text-shadow: 0 0 6px var(--green);
+    }
+
+    main {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 1rem 1rem 4rem;
+    }
+
+    .section-title {
+        font-size: 1rem;
+        font-weight: bold;
+        color: var(--green);
+        text-shadow: 0 0 8px var(--green);
+        border-bottom: 1px solid var(--border-dim);
+        padding-bottom: .3rem;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        letter-spacing: .1em;
+    }
+
+    .section-title::before {
+        content: ">> ";
+        color: var(--green-dim);
+    }
+
+    .inst-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-dim);
+        border-left: 3px solid var(--green-dim);
+        padding: 1rem 1.2rem;
+        margin-bottom: 1.2rem;
+        border-radius: 2px;
+        transition: border-color .2s, box-shadow .2s;
+    }
+
+    .inst-card:hover {
+        border-color: var(--green);
+        box-shadow: 0 0 10px rgba(0, 255, 65, .12);
+    }
+
+    footer {
+        background: var(--bg-card);
+        border-top: 1px solid var(--border-dim);
+        color: var(--green-dim);
+        padding: .4rem 1rem;
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: .5rem;
+        font-size: .7rem;
+    }
+
+    footer a {
+        color: var(--green-dim);
+        text-decoration: none;
+    }
+
+    footer a:hover {
+        color: var(--green);
+        text-decoration: underline;
+    }
+
+    .footer-divider { color: var(--border-dim) }
+
+    .shields-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: .4rem;
+    }
+
+    .shields-row img { height: 18px; border: none }
+
+    @media screen and (max-width: 768px) {
+        nav ul {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        nav ul li a {
+            border-right: none;
+            border-bottom: 1px solid var(--border-dim);
+            width: 100%;
+        }
+
+        footer { position: relative }
+    }
+
+    /* === Calendrier de rencontre thèse === */
+
+    .meeting-card {
+        margin-top: 2rem;
+    }
+
+    .meeting-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+        font-size: .78rem;
+        margin-bottom: .7rem;
+        color: var(--green-dim);
+    }
+
+    .meeting-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: .3rem;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid var(--border-dim);
+        background: var(--bg-card2);
+    }
+
+    .meeting-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .dot-dom { background: var(--dom-color); }
+    .dot-rog { background: var(--rog-color); }
+    .dot-jan { background: var(--jan-color); }
+    .dot-off { opacity: .18; }
+
+    .meeting-dot-common {
+        width: 14px;
+        height: 14px;
+        border-radius: 3px;
+        background: var(--common-red);
+        box-shadow: 0 0 6px rgba(183, 28, 28, .6);
+    }
+
+    .meeting-intro {
+        font-size: .8rem;
+        color: var(--green-dim);
+        margin-bottom: .4rem;
+    }
+
+    .meeting-intro code {
+        background: #020802;
+        padding: 1px 4px;
+        border-radius: 2px;
+        border: 1px solid var(--border-dim);
+        font-size: .78rem;
+    }
+
+    .meeting-warning {
+        font-size: .75rem;
+        color: #ffb74d;
+        margin-top: .2rem;
+    }
+
+    .meeting-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: .6rem;
+        font-size: .8rem;
+    }
+
+    .meeting-table th,
+    .meeting-table td {
+        border: 1px solid var(--border-dim);
+        padding: .25rem .35rem;
+        text-align: center;
+    }
+
+    .meeting-table th {
+        background: #050f05;
+        color: var(--green-dim);
+        letter-spacing: .06em;
+    }
+
+    .meeting-table td.slot {
+        cursor: pointer;
+        background: var(--bg-card2);
+        transition: background .12s, box-shadow .12s, transform .05s;
+        position: relative;
+    }
+
+    .meeting-table td.slot:hover {
+        box-shadow: 0 0 6px rgba(0, 255, 65, .35);
+        transform: translateY(-1px);
+    }
+
+    .slot-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+    }
+
+    .slot-label {
+        font-size: .8rem;
+        color: var(--green);
+    }
+
+    .slot-dots {
+        display: flex;
+        gap: 3px;
+    }
+
+    .slot-me {
+        outline: 1px solid var(--green);
+        outline-offset: -2px;
+    }
+
+    .slot-common {
+        background: #330000 !important;
+        border-color: var(--common-red) !important;
+        box-shadow: 0 0 8px rgba(183, 28, 28, .7);
+    }
+
+    .meeting-message {
+        margin-top: .5rem;
+        font-size: .78rem;
+    }
+
+    .meeting-message.error { color: #ff5252; }
+    .meeting-message.success { color: #81c784; }
+
+    .meeting-common-wrapper {
+        margin-top: 1rem;
+        border-top: 1px solid var(--border-dim);
+        padding-top: .7rem;
+    }
+
+    .meeting-common-label {
+        font-size: .8rem;
+        color: var(--green-dim);
+        margin-bottom: .3rem;
+    }
+
+    #meeting-common-text {
+        width: 100%;
+        min-height: 60px;
+        max-height: 120px;
+        background: #020802;
+        color: var(--green);
+        border: 1px solid var(--border-dim);
+        border-radius: 2px;
+        padding: .4rem .5rem;
+        font-family: var(--font);
+        font-size: .8rem;
+        resize: vertical;
+    }
+
+    #meeting-copy-btn {
+        margin-top: .4rem;
+        padding: .25rem .65rem;
+        background: var(--green-dark);
+        color: var(--green);
+        border: 1px solid var(--border-dim);
+        font-family: var(--font);
+        font-size: .78rem;
+        cursor: pointer;
+    }
+
+    #meeting-copy-btn:hover {
+        background: #0a3d16;
+        box-shadow: 0 0 6px rgba(0, 255, 65, .4);
+    }
+
+    #meeting-copy-feedback {
+        font-size: .75rem;
+        margin-top: .2rem;
+        color: var(--green-dim);
+    }
+
+    .meeting-user-info {
+        font-size: .78rem;
+        color: var(--green-dim);
+        margin-bottom: .4rem;
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Rencontre de thèse – Dominique Loyer</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="https://dominiqueloyer.github.io/">About</a></li>
+            <li><a href="https://syscred.uqam.ca">sysCRED</a></li>
+            <li><a href="https://dominiqueloyer.github.io/papers.html">Papers</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h2 class="section-title">Planification d’une rencontre de thèse</h2>
+
+        <div class="inst-card meeting-card" id="meeting-app">
+            <div class="meeting-user-info" id="meeting-user-info"></div>
+
+            <div class="meeting-intro">
+                Horizon&nbsp;: les 2 prochaines semaines, créneaux fixes
+                <code>09:00, 10:00, 11:00, 13:00, 14:00, 15:00</code>.<br/>
+                Liens personnels&nbsp;:
+                <code>?user=dominique</code>,
+                <code>?user=roger</code>,
+                <code>?user=janie</code>.
+            </div>
+
+            <div class="meeting-legend">
+                <span class="meeting-pill">
+                    <span class="meeting-dot dot-dom"></span> Moi (Dominique)
+                </span>
+                <span class="meeting-pill">
+                    <span class="meeting-dot dot-rog"></span> Roger
+                </span>
+                <span class="meeting-pill">
+                    <span class="meeting-dot dot-jan"></span> Janie
+                </span>
+                <span class="meeting-pill">
+                    <span class="meeting-dot-common"></span> Plage où nous 3 sommes disponibles
+                </span>
+            </div>
+
+            <div class="meeting-intro meeting-warning">
+                Cliquez sur une case pour indiquer/retirer <strong>vos</strong> disponibilités.  
+                Les pastilles indiquent qui est disponible sur chaque créneau.
+            </div>
+
+            <table class="meeting-table" id="meeting-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Jour</th>
+                        <th>09:00</th>
+                        <th>10:00</th>
+                        <th>11:00</th>
+                        <th>13:00</th>
+                        <th>14:00</th>
+                        <th>15:00</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <div id="meeting-message" class="meeting-message"></div>
+
+            <div class="meeting-common-wrapper">
+                <div class="meeting-common-label">
+                    Première plage commune (texte à copier / coller)&nbsp;:
+                </div>
+                <textarea id="meeting-common-text" readonly>
+Aucune plage commune trouvée pour l’instant sur les deux prochaines semaines.
+                </textarea>
+                <button id="meeting-copy-btn" type="button">Copier le texte</button>
+                <div id="meeting-copy-feedback" class="small"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0">
+            <img alt="Creative Commons License" style="border-width:0;height:14px;" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/>
+        </a>
+        <a href="mailto:votreconsultant&#64;gmail.com">(ↄ) MMXXVI Dominique S. Loyer &#9993;</a>
+        <span class="footer-divider">|</span>
+        <div class="shields-row">
+            <a href="https://orcid.org/0009-0003-9713-7109" target="_blank" rel="me noopener noreferrer">
+                <img src="https://img.shields.io/badge/ORCID-0009--0003--9713--7109-green.svg" alt="ORCID"/>
+            </a>
+        </div>
+    </footer>
+
+    <script type="text/javascript">
+    (function () {
+        var API_BASE = '/api/slots';
+
+        var PARTICIPANTS = {
+            dominique: { label: 'Dominique (doctorant)' },
+            roger:     { label: 'Roger (directeur)' },
+            janie:     { label: 'Janie (directrice)' }
+        };
+
+        var TIME_SLOTS = [
+            { id: '09:00', label: '09:00' },
+            { id: '10:00', label: '10:00' },
+            { id: '11:00', label: '11:00' },
+            { id: '13:00', label: '13:00' },
+            { id: '14:00', label: '14:00' },
+            { id: '15:00', label: '15:00' }
+        ];
+
+        function getNextDays(n) {
+            var days = [];
+            var today = new Date();
+            today.setHours(0, 0, 0, 0);
+            for (var i = 0; i < n; i++) {
+                var d = new Date(today.getTime());
+                d.setDate(d.getDate() + i);
+                var y = d.getFullYear();
+                var m = String(d.getMonth() + 1).padStart(2, '0');
+                var day = String(d.getDate()).padStart(2, '0');
+                var iso = y + '-' + m + '-' + day;
+                var weekday = d.toLocaleDateString('fr-CA', { weekday: 'short' });
+                days.push({ iso: iso, weekday: weekday });
+            }
+            return days;
+        }
+
+        function keyFor(date, time) { return date + '|' + time; }
+
+        function capitalizeFirst(s) {
+            if (!s) return s;
+            return s.charAt(0).toUpperCase() + s.slice(1);
+        }
+
+        function formatFrenchLongDate(iso) {
+            var d = new Date(iso + 'T00:00:00');
+            var s = d.toLocaleDateString('fr-CA', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long'
+            });
+            return capitalizeFirst(s);
+        }
+
+        var params = new URLSearchParams(window.location.search);
+        var currentUser = params.get('user');
+
+        var userInfoEl   = document.getElementById('meeting-user-info');
+        var tableBody    = document.querySelector('#meeting-table tbody');
+        var msgEl        = document.getElementById('meeting-message');
+        var commonTextEl = document.getElementById('meeting-common-text');
+        var copyBtn      = document.getElementById('meeting-copy-btn');
+        var copyFbEl     = document.getElementById('meeting-copy-feedback');
+
+        var DAYS = getNextDays(14);
+        var availabilities = {};
+
+        if (!currentUser || !PARTICIPANTS[currentUser]) {
+            if (userInfoEl) {
+                userInfoEl.innerHTML =
+                    '<span class="meeting-message error">' +
+                    'Ajoutez <code>?user=dominique</code>, <code>?user=roger</code> ou <code>?user=janie</code> à l’URL.' +
+                    '</span>';
+            }
+        } else {
+            if (userInfoEl) {
+                userInfoEl.textContent =
+                    'Vous êtes : ' + PARTICIPANTS[currentUser].label +
+                    ' — ce lien est personnel. Pour les autres participants, utilisez l’URL avec ?user=roger ou ?user=janie.';
+            }
+        }
+
+        function showMessage(text, type) {
+            if (!msgEl) return;
+            msgEl.textContent = text;
+            msgEl.className = 'meeting-message ' + (type || '');
+        }
+
+        function renderTable() {
+            if (!tableBody) return;
+            tableBody.innerHTML = '';
+
+            for (var i = 0; i < DAYS.length; i++) {
+                var day = DAYS[i];
+                var tr = document.createElement('tr');
+
+                var tdDate = document.createElement('td');
+                tdDate.textContent = day.iso;
+                tr.appendChild(tdDate);
+
+                var tdWeek = document.createElement('td');
+                tdWeek.textContent = day.weekday;
+                tr.appendChild(tdWeek);
+
+                for (var t = 0; t < TIME_SLOTS.length; t++) {
+                    var slotInfo = TIME_SLOTS[t];
+                    var td = document.createElement('td');
+                    td.className = 'slot';
+                    td.setAttribute('data-date', day.iso);
+                    td.setAttribute('data-time', slotInfo.id);
+
+                    var k = keyFor(day.iso, slotInfo.id);
+                    var slot = availabilities[k] || {};
+
+                    var allAvailable = true;
+                    var anyAvailable = false;
+
+                    for (var p in PARTICIPANTS) {
+                        if (PARTICIPANTS.hasOwnProperty(p)) {
+                            if (!slot[p]) {
+                                allAvailable = false;
+                            } else {
+                                anyAvailable = true;
+                            }
+                        }
+                    }
+
+                    var meAvailable = currentUser && slot[currentUser];
+
+                    var content = document.createElement('div');
+                    content.className = 'slot-content';
+
+                    var label = document.createElement('div');
+                    label.className = 'slot-label';
+                    label.textContent = slotInfo.label;
+                    content.appendChild(label);
+
+                    var dots = document.createElement('div');
+                    dots.className = 'slot-dots';
+
+                    var dotDom = document.createElement('span');
+                    dotDom.className = 'meeting-dot dot-dom' + (slot.dominique ? '' : ' dot-off');
+                    dots.appendChild(dotDom);
+
+                    var dotRog = document.createElement('span');
+                    dotRog.className = 'meeting-dot dot-rog' + (slot.roger ? '' : ' dot-off');
+                    dots.appendChild(dotRog);
+
+                    var dotJan = document.createElement('span');
+                    dotJan.className = 'meeting-dot dot-jan' + (slot.janie ? '' : ' dot-off');
+                    dots.appendChild(dotJan);
+
+                    content.appendChild(dots);
+                    td.appendChild(content);
+
+                    if (meAvailable) {
+                        td.className += ' slot-me';
+                    }
+                    if (allAvailable && anyAvailable) {
+                        td.className += ' slot-common';
+                    }
+
+                    if (currentUser && PARTICIPANTS[currentUser]) {
+                        (function (cell) {
+                            cell.onclick = onSlotClick;
+                        })(td);
+                    } else {
+                        td.style.cursor = 'not-allowed';
+                    }
+
+                    tr.appendChild(td);
+                }
+
+                tableBody.appendChild(tr);
+            }
+
+            updateCommonSlotDisplay();
+        }
+
+        function updateCommonSlotDisplay() {
+            var participants = Object.keys(PARTICIPANTS);
+            var chosen = null;
+
+            outer:
+            for (var i = 0; i < DAYS.length; i++) {
+                var day = DAYS[i];
+                for (var t = 0; t < TIME_SLOTS.length; t++) {
+                    var s = TIME_SLOTS[t];
+                    var k = keyFor(day.iso, s.id);
+                    var slot = availabilities[k] || {};
+                    var all = true;
+                    for (var p = 0; p < participants.length; p++) {
+                        var name = participants[p];
+                        if (!slot[name]) {
+                            all = false;
+                            break;
+                        }
+                    }
+                    if (all) {
+                        chosen = { date: day.iso, time: s.id };
+                        break outer;
+                    }
+                }
+            }
+
+            if (!commonTextEl) return;
+
+            if (!chosen) {
+                commonTextEl.value =
+                    'Aucune plage commune trouvée pour l’instant sur les deux prochaines semaines.';
+                return;
+            }
+
+            var longDate = formatFrenchLongDate(chosen.date);
+            var text =
+                'Rencontre pour le projet de Doctorat à Dominique Loyer, le ' +
+                longDate +
+                ' à ' + chosen.time +
+                ' via Visioconférence. Merci de le noter à vos agendas.';
+
+            commonTextEl.value = text;
+        }
+
+        function onSlotClick(e) {
+            if (!currentUser || !PARTICIPANTS[currentUser]) return;
+
+            var td = e.currentTarget;
+            var date = td.getAttribute('data-date');
+            var time = td.getAttribute('data-time');
+            var k = keyFor(date, time);
+
+            var slot = availabilities[k] || {};
+            var currentlyAvailable = !!slot[currentUser];
+            var newAvailable = !currentlyAvailable;
+
+            saveAvailability(currentUser, date, time, newAvailable);
+        }
+
+        function loadAvailabilities() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', API_BASE, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        try {
+                            var data = JSON.parse(xhr.responseText);
+                            availabilities = data.slots || {};
+                        } catch (e) {
+                            availabilities = {};
+                        }
+                        renderTable();
+                    } else {
+                        showMessage('Impossible de charger les disponibilités depuis le serveur.', 'error');
+                    }
+                }
+            };
+            xhr.send(null);
+        }
+
+        function saveAvailability(participant, date, time, available) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', API_BASE, true);
+            xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        var k = keyFor(date, time);
+                        if (!availabilities[k]) availabilities[k] = {};
+                        availabilities[k][participant] = !!available;
+                        renderTable();
+                        showMessage('Disponibilité mise à jour.', 'success');
+                    } else {
+                        showMessage('Erreur lors de l’enregistrement de la disponibilité.', 'error');
+                    }
+                }
+            };
+            xhr.send(JSON.stringify({
+                participant: participant,
+                date: date,
+                period: time,
+                available: available
+            }));
+        }
+
+        function copyCommonText() {
+            if (!commonTextEl) return;
+            var text = commonTextEl.value || '';
+            if (!text.trim()) return;
+
+            if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text)
+                    .then(function () {
+                        if (copyFbEl) {
+                            copyFbEl.textContent = 'Texte copié dans le presse-papiers.';
+                        }
+                    })
+                    .catch(function () {
+                        if (copyFbEl) {
+                            copyFbEl.textContent =
+                                'Impossible de copier automatiquement. Sélectionnez et utilisez CTRL+C.';
+                        }
+                    });
+            } else {
+                try {
+                    commonTextEl.focus();
+                    commonTextEl.select();
+                    document.execCommand('copy');
+                    if (copyFbEl) {
+                        copyFbEl.textContent = 'Texte copié (fallback).';
+                    }
+                } catch (e) {
+                    if (copyFbEl) {
+                        copyFbEl.textContent = 'Sélectionnez le texte et utilisez CTRL+C.';
+                    }
+                }
+            }
+        }
+
+        if (copyBtn) {
+            copyBtn.onclick = copyCommonText;
+        }
+
+        loadAvailabilities();
+    })();
+    </script>
+</body>
+</html>

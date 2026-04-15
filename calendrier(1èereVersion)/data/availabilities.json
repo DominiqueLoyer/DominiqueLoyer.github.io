@@ -1,0 +1,174 @@
+{
+  "slots": {
+    "2026-03-19|14:00": {
+      "dominique": false
+    },
+    "2026-03-19|13:00": {
+      "dominique": false
+    },
+    "2026-03-20|13:00": {
+      "dominique": true
+    },
+    "2026-03-20|09:00": {
+      "dominique": true,
+      "roger": true,
+      "janie": true
+    },
+    "2026-03-20|10:00": {
+      "dominique": true
+    },
+    "2026-03-20|11:00": {
+      "dominique": true
+    },
+    "2026-03-20|14:00": {
+      "dominique": true
+    },
+    "2026-03-20|15:00": {
+      "dominique": true
+    },
+    "2026-03-23|09:00": {
+      "dominique": true
+    },
+    "2026-03-23|10:00": {
+      "dominique": true
+    },
+    "2026-03-23|11:00": {
+      "dominique": true
+    },
+    "2026-03-23|13:00": {
+      "dominique": true
+    },
+    "2026-03-23|14:00": {
+      "dominique": true
+    },
+    "2026-03-23|15:00": {
+      "dominique": true
+    },
+    "2026-03-24|09:00": {
+      "dominique": true
+    },
+    "2026-03-24|10:00": {
+      "dominique": false
+    },
+    "2026-03-24|11:00": {
+      "dominique": false
+    },
+    "2026-03-24|13:00": {
+      "dominique": false
+    },
+    "2026-03-24|14:00": {
+      "dominique": true
+    },
+    "2026-03-24|15:00": {
+      "dominique": true
+    },
+    "2026-03-25|09:00": {
+      "dominique": true
+    },
+    "2026-03-25|10:00": {
+      "dominique": true
+    },
+    "2026-03-25|11:00": {
+      "dominique": true
+    },
+    "2026-03-25|13:00": {
+      "dominique": true
+    },
+    "2026-03-25|14:00": {
+      "dominique": true
+    },
+    "2026-03-25|15:00": {
+      "dominique": true
+    },
+    "2026-03-26|09:00": {
+      "dominique": true
+    },
+    "2026-03-26|10:00": {
+      "dominique": true
+    },
+    "2026-03-27|09:00": {
+      "dominique": true
+    },
+    "2026-03-27|10:00": {
+      "dominique": true
+    },
+    "2026-03-27|11:00": {
+      "dominique": true
+    },
+    "2026-03-26|11:00": {
+      "dominique": true
+    },
+    "2026-03-26|13:00": {
+      "dominique": true
+    },
+    "2026-03-27|13:00": {
+      "dominique": true
+    },
+    "2026-03-27|14:00": {
+      "dominique": true
+    },
+    "2026-03-27|15:00": {
+      "dominique": true
+    },
+    "2026-03-26|15:00": {
+      "dominique": true
+    },
+    "2026-03-26|14:00": {
+      "dominique": true
+    },
+    "2026-03-30|09:00": {
+      "dominique": true
+    },
+    "2026-03-31|09:00": {
+      "dominique": true
+    },
+    "2026-04-01|09:00": {
+      "dominique": true
+    },
+    "2026-04-01|10:00": {
+      "dominique": true
+    },
+    "2026-03-31|10:00": {
+      "dominique": true
+    },
+    "2026-03-30|10:00": {
+      "dominique": true
+    },
+    "2026-03-30|11:00": {
+      "dominique": true
+    },
+    "2026-03-31|11:00": {
+      "dominique": true
+    },
+    "2026-04-01|11:00": {
+      "dominique": true
+    },
+    "2026-04-01|13:00": {
+      "dominique": true
+    },
+    "2026-03-31|13:00": {
+      "dominique": true
+    },
+    "2026-03-30|13:00": {
+      "dominique": true
+    },
+    "2026-03-30|14:00": {
+      "dominique": true
+    },
+    "2026-03-31|14:00": {
+      "dominique": true
+    },
+    "2026-04-01|14:00": {
+      "dominique": true
+    },
+    "2026-04-01|15:00": {
+      "dominique": true
+    },
+    "2026-03-31|15:00": {
+      "dominique": true
+    },
+    "2026-03-30|15:00": {
+      "dominique": true
+    }
+  }
+}

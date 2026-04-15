@@ -1,0 +1,289 @@
+
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Magie des Maths derrière vos Écrans - Filtrage Collaboratif</title>
+    
+    <!-- Tailwind CSS via CDN pour un rendu parfait en local -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+
+        /* Animation d'apparition en cascade */
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(2rem); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in-up {
+            animation: fadeInUp 0.7s ease-out forwards;
+            opacity: 0; /* Reste invisible jusqu'au début de l'animation */
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-300 min-h-screen flex flex-col selection:bg-indigo-500/30">
+
+    <!-- HEADER -->
+    <header class="relative py-16 px-6 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/20 to-slate-950 -z-10"></div>
+        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent"></div>
+        
+        <div class="max-w-6xl mx-auto text-center space-y-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-sm font-medium mb-4">
+                <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+                Filtrage Collaboratif
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white tracking-tight">
+                La Magie des Maths <br class="hidden md:block"/>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">
+                    derrière vos Écrans
+                </span>
+            </h1>
+            <p class="max-w-2xl mx-auto text-lg md:text-xl text-slate-400">
+                Comment prédire si vous aimerez un film que vous n'avez jamais vu ? En comparant vos goûts à ceux des autres ou en trouvant les caractéristiques cachées des films.
+            </p>
+        </div>
+    </header>
+
+    <!-- MAIN GRID -->
+    <main class="max-w-7xl mx-auto px-6 py-12 flex-1">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-min">
+
+            <!-- PANNEAU 1 : Le Problème -->
+            <div class="animate-fade-in-up relative group bg-slate-900/40 backdrop-blur-sm border border-slate-800 rounded-2xl p-6 hover:border-slate-600 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-700 ease-out flex flex-col md:col-span-1" style="animation-delay: 0ms;">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="p-2 bg-slate-800/50 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-cyan-400"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white tracking-wide">Le Problème</h3>
+                </div>
+                <div class="flex-1 space-y-4">
+                    <p class="text-sm">Le défi : Remplir les vides d'une matrice géante et clairsemée.</p>
+                    <div class="relative p-4 bg-slate-900/50 rounded-lg border border-slate-800 font-mono text-xs overflow-hidden group">
+                        <div class="grid grid-cols-4 gap-2 text-center text-slate-500">
+                            <div class="text-slate-600 border-b border-r border-slate-700 pb-1">U\F</div>
+                            <div class="text-slate-300 border-b border-slate-700 pb-1">F1</div>
+                            <div class="text-slate-300 border-b border-slate-700 pb-1">F2</div>
+                            <div class="text-slate-300 border-b border-slate-700 pb-1">F3</div>
+                            
+                            <div class="text-slate-300 border-r border-slate-700">Alice</div>
+                            <div class="text-emerald-400">5</div>
+                            <div class="text-cyan-400 font-bold animate-pulse">?</div>
+                            <div class="text-emerald-400">4</div>
+
+                            <div class="text-slate-300 border-r border-slate-700">Bob</div>
+                            <div class="text-cyan-400 font-bold animate-pulse">?</div>
+                            <div class="text-emerald-400">1</div>
+                            <div class="text-cyan-400 font-bold animate-pulse">?</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANNEAU 2 : Trouver les Similitudes -->
+            <div class="animate-fade-in-up relative group bg-slate-900/40 backdrop-blur-sm border border-slate-800 rounded-2xl p-6 hover:border-slate-600 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-700 ease-out flex flex-col md:col-span-2" style="animation-delay: 100ms;">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="p-2 bg-slate-800/50 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-indigo-400"><circle cx="9" cy="9" r="7"/><circle cx="15" cy="15" r="7"/></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white tracking-wide">Étape 1 : Trouver les Similitudes</h3>
+                </div>
+                <div class="flex-1">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 h-full items-center">
+                        <div class="flex flex-col p-4 bg-slate-950/50 rounded-xl border border-slate-800/80 hover:bg-slate-800/50 transition-colors h-full">
+                            <div class="flex items-center gap-2 mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-pink-400"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+                                <h4 class="font-semibold text-slate-200 text-sm">Pearson (Tendances)</h4>
+                            </div>
+                            <div class="font-mono text-xs text-center py-2 bg-black/40 rounded mb-2 text-slate-300">
+                                sim(u,v) ≈ Corrélation
+                            </div>
+                            <p class="text-xs text-slate-400 mt-auto leading-relaxed">Mesure si 2 utilisateurs varient de la même façon. +1 (Jumeaux), -1 (Opposés).</p>
+                        </div>
+                        
+                        <div class="flex flex-col p-4 bg-slate-950/50 rounded-xl border border-slate-800/80 hover:bg-slate-800/50 transition-colors h-full">
+                            <div class="flex items-center gap-2 mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-amber-400"><path d="M13 5H19V11"/><path d="M19 5L5 19"/></svg>
+                                <h4 class="font-semibold text-slate-200 text-sm">Cosinus (Angle)</h4>
+                            </div>
+                            <div class="font-mono text-xs text-center py-2 bg-black/40 rounded mb-2 text-slate-300">
+                                sim(x,y) = cos(θ)
+                            </div>
+                            <p class="text-xs text-slate-400 mt-auto leading-relaxed">Angle entre deux vecteurs de notes. Si l'angle est nul, goûts identiques.</p>
+                        </div>
+
+                        <div class="flex flex-col p-4 bg-slate-950/50 rounded-xl border border-slate-800/80 hover:bg-slate-800/50 transition-colors h-full">
+                            <div class="flex items-center gap-2 mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-purple-400"><circle cx="9" cy="9" r="7"/><circle cx="15" cy="15" r="7"/></svg>
+                                <h4 class="font-semibold text-slate-200 text-sm">Jaccard (Ensemble)</h4>
+                            </div>
+                            <div class="font-mono text-xs text-center py-2 bg-black/40 rounded mb-2 text-slate-300">
+                                J(A,B) = |A ∩ B| / |A ∪ B|
+                            </div>
+                            <p class="text-xs text-slate-400 mt-auto leading-relaxed">Pourcentage d'éléments communs (ex: films vus par les deux).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANNEAU 3 : Filtrage Collaboratif -->
+            <div class="animate-fade-in-up relative group bg-slate-900/40 backdrop-blur-sm border border-slate-800 rounded-2xl p-6 hover:border-slate-600 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-700 ease-out flex flex-col md:col-span-1" style="animation-delay: 200ms;">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="p-2 bg-slate-800/50 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-emerald-400"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white tracking-wide">Étape 2 : Filtrage Collaboratif</h3>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm mb-4">Deux approches pour deviner votre note <span class="font-mono text-indigo-300 bg-indigo-950/30 px-1 rounded inline-block">r̂<sub>u,i</sub></span>.</p>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-slate-900/50 rounded border border-slate-800 hover:border-emerald-500/30 transition-colors">
+                            <div class="flex items-center gap-2 mb-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-emerald-400"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                <h4 class="font-semibold text-slate-200">User-Based</h4>
+                            </div>
+                            <p class="text-xs text-slate-400 italic">« Dis-moi qui sont tes amis... »</p>
+                            <p class="text-xs mt-1">Pondère les notes des voisins similaires.</p>
+                        </div>
+                        <div class="p-3 bg-slate-900/50 rounded border border-slate-800 hover:border-cyan-500/30 transition-colors">
+                            <div class="flex items-center gap-2 mb-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-cyan-400"><rect width="20" height="20" x="2" y="2" rx="2.18" ry="2.18"/><line x1="7" x2="7" y1="2" y2="22"/><line x1="17" x2="17" y1="2" y2="22"/><line x1="2" x2="22" y1="12" y2="12"/><line x1="2" x2="7" y1="7" y2="7"/><line x1="2" x2="7" y1="17" y2="17"/><line x1="17" x2="22" y1="17" y2="17"/><line x1="17" x2="22" y1="7" y2="7"/></svg>
+                                <h4 class="font-semibold text-slate-200">Item-Based</h4>
+                            </div>
+                            <p class="text-xs text-slate-400 italic">« Si tu aimes Toy Story... »</p>
+                            <p class="text-xs mt-1">Utilise la similarité entre les films.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANNEAU 4 : Factorisation Matricielle -->
+            <div class="animate-fade-in-up relative group bg-gradient-to-br from-slate-900 to-indigo-950/20 backdrop-blur-sm border border-slate-800 rounded-2xl p-6 hover:border-slate-600 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-700 ease-out flex flex-col md:col-span-2" style="animation-delay: 300ms;">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="p-2 bg-slate-800/50 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-purple-400"><path d="M8 19H5c-1 0-2-1-2-2V7c0-1 1-2 2-2h3"/><path d="M16 5h3c1 0 2 1 2 2v10c0 1-1 2-2 2h-3"/><line x1="12" x2="12" y1="4" y2="20"/></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white tracking-wide">Le Cœur : Factorisation Matricielle</h3>
+                </div>
+                <div class="flex-1">
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="flex-1 space-y-4">
+                            <h4 class="text-white font-medium">Découvrir les Facteurs Latents</h4>
+                            <p class="text-sm text-slate-400">
+                                Au lieu de noter directement, on décrit utilisateurs et films par des caractéristiques cachées (Action, Comédie, etc.). La grosse matrice se brise en deux matrices fines (<span class="font-mono text-indigo-300 bg-indigo-950/30 px-1 rounded inline-block">P</span> et <span class="font-mono text-indigo-300 bg-indigo-950/30 px-1 rounded inline-block">Q</span>).
+                            </p>
+                            
+                            <div class="p-4 bg-black/40 rounded-lg border border-purple-500/20 font-mono text-sm">
+                                <div class="text-purple-300 mb-2">Le Modèle Complet (Avec Biais) :</div>
+                                <div class="text-xl text-white tracking-wider flex items-center justify-center py-2 bg-purple-500/10 rounded">
+                                    r̂<sub>ui</sub> = μ + b<sub>u</sub> + b<sub>i</sub> + q<sub>i</sub><sup>T</sup>p<sub>u</sub>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-1 text-sm space-y-2 border-l border-slate-800 pl-6 flex flex-col justify-center">
+                            <ul class="space-y-3">
+                                <li class="flex gap-2"><span class="text-purple-400 w-6">r̂<sub>ui</sub></span> <span>Note prédite</span></li>
+                                <li class="flex gap-2"><span class="text-purple-400 w-6">μ</span> <span>Moyenne globale</span></li>
+                                <li class="flex gap-2"><span class="text-purple-400 w-6">b<sub>u</sub></span> <span>Biais utilisateur (critique/généreux)</span></li>
+                                <li class="flex gap-2"><span class="text-purple-400 w-6">b<sub>i</sub></span> <span>Biais item (popularité du film)</span></li>
+                                <li class="flex gap-2"><span class="text-purple-400 w-6">q<sub>i</sub></span> <span>Profil du film</span></li>
+                                <li class="flex gap-2"><span class="text-purple-400 w-6">p<sub>u</sub></span> <span>Profil de l'utilisateur</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANNEAU 5 : Apprentissage -->
+            <div class="animate-fade-in-up relative group bg-slate-900/40 backdrop-blur-sm border border-slate-800 rounded-2xl p-6 hover:border-slate-600 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-700 ease-out flex flex-col md:col-span-1" style="animation-delay: 400ms;">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="p-2 bg-slate-800/50 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-amber-400"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white tracking-wide">Comment l'IA Apprend</h3>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-amber-400 font-medium text-sm mb-2">Descente de Gradient Stochastique (SGD)</h4>
+                    <div class="space-y-3 text-sm">
+                        <p class="text-slate-400">Minimiser l'erreur entre la vraie note <span class="font-mono text-indigo-300 bg-indigo-950/30 px-1 rounded inline-block">r<sub>ui</sub></span> et la prédiction <span class="font-mono text-indigo-300 bg-indigo-950/30 px-1 rounded inline-block">r̂<sub>ui</sub></span>.</p>
+                        
+                        <ol class="list-decimal list-inside space-y-1 text-slate-300 marker:text-amber-500/50">
+                            <li>Calculer l'erreur : <span class="font-mono text-indigo-300 bg-indigo-950/30 px-1 rounded inline-block">e<sub>ui</sub> = r<sub>ui</sub> - r̂<sub>ui</sub></span></li>
+                            <li>Corriger les profils d'un petit pas (<span class="font-mono text-indigo-300 bg-indigo-950/30 px-1 rounded inline-block">γ</span>) dans la direction opposée.</li>
+                            <li>Répéter des millions de fois !</li>
+                        </ol>
+
+                        <div class="mt-4 p-2 bg-amber-500/10 rounded border border-amber-500/20">
+                            <span class="font-semibold text-amber-300 text-xs uppercase tracking-wider">Le Frein (Régularisation λ)</span>
+                            <p class="text-xs mt-1 text-amber-200/70">Empêche le modèle de tricher ou de faire du surapprentissage.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANNEAU 6 : Évaluation -->
+            <div class="animate-fade-in-up relative group bg-slate-900/40 backdrop-blur-sm border border-slate-800 rounded-2xl p-6 hover:border-slate-600 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-700 ease-out flex flex-col md:col-span-2" style="animation-delay: 500ms;">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="p-2 bg-slate-800/50 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-pink-400"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white tracking-wide">Le Bulletin de Notes</h3>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm mb-4">Est-ce que la prédiction est bonne ?</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="p-4 bg-slate-900/50 rounded-lg border border-slate-800 hover:border-pink-500/30 transition-all">
+                            <h4 class="text-pink-400 font-bold mb-2">RMSE (Root Mean Squared Error)</h4>
+                            <div class="font-mono text-xs bg-black/50 p-2 rounded mb-2 text-center">
+                                √( Moyenne des erreurs² )
+                            </div>
+                            <ul class="text-xs space-y-1 text-slate-400">
+                                <li class="flex gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-pink-500 shrink-0"><path d="m9 18 6-6-6-6"/></svg>
+                                    Pénalise fortement les "catastrophes".
+                                </li>
+                                <li class="flex gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-pink-500 shrink-0"><path d="m9 18 6-6-6-6"/></svg>
+                                    Idéal pour éviter les pires recommandations.
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="p-4 bg-slate-900/50 rounded-lg border border-slate-800 hover:border-pink-500/30 transition-all">
+                            <h4 class="text-pink-400 font-bold mb-2">MAE (Mean Absolute Error)</h4>
+                            <div class="font-mono text-xs bg-black/50 p-2 rounded mb-2 text-center">
+                                Moyenne des | erreurs |
+                            </div>
+                            <ul class="text-xs space-y-1 text-slate-400">
+                                <li class="flex gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-pink-500 shrink-0"><path d="m9 18 6-6-6-6"/></svg>
+                                    Mesure l'erreur moyenne réelle.
+                                </li>
+                                <li class="flex gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-pink-500 shrink-0"><path d="m9 18 6-6-6-6"/></svg>
+                                    N'exagère pas les grands écarts.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="max-w-7xl mx-auto px-6 py-8 border-t border-slate-800/50 text-xs text-slate-500 flex flex-col md:flex-row justify-between items-center gap-4 w-full">
+        <div class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            <p>Basé sur les modèles mathématiques du Netflix Prize et de la SVD (Funk SVD, SVD++).</p>
+        </div>
+        <div class="font-mono bg-slate-900 px-3 py-1 rounded">Sources : Documents fournis</div>
+    </footer>
+
+</body>
+</html>

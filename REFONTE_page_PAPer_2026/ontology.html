@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dominique Loyer | Researcher's Ontology</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <style>
+    :root{--green:#00ff41;--green-dim:#00cc33;--green-dark:#004d1a;--bg:#0a0a0a;--bg-card:#0f1a0f;--bg-card2:#0d150d;--border:#00ff41;--border-dim:#005511;--font:'Courier New',Courier,monospace}
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{margin:0;padding:0;height:100%;overflow:hidden}
+
+    body{
+      font-family:var(--font);
+      font-size:13px;
+      background:var(--bg);
+      color:var(--green);
+      display:flex;
+      flex-direction:column;
+    }
+
+    /* scanlines */
+    body::before{content:"";pointer-events:none;position:fixed;inset:0;
+      background:repeating-linear-gradient(to bottom,transparent 0px,transparent 3px,rgba(0,0,0,0.07) 3px,rgba(0,0,0,0.07) 4px);
+      z-index:9999}
+
+    /* HEADER */
+    header{background:var(--bg);border-bottom:1px solid var(--border);padding:.5rem 1rem;text-align:center;flex-shrink:0}
+    header h1{margin:0;font-size:.95rem;letter-spacing:.12em;color:var(--green);text-shadow:0 0 8px var(--green)}
+    header h1::before{content:"$ ";color:var(--green-dim)}
+
+    /* NAV */
+    nav{background:var(--bg-card);border-bottom:1px solid var(--border-dim);padding:.25rem 0;flex-shrink:0}
+    nav ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center}
+    nav ul li{position:relative}
+    nav ul li a{display:block;padding:6px 12px;color:var(--green-dim);text-decoration:none;font-size:.75rem;letter-spacing:.05em;transition:color .2s,background .2s;border-right:1px solid var(--border-dim)}
+    nav ul li a:hover{color:var(--green);background:var(--green-dark);text-shadow:0 0 6px var(--green)}
+    .dropdown-content{display:none;position:absolute;top:100%;left:0;background:var(--bg-card2);border:1px solid var(--border-dim);min-width:200px;z-index:200}
+    .dropdown-content a{border-right:none!important;border-bottom:1px solid var(--border-dim)}
+    .dropdown:hover .dropdown-content{display:block}
+
+    /* GRAPH CONTAINER */
+    #graph-container{flex:1;position:relative;overflow:hidden}
+    #graph-container svg{width:100%;height:100%}
+
+    /* SEARCH */
+    .search-container{
+      position:absolute;top:14px;left:14px;z-index:10;
+      background:rgba(10,20,10,0.88);
+      padding:10px;border-radius:3px;
+      border:1px solid var(--border-dim);
+      box-shadow:0 0 10px rgba(0,255,65,0.1);
+    }
+    #search-input{
+      width:230px;padding:6px 8px;
+      border-radius:2px;border:1px solid var(--border-dim);
+      background:var(--bg);color:var(--green);
+      font-family:var(--font);font-size:.78rem;
+      outline:none;
+    }
+    #search-input:focus{border-color:var(--green);box-shadow:0 0 6px rgba(0,255,65,0.2)}
+    #search-input::placeholder{color:#004d1a}
+    #search-results{max-height:180px;overflow-y:auto;margin-top:8px}
+    .search-result-item{padding:5px 6px;cursor:pointer;border-radius:2px;font-size:.75rem;color:var(--green-dim)}
+    .search-result-item:hover{background:var(--green-dark);color:var(--green)}
+
+    /* NODES */
+    .node circle{stroke:var(--bg);stroke-width:1.5px;cursor:pointer;transition:r .3s ease}
+    .node text{font-size:11px;fill:var(--green-dim);pointer-events:none;text-anchor:middle;dominant-baseline:central;font-family:var(--font)}
+    .link{stroke-opacity:0.5}
+    .highlighted circle{stroke:var(--green)!important;stroke-width:3px!important;filter:drop-shadow(0 0 6px var(--green))}
+
+    /* TOOLTIP */
+    #tooltip{
+      position:absolute;visibility:hidden;
+      background:rgba(10,20,10,0.95);
+      color:var(--green);padding:14px;
+      border-radius:3px;border:1px solid var(--border-dim);
+      box-shadow:0 0 16px rgba(0,255,65,0.15);
+      width:290px;max-width:90%;z-index:20;
+      font-size:12px;line-height:1.55;font-family:var(--font);
+    }
+    #tooltip h3{margin-top:0;font-size:13px;color:var(--green);text-shadow:0 0 6px var(--green);margin-bottom:6px}
+    #tooltip p{margin:4px 0;color:var(--green-dim)}
+    #tooltip .keywords{font-style:italic;color:#33aa55;font-size:11px}
+    #tooltip .close-btn{position:absolute;top:5px;right:10px;cursor:pointer;font-size:18px;color:var(--border-dim)}
+    #tooltip .close-btn:hover{color:var(--green)}
+    #tooltip a{color:#33aa55;text-decoration:none}
+    #tooltip a:hover{color:var(--green);text-decoration:underline}
+
+    /* FOOTER */
+    footer{
+      background:var(--bg-card);border-top:1px solid var(--border-dim);
+      color:var(--green-dim);padding:.35rem 1rem;flex-shrink:0;
+      display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;font-size:.68rem;
+      position:relative;z-index:50;
+    }
+    footer a{color:var(--green-dim);text-decoration:none}
+    footer a:hover{color:var(--green);text-decoration:underline}
+    .footer-divider{color:var(--border-dim)}
+    .shields-row{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem}
+    .shields-row img{height:18px;border:none}
+
+    @media screen and (max-width:768px){
+      nav ul{flex-direction:column;align-items:flex-start}
+      nav ul li a{border-right:none;border-bottom:1px solid var(--border-dim);width:100%}
+      .dropdown-content{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <h1>Dominique Loyer | Researcher's Ontology</h1>
+</header>
+
+<!-- NAV -->
+<nav>
+  <ul>
+    <li><a href="https://dominiqueloyer.github.io/">About</a></li>
+    <li><a href="https://github.com/DominiqueLoyer">Github Projects</a></li>
+    <li><a href="https://dominiqueloyer.github.io/papers.html">Papers</a></li>
+    <li><a href="https://dominiqueloyer.github.io/conferences.html">Conferences</a></li>
+    <li><a href="https://dominiqueloyer.github.io/lectures.html">Lectures</a></li>
+    <li><a href="https://dominiqueloyer.github.io/Codes.html">My Coding</a></li>
+    <li><a href="https://dominiqueloyer.github.io/ontology.html">Researcher's Ontology</a></li>
+    <li><a href="https://dominiqueloyer.github.io/mapmind.html">xAI MapMind</a></li>
+    <li><a href="https://plateforme-isc.uqam.ca">Plateforme UQAM</a></li>
+    <li class="dropdown">
+      <a href="#">Children's Corner &#9662;</a>
+      <div class="dropdown-content">
+        <a href="https://dominiqueloyer.github.io/childrenCorner.html">Children's Corner I</a>
+        <a href="https://dominiqueloyer.github.io/childrenCorner2.html">Children's Corner II</a>
+        <a href="https://dominiqueloyer.github.io/pong.html">Children's Corner III</a>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+<!-- GRAPH -->
+<div id="graph-container">
+  <div class="search-container">
+    <input type="text" id="search-input" placeholder="// rechercher dans l'ontologie..."/>
+    <div id="search-results"></div>
+  </div>
+  <div id="tooltip">
+    <span class="close-btn">&times;</span>
+    <h3 id="tooltip-title"></h3>
+    <p id="tooltip-desc"></p>
+    <p class="keywords" id="tooltip-keywords"></p>
+    <p><a id="tooltip-link" href="#" target="_blank">&gt; Voir le document</a></p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0">
+    <img alt="Creative Commons License" style="border-width:0;height:14px;" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/>
+  </a>
+  <a href="mailto:votreconsultant&#64;gmail.com">(ↄ) MMXXVI Dominique S. Loyer &#9993;</a>
+  <span class="footer-divider">|</span>
+  <div class="shields-row">
+    <a href="https://orcid.org/0009-0003-9713-7109" target="_blank" rel="me noopener noreferrer">
+      <img src="https://img.shields.io/badge/ORCID-0009--0003--9713--7109-green.svg" alt="ORCID"/>
+    </a>
+    <a href="https://scholar.google.com/citations?user=JmRd6U0AAAAJ" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/Google%20Scholar-Profile-blue" alt="Google Scholar"/>
+    </a>
+    <a href="https://www.researchgate.net/profile/Dominique-Loyer" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/ResearchGate-Profile-00CCBB" alt="ResearchGate"/>
+    </a>
+    <a href="https://dominiqueloyer.github.io" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/Website-dominiqueloyer.github.io-orange" alt="Website"/>
+    </a>
+  </div>
+</footer>
+
+<script>
+// ============================================================
+// DONNÉES DE L'ONTOLOGIE (inchangées)
+// ============================================================
+const ontologyData = {
+    id: "root",
+    name: "Dominique Loyer",
+    children: [
+        {
+            id: "publications",
+            name: "Publications",
+            children: [
+                { id: "pub1", name: "Transparence & Responsabilité Algorithmique", url: "https://dominiqueloyer.github.io/thesis_dl.pdf", description: "Ébauche de projet de thèse de doctorat, Université du Québec à Montréal (UQAM).", keywords: "Thèse, Transparence, Responsabilité, Algorithme, Personnalisation" },
+                { id: "pub2", name: "Traduction Automatique Neuronale EE-RU", url: "https://dominiqueloyer.github.io/NeuronalTranslation.pdf", description: "Projet sur la traduction automatique neuronale entre l'estonien et le russe.", keywords: "Traduction Automatique, NMT, Estonien, Russe" },
+                { id: "pub3", name: "Moteur de recherche avec Lucene", url: "https://dominiqueloyer.github.io/RI_Report.pdf", description: "Projet de création d'un moteur de recherche d'information avec la bibliothèque Lucene.", keywords: "Recherche d'information, Lucene, Moteur de recherche" },
+                { id: "pub4", name: "Hybrid System for Verifying Credibility", url: "https://dominiqueloyer.github.io/Ontology_of_a_verification_system_for_liability_of_the_information_may15_2025.pdf", description: "Un système hybride basé sur une ontologie pour vérifier la crédibilité des sources d'information.", keywords: "Système hybride, Crédibilité, Ontologie, Vérification" },
+                { id: "pub5", name: "Modeling an Hybrid System", url: "https://dominiqueloyer.github.io/Modeling%20and%20Hybrid%20System%20for%20Verification%20of%20sources%20credibility.pdf", description: "Modélisation d'un système hybride (logique des prédicats & IA/ML) pour la vérification de la crédibilité des sources.", keywords: "Modélisation, Système hybride, Logique des prédicats, IA, Crédibilité" }
+            ]
+        },
+        {
+            id: "codes",
+            name: "Codes",
+            children: [
+                { id: "code1",  name: "(code propre)_RI_tp1_6avril25.ipynb",          lines: 450, description: "Script Python pour la recherche d'informations: installation, prétraitement, indexation Pyserini (Lucene), requêtes (BM25, TF-IDF, RM3) et évaluation TREC.", keywords: "Récupération d'informations, Pyserini, Indexation, Prétraitement texte, Évaluation performance" },
+                { id: "code2",  name: "1mars2018.R",                                   lines: 120, description: "Code R qui charge, explore, nettoie des données de recensement, puis construit et évalue des modèles de prédiction.", keywords: "Données, Nettoyage, Modélisation, Prédiction, R" },
+                { id: "code3",  name: "ARIMA.R",                                        lines: 80,  description: "Code R qui importe des données de ventes, les transforme en série chronologique, puis ajuste un modèle ARIMA automatique.", keywords: "Séries chronologiques, Prévision, ARIMA, Décomposition, Analyse" },
+                { id: "code4",  name: "backend_7juin25.html",                           lines: 150, description: "Interface web interactive pour soumettre une URL ou du texte afin d'analyser son niveau de crédibilité via un service backend.", keywords: "Crédibilité, Information, Évaluation, Interface web, Frontend" },
+                { id: "code5",  name: "Cart_ClassificationTree_V1.R",                  lines: 65,  description: "Code R qui construit, élague et visualise un arbre de décision de classification pour prédire le défaut de paiement.", keywords: "arbre de décision, classification, défaut de paiement, r, rpart" },
+                { id: "code6",  name: "check_env.py",                                   lines: 20,  description: "Script Python affichant des informations diagnostiques sur l'environnement d'exécution.", keywords: "Python, environnement, diagnostic, chemins, modules" },
+                { id: "code7",  name: "chercheur110725.py",                             lines: 50,  description: "Application Tkinter interactive testant l'ajout séquentiel de composants d'interface utilisateur.", keywords: "Tkinter, interface graphique, diagnostic, test, composants" },
+                { id: "code8",  name: "classifierv1806.py",                             lines: 250, description: "Script Python qui organise automatiquement les fichiers, détecte les doublons et utilise une IA (Gemini) pour la classification.", keywords: "organisation, fichiers, doublons, classification IA, mémoire" },
+                { id: "code9",  name: "Copie de Backend Flask_app.py",                 lines: 40,  description: "Le code initialise une API Flask pour la vérification de crédibilité via un système externe.", keywords: "Flask, API REST, vérification, crédibilité, système" },
+                { id: "code10", name: "dc706.py",                                       lines: 180, description: "Script Python organisant des fichiers en identifiant les doublons, renommant intelligemment et classant par catégories UQAM.", keywords: "fichiers, doublons, classement, organisation, UQAM" },
+                { id: "code11", name: "dcv3.py",                                        lines: 160, description: "Script Python gérant les fichiers d'un répertoire en identifiant et supprimant les doublons, puis organisant par catégorie via IA.", keywords: "dédoublonnage, classement, fichiers, intelligence artificielle, organisation" },
+                { id: "code12", name: "Debate Analysis 1.ipynb",                       lines: 300, description: "Analyse de débat.", keywords: "Analyse, Débat, NLP" },
+                { id: "code13", name: "double_check.py",                                lines: 50,  description: "Vérification de doublons.", keywords: "Doublons, Fichiers, Utilitaires" },
+                { id: "code14", name: "en-fr_13juin25.ipynb",                           lines: 280, description: "Traduction Anglais-Français.", keywords: "NMT, Traduction, Anglais, Français" },
+                { id: "code15", name: "misc 1.R",                                       lines: 220, description: "Script R réalisant une analyse de sentiment sur des tweets et une modélisation prédictive sur des données de recensement.", keywords: "Analyse sentiment, Données textuelles, Traitement données, Arbre décision, Réseau neuronal" },
+                { id: "code16", name: "organisateur.py",                                lines: 190, description: "Code Python nettoyant un dossier en détectant les doublons, suggérant un renommage, puis organisant par catégorie via IA.", keywords: "Dupliqués, Renommage, Classification, IA, Organisation fichiers" },
+                { id: "code17", name: "randomForestClassifier_Desjardins.ipynb",        lines: 150, description: "Classification avec Random Forest.", keywords: "Random Forest, Classification, Machine Learning" },
+                { id: "code18", name: "TREC_AP88-90_5juin25(Pyserini&Lucene).ipynb",   lines: 400, description: "Evaluation TREC avec Pyserini et Lucene.", keywords: "TREC, Pyserini, Lucene, Recherche d'information" }
+            ]
+        },
+        {
+            id: "conferences",
+            name: "Conférences",
+            children: [
+                { id: "conf1", name: "Modélisation d'un système hybride d'évaluation de crédibilité", url: "https://dominiqueloyer.github.io/modelisationCred.pdf", description: "Présentation Beamer sur la modélisation d'un système hybride pour évaluer la crédibilité de l'information.", keywords: "Modélisation, Système hybride, Crédibilité, Beamer" },
+                { id: "conf2", name: "Système d'évaluation de crédibilité, une ontologie",            url: "https://dominiqueloyer.github.io/ontoCred.pdf",          description: "Présentation Beamer sur l'utilisation d'une ontologie pour un système d'évaluation de la crédibilité.", keywords: "Ontologie, Crédibilité, Système d'évaluation, Beamer" },
+                { id: "conf3", name: "Développement d'un système de recherche d'information",         url: "https://dominiqueloyer.github.io/RI.pdf",               description: "Présentation sur le développement d'un système de recherche d'information avec Lucene.", keywords: "Recherche d'information, Lucene, Beamer" },
+                { id: "conf4", name: "Développement d'un système de TAN Anglais-Russe",               url: "https://dominiqueloyer.github.io/TAN.pdf",              description: "Présentation sur le développement d'un système de traduction automatique de l'anglais vers le russe.", keywords: "TAN, NMT, Anglais, Russe, Beamer" },
+                { id: "conf5", name: "L'intelligence artificielle, qu'est-ce que c'est?",             url: "https://dominiqueloyer.github.io/l'intelligence%20artificielle.pdf", description: "Diapositives de présentation sur l'intelligence artificielle, Université de Sherbrooke (2020).", keywords: "Intelligence Artificielle, Présentation, Divulgation" }
+            ]
+        },
+        {
+            id: "enseignement",
+            name: "Enseignement",
+            children: [
+                { id: "ens1", name: "571-RC4-AS PRINCIPES COMPTABLES",                      description: "Notions fondamentales de comptabilité, mathématique commerciale et paie; bilan; journaux auxiliaires.", keywords: "Comptabilité, Simple Comptable, Bilan, Journaux" },
+                { id: "ens2", name: "571-BF4-AS PLANIFICATION FINANCIÈRE",                   description: "Prévisions budgétaires, contrôle du budget, analyse des rapports de vente, interprétation des écarts.", keywords: "Planification financière, Budget, Excel, Analyse des écarts" },
+                { id: "ens3", name: "412-DM2-AS GESTION DE PROJET",                          description: "Gestion de projet et organisation d'évènements avec MS Project.", keywords: "Gestion de projet, MS Project, Organisation d'évènements" },
+                { id: "ens4", name: "582-DM2-AS Programmation web",                          description: "POO avec Netbeans, MVC, Wamp/Apache, MySQL, PHP, Zend, Symfony, WordPress.", keywords: "Programmation web, PHP, MySQL, MVC, Wordpress" },
+                { id: "ens5", name: "412-BM2-AS PRÉSENTATIONS MULTIMÉDIAS",                  description: "Concevoir et réaliser des présentations multimédias avec PowerPoint.", keywords: "PowerPoint, Présentation, Multimédia" },
+                { id: "ens6", name: "582-MB3-AS TRAITEMENT DE L'IMAGE",                      description: "Concevoir et traiter l'imagerie digitale avec Adobe Photoshop CS5.", keywords: "Photoshop, Traitement d'image, Numérisation" },
+                { id: "ens7", name: "412-AM2-AS MESSAGERIE ET RECHERCHE WEB",                description: "Échange électronique d'information, recherche web, classification avec MS Outlook.", keywords: "Outlook, Messagerie, Recherche web, Classification" },
+                { id: "ens8", name: "571-RX3-AS GESTION DES MARCHANDISES MODE",              description: "Niveaux de stocks, inventaire, contrôle des pertes.", keywords: "Gestion de stock, Inventaire, Mode, Logistique" },
+                { id: "ens9", name: "571-R33-AS APPROCHE À LA PLANIFICATION",                description: "Objectifs, moyens, échéancier, mesures de contrôle, plan d'action.", keywords: "Planification stratégique, Objectifs, Plan d'action" }
+            ]
+        }
+    ]
+};
+
+// ============================================================
+// CONFIGURATION D3 (logique inchangée, couleurs adaptées)
+// ============================================================
+const container = document.getElementById('graph-container');
+const width  = container.clientWidth;
+const height = container.clientHeight;
+
+// Palette terminal
+const color = d3.scaleOrdinal(["#00ff41","#33aa55","#00cc33","#66ff88","#004d1a"]);
+
+const svg = d3.select(container).append("svg")
+    .attr("viewBox", [-width / 2, -height / 2, width, height]);
+
+const radiusScale = d3.scaleSqrt().domain([10, 500]).range([7, 18]);
+
+const tooltip      = d3.select("#tooltip");
+const tooltipTitle = document.getElementById("tooltip-title");
+const tooltipDesc  = document.getElementById("tooltip-desc");
+const tooltipKeys  = document.getElementById("tooltip-keywords");
+const tooltipLink  = document.getElementById("tooltip-link");
+let tooltipTimeout;
+
+d3.select("#tooltip .close-btn").on("click", () => {
+    tooltip.style("visibility", "hidden");
+    clearTimeout(tooltipTimeout);
+});
+
+let nodes = [], links = [];
+
+function flatten(root) {
+    const flatNodes = [], flatLinks = [];
+    root.isCollapsed = false;
+    flatNodes.push(root);
+    root.children.forEach(child => {
+        child.isCollapsed = true;
+        flatNodes.push(child);
+        flatLinks.push({ source: root.id, target: child.id });
+    });
+    return { nodes: flatNodes, links: flatLinks };
+}
+
+let init = flatten(ontologyData);
+nodes = init.nodes;
+links = init.links;
+
+const simulation = d3.forceSimulation(nodes)
+    .force("link",   d3.forceLink(links).id(d => d.id).distance(130).strength(0.5))
+    .force("charge", d3.forceManyBody().strength(-650))
+    .force("center", d3.forceCenter(0, 0))
+    .force("x",      d3.forceX())
+    .force("y",      d3.forceY());
+
+let link = svg.append("g").attr("class", "links").selectAll("line");
+let node = svg.append("g").attr("class", "nodes").selectAll("g");
+
+function updateGraph() {
+    link = link.data(links, d => `${d.source.id}-${d.target.id}`);
+    link.exit().remove();
+    link = link.enter().append("line")
+        .attr("class", "link")
+        .style("stroke", d => color(d.source.id))
+        .style("stroke-width", 1.2)
+        .merge(link);
+
+    node = node.data(nodes, d => d.id);
+    node.exit().remove();
+
+    const nodeEnter = node.enter().append("g")
+        .attr("class", "node")
+        .call(drag(simulation));
+
+    nodeEnter.append("circle")
+        .attr("r", d => {
+            if (d.id === 'root') return 16;
+            if (d.parent && d.parent.id === 'codes' && d.lines) return radiusScale(d.lines);
+            if (d.children && d.children.length > 0) return 12;
+            return 8;
+        })
+        .attr("fill", d => {
+            if (d.id === 'root') return '#00ff41';
+            const parent = ontologyData.children.find(p => p.id === (d.parent ? d.parent.id : d.id));
+            return parent ? color(parent.id) : '#005511';
+        })
+        .attr("stroke", "#0a0a0a")
+        .on("click", nodeClicked);
+
+    nodeEnter.append("text")
+        .text(d => d.name.length > 28 ? d.name.substring(0, 26) + '…' : d.name)
+        .attr("dy", d => {
+            const r = (d.parent && d.parent.id === 'codes' && d.lines) ? radiusScale(d.lines) : (d.children && d.children.length > 0 ? 12 : 8);
+            return `${r + 9}px`;
+        });
+
+    node = nodeEnter.merge(node);
+    simulation.nodes(nodes);
+    simulation.force("link").links(links);
+    simulation.alpha(1).restart();
+}
+
+function nodeClicked(event, d) {
+    event.stopPropagation();
+    clearTimeout(tooltipTimeout);
+    tooltip.style("visibility", "hidden");
+
+    if (!d.children || d.children.length === 0) {
+        tooltipTitle.textContent = d.name;
+        tooltipDesc.textContent  = d.description || "Aucune description disponible.";
+        tooltipKeys.textContent  = d.keywords ? `// mots-clés: ${d.keywords}` : "";
+        if (d.url) { tooltipLink.href = d.url; tooltipLink.style.display = "block"; }
+        else        { tooltipLink.style.display = "none"; }
+        tooltip
+            .style("visibility", "visible")
+            .style("top",  (event.pageY + 15) + "px")
+            .style("left", (event.pageX + 15) + "px");
+        tooltipTimeout = setTimeout(() => tooltip.style("visibility", "hidden"), 20000);
+        return;
+    }
+
+    d.isCollapsed = !d.isCollapsed;
+    if (d.isCollapsed) {
+        const childIds = new Set(d.children.map(c => c.id));
+        nodes = nodes.filter(n => !childIds.has(n.id));
+        links = links.filter(l => l.source.id !== d.id);
+    } else {
+        d.children.forEach(child => {
+            if (!nodes.find(n => n.id === child.id)) {
+                child.parent = d;
+                nodes.push(child);
+                links.push({ source: d, target: child });
+            }
+        });
+    }
+    updateGraph();
+}
+
+function drag(simulation) {
+    return d3.drag()
+        .on("start", (event, d) => { if (!event.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+        .on("drag",  (event, d) => { d.fx = event.x; d.fy = event.y; })
+        .on("end",   (event, d) => { if (!event.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; });
+}
+
+simulation.on("tick", () => {
+    link.attr("x1", d => d.source.x).attr("y1", d => d.source.y)
+        .attr("x2", d => d.target.x).attr("y2", d => d.target.y);
+    node.attr("transform", d => `translate(${d.x},${d.y})`);
+});
+
+// RECHERCHE
+const searchInput = document.getElementById('search-input');
+const searchResultsContainer = document.getElementById('search-results');
+const allNodes = d3.hierarchy(ontologyData).descendants();
+
+searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase();
+    node.classed("highlighted", false);
+    searchResultsContainer.innerHTML = '';
+    if (query.length < 2) return;
+    const results = allNodes.filter(d => d.data.name.toLowerCase().includes(query));
+    results.forEach(res => {
+        node.filter(n => n.id === res.data.id).classed("highlighted", true);
+        const item = document.createElement('div');
+        item.className = 'search-result-item';
+        item.textContent = res.data.name;
+        item.onclick = () => {
+            let current = d3.hierarchy(ontologyData).descendants().find(n => n.data.id === res.data.id);
+            if (current) { current = current.parent; }
+            while (current) {
+                const gn = nodes.find(n => n.id === current.data.id);
+                if (gn && gn.isCollapsed) nodeClicked({stopPropagation:()=>{}}, gn);
+                current = current.parent;
+            }
+            setTimeout(() => {
+                const targetNode = nodes.find(n => n.id === res.data.id);
+                if (targetNode) {
+                    const t = d3.zoomIdentity.translate(width/2, height/2).scale(1.5).translate(-targetNode.x, -targetNode.y);
+                    svg.transition().duration(750).call(zoom.transform, t);
+                }
+            }, 100);
+            searchInput.value = res.data.name;
+            searchResultsContainer.innerHTML = '';
+        };
+        searchResultsContainer.appendChild(item);
+    });
+});
+
+// ZOOM
+const zoom = d3.zoom()
+    .scaleExtent([0.1, 4])
+    .on("zoom", (event) => {
+        svg.selectAll('g.nodes, g.links').attr('transform', event.transform);
+    });
+svg.call(zoom);
+
+updateGraph();
+
+window.addEventListener('resize', () => {
+    const nw = container.clientWidth, nh = container.clientHeight;
+    svg.attr("viewBox", [-nw/2, -nh/2, nw, nh]);
+});
+</script>
+</body>
+</html>

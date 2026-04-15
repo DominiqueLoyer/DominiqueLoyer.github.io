@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Footer Académique - Dominique Loyer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0d1117 0%, #1a1f2e 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 40px 20px;
+        }
+
+        /* Footer Container */
+        .footer-container {
+            background: rgba(20, 25, 35, 0.95);
+            border-top: 2px solid rgba(88, 166, 255, 0.3);
+            padding: 40px 20px;
+            margin-top: auto;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+            border-radius: 12px 12px 0 0;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+        }
+
+        /* Badges Container */
+        .badges-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        /* Badge Styling */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            cursor: pointer;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .badge:hover::before {
+            left: 0;
+        }
+
+        /* ORCID Badge */
+        .badge.orcid {
+            background: linear-gradient(135deg, #2d3a48 0%, #3d4a58 100%);
+            border-color: rgba(150, 150, 150, 0.3);
+        }
+
+        .badge.orcid-id {
+            background: #a6ce39;
+            color: #000;
+            font-weight: 700;
+            border-color: #8db327;
+        }
+
+        .badge.orcid:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(166, 206, 57, 0.3);
+        }
+
+        /* Google Scholar Badge */
+        .badge.scholar {
+            background: linear-gradient(135deg, #2d3a48 0%, #3d4a58 100%);
+            border-color: rgba(150, 150, 150, 0.3);
+        }
+
+        .badge.scholar-label {
+            background: #4285f4;
+            font-weight: 700;
+            border-color: #3367d6;
+        }
+
+        .badge.scholar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(66, 133, 244, 0.3);
+        }
+
+        /* ResearchGate Badge */
+        .badge.researchgate {
+            background: linear-gradient(135deg, #2d3a48 0%, #3d4a58 100%);
+            border-color: rgba(150, 150, 150, 0.3);
+        }
+
+        .badge.researchgate-label {
+            background: #00d084;
+            color: #000;
+            font-weight: 700;
+            border-color: #00b870;
+        }
+
+        .badge.researchgate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 208, 132, 0.3);
+        }
+
+        /* Website Badge */
+        .badge.website {
+            background: linear-gradient(135deg, #2d3a48 0%, #3d4a58 100%);
+            border-color: rgba(150, 150, 150, 0.3);
+        }
+
+        .badge.website-label {
+            background: #ff9966;
+            color: #000;
+            font-weight: 700;
+            border-color: #ff7744;
+        }
+
+        .badge.website:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(255, 153, 102, 0.3);
+        }
+
+        /* Divider */
+        .footer-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(88, 166, 255, 0.3), transparent);
+            margin: 30px 0;
+        }
+
+        /* Footer Info */
+        .footer-info {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .footer-info p {
+            margin: 8px 0;
+        }
+
+        .footer-info a {
+            color: #58a6ff;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-info a:hover {
+            color: #79c0ff;
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .footer-container {
+                padding: 30px 15px;
+                border-radius: 8px 8px 0 0;
+            }
+
+            .badges-section {
+                gap: 10px;
+            }
+
+            .badge {
+                padding: 7px 12px;
+                font-size: 12px;
+            }
+
+            body {
+                padding: 20px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .badges-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .badge {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .footer-info {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="footer-container">
+        <div class="badges-section">
+            <!-- ORCID Badge -->
+            <a href="https://orcid.org/0009-0003-9713-7109" target="_blank" rel="noopener noreferrer" class="badge orcid" title="Voir le profil ORCID">
+                <span style="margin-right: 6px;">ORCID</span>
+                <span class="badge-value" style="background: #a6ce39; color: #000; padding: 3px 8px; border-radius: 4px; font-weight: 700;">0009-0003-9713-7109</span>
+            </a>
+
+            <!-- Google Scholar Badge -->
+            <a href="https://scholar.google.com/citations?user=YOUR_USER_ID" target="_blank" rel="noopener noreferrer" class="badge scholar" title="Voir le profil Google Scholar">
+                <span style="margin-right: 6px;">Google Scholar</span>
+                <span style="background: #4285f4; padding: 3px 8px; border-radius: 4px; font-weight: 700;">Profile</span>
+            </a>
+
+            <!-- ResearchGate Badge -->
+            <a href="https://www.researchgate.net/profile/Dominique-Loyer" target="_blank" rel="noopener noreferrer" class="badge researchgate" title="Voir le profil ResearchGate">
+                <span style="margin-right: 6px;">ResearchGate</span>
+                <span style="background: #00d084; color: #000; padding: 3px 8px; border-radius: 4px; font-weight: 700;">Profile</span>
+            </a>
+
+            <!-- Website Badge -->
+            <a href="https://dominiqueloyer.github.io" target="_blank" rel="noopener noreferrer" class="badge website" title="Visiter le site web">
+                <span style="margin-right: 6px;">Website</span>
+                <span style="background: #ff9966; color: #000; padding: 3px 8px; border-radius: 4px; font-weight: 700;">dominiqueloyer.github.io</span>
+            </a>
+        </div>
+
+        <div class="footer-divider"></div>
+
+        <div class="footer-info">
+            <p>Doctorant en informatique cognitive | Université du Québec à Montréal (UQAM)</p>
+            <p>© 2025 Dominique Loyer • <a href="https://github.com/DominiqueLoyer">GitHub</a> • <a href="https://dominiqueloyer.github.io">Portfolio</a></p>
+        </div>
+    </div>
+</body>
+</html>

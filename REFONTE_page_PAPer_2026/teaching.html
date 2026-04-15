@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Teaching experience and courses by Dominique Loyer">
+    <meta name="keywords" content="teaching, courses, education, lectures, assistant positions">
+    <title>Teaching - Dominique Loyer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --border-color: rgba(88, 166, 255, 0.3);
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --accent: #58a6ff;
+            --accent-dark: #1f6feb;
+            --success: #3fb950;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(13, 17, 23, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent) 0%, #79c0ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Summary Box */
+        .summary-box {
+            background: rgba(22, 27, 34, 0.95);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .summary-stat {
+            text-align: center;
+        }
+
+        .summary-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Teaching Section */
+        .teaching-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Course/Position Card */
+        .course-card {
+            background: rgba(22, 27, 34, 0.95);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .course-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 24px rgba(88, 166, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .course-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .course-code {
+            background: rgba(88, 166, 255, 0.1);
+            color: var(--accent);
+            padding: 0.375rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border: 1px solid var(--border-color);
+        }
+
+        .course-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(88, 166, 255, 0.1);
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .info-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .course-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .course-topics {
+            margin-top: 1rem;
+        }
+
+        .topics-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .topics-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .topic-item {
+            background: rgba(88, 166, 255, 0.05);
+            border: 1px solid rgba(88, 166, 255, 0.2);
+            padding: 0.375rem 0.75rem;
+            border-radius: 4px;
+        }
+
+        /* Languages */
+        .language-badge {
+            display: inline-block;
+            background: rgba(63, 185, 80, 0.1);
+            color: var(--success);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid rgba(63, 185, 80, 0.3);
+            margin-top: 0.5rem;
+        }
+
+        /* Footer */
+        .footer-container {
+            background: rgba(20, 25, 35, 0.95);
+            border-top: 2px solid var(--border-color);
+            padding: 2rem;
+            margin-top: auto;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .footer-content a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .footer-content a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .page-header h1 { font-size: 2rem; }
+            .course-card { padding: 1.5rem; }
+            .course-info { grid-template-columns: 1fr; }
+            .summary-box { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links { gap: 1rem; font-size: 0.9rem; }
+            .page-header h1 { font-size: 1.75rem; }
+            .section-title { font-size: 1.5rem; }
+            .course-title { font-size: 1.1rem; }
+            .course-header { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="nav-logo">Dominique Loyer</a>
+            <ul class="nav-links">
+                <li><a href="/publications.html">Publications</a></li>
+                <li><a href="/conferences.html">Conferences</a></li>
+                <li><a href="/projects.html">Projects</a></li>
+                <li><a href="/teaching.html">Teaching</a></li>
+                <li><a href="/index-fr.html">FR</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="page-header">
+            <h1>Teaching & Education</h1>
+            <p>Teaching experience at university and college levels, course development, and mentoring activities.</p>
+        </div>
+
+        <!-- Summary Stats -->
+        <div class="summary-box">
+            <div class="summary-stat">
+                <div class="summary-number">20+</div>
+                <div class="summary-label">Courses Taught</div>
+            </div>
+            <div class="summary-stat">
+                <div class="summary-number">150+</div>
+                <div class="summary-label">Students Mentored</div>
+            </div>
+            <div class="summary-stat">
+                <div class="summary-number">15</div>
+                <div class="summary-label">Years Experience</div>
+            </div>
+            <div class="summary-stat">
+                <div class="summary-number">2/3</div>
+                <div class="summary-label">English/French</div>
+            </div>
+        </div>
+
+        <!-- Current Position -->
+        <div class="teaching-section">
+            <h2 class="section-title">Current Position</h2>
+            
+            <div class="course-card">
+                <div class="course-header">
+                    <div>
+                        <h3 class="course-title">Research Assistant</h3>
+                        <p style="color: var(--text-secondary); margin-top: 0.25rem;">Institut des Sciences Cognitives, UQAM</p>
+                    </div>
+                    <span class="course-code">2024-2025</span>
+                </div>
+
+                <div class="course-info">
+                    <div class="info-item">
+                        <span class="info-label">Focus Area</span>
+                        <span class="info-value">AI & Cognitive Science</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Responsibilities</span>
+                        <span class="info-value">Research support, student mentoring</span>
+                    </div>
+                </div>
+
+                <p class="course-description">
+                    Supporting faculty and students in research projects at the Institute of Cognitive Sciences. Involved in designing experiments, data analysis, and mentoring undergraduate and graduate students.
+                </p>
+            </div>
+        </div>
+
+        <!-- University Teaching -->
+        <div class="teaching-section">
+            <h2 class="section-title">University Courses</h2>
+            
+            <div class="course-card">
+                <div class="course-header">
+                    <div>
+                        <h3 class="course-title">Advanced Topics in Artificial Intelligence</h3>
+                        <p style="color: var(--text-secondary); margin-top: 0.25rem;">UQAM</p>
+                    </div>
+                    <span class="course-code">DIC-9251</span>
+                </div>
+
+                <div class="course-info">
+                    <div class="info-item">
+                        <span class="info-label">Level</span>
+                        <span class="info-value">Master/PhD</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Language</span>
+                        <span class="info-value">French/English</span>
+                    </div>
+                </div>
+
+                <p class="course-description">
+                    Exploration of cutting-edge topics in AI including neuro-symbolic systems, explainable AI, and algorithmic decision-making. Students work on research projects and prototypes.
+                </p>
+
+                <div class="course-topics">
+                    <div class="topics-title">Topics Covered:</div>
+                    <div class="topics-list">
+                        <span class="topic-item">Neuro-Symbolic AI</span>
+                        <span class="topic-item">Knowledge Graphs</span>
+                        <span class="topic-item">Explainable AI</span>
+                        <span class="topic-item">Algorithmic Fairness</span>
+                        <span class="topic-item">Information Credibility</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- College Teaching -->
+        <div class="teaching-section">
+            <h2 class="section-title">College-Level Teaching (Collège LaSalle)</h2>
+            
+            <div class="course-card">
+                <div class="course-header">
+                    <div>
+                        <h3 class="course-title">Financial Accounting Fundamentals</h3>
+                    </div>
+                    <span class="course-code">571-BF1-AS</span>
+                </div>
+
+                <div class="course-info">
+                    <div class="info-item">
+                        <span class="info-label">Level</span>
+                        <span class="info-value">College (DÉC)</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Class Size</span>
+                        <span class="info-value">25-30 students</span>
+                    </div>
+                </div>
+
+                <p class="course-description">
+                    Introduction to fundamental accounting principles, financial statement preparation, and commercial enterprise analysis.
+                </p>
+
+                <div class="course-topics">
+                    <div class="topics-title">Key Competencies:</div>
+                    <div class="topics-list">
+                        <span class="topic-item">Financial Statements</span>
+                        <span class="topic-item">Journal Entries</span>
+                        <span class="topic-item">Ledger Management</span>
+                        <span class="topic-item">Enterprise Analysis</span>
+                    </div>
+                </div>
+                
+                <span class="language-badge">60% English • 40% French</span>
+            </div>
+
+            <div class="course-card">
+                <div class="course-header">
+                    <div>
+                        <h3 class="course-title">Financial Planning & Budgeting (MS Excel)</h3>
+                    </div>
+                    <span class="course-code">571-BF4-AS</span>
+                </div>
+
+                <div class="course-info">
+                    <div class="info-item">
+                        <span class="info-label">Level</span>
+                        <span class="info-value">College (DÉC)</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Focus</span>
+                        <span class="info-value">Practical Applications</span>
+                    </div>
+                </div>
+
+                <p class="course-description">
+                    Practical course on budget forecasting, financial analysis, and scenario modeling using advanced Excel features.
+                </p>
+
+                <div class="course-topics">
+                    <div class="topics-title">Skills Developed:</div>
+                    <div class="topics-list">
+                        <span class="topic-item">Excel Macros</span>
+                        <span class="topic-item">Scenario Analysis</span>
+                        <span class="topic-item">Sensitivity Analysis</span>
+                        <span class="topic-item">Budget Controls</span>
+                        <span class="topic-item">Financial Forecasting</span>
+                        <span class="topic-item">Dupont Analysis</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="course-card">
+                <div class="course-header">
+                    <div>
+                        <h3 class="course-title">Object-Oriented Programming & Web Development</h3>
+                    </div>
+                    <span class="course-code">420-A74-AS</span>
+                </div>
+
+                <div class="course-info">
+                    <div class="info-item">
+                        <span class="info-label">Level</span>
+                        <span class="info-value">College (DÉC)</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Duration</span>
+                        <span class="info-value">Full Session</span>
+                    </div>
+                </div>
+
+                <p class="course-description">
+                    Introduction to software development using OOP principles, MVC architecture, and modern web frameworks.
+                </p>
+
+                <div class="course-topics">
+                    <div class="topics-title">Technologies Taught:</div>
+                    <div class="topics-list">
+                        <span class="topic-item">Java/NetBeans</span>
+                        <span class="topic-item">PHP</span>
+                        <span class="topic-item">MySQL</span>
+                        <span class="topic-item">Apache/WAMP</span>
+                        <span class="topic-item">Zend/Symfony</span>
+                        <span class="topic-item">WordPress</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-container">
+        <div class="footer-content">
+            <p>© 2026 Dominique Loyer • <a href="https://github.com/DominiqueLoyer">GitHub</a> • <a href="https://scholar.google.com/citations?user=JmRd6U0AAAAJ">Google Scholar</a> • <a href="https://orcid.org/0009-0003-9713-7109">ORCID</a></p>
+            <p>Doctoral Researcher in Cognitive Informatics • UQAM</p>
+        </div>
+    </footer>
+</body>
+</html>

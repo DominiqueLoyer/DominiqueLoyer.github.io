@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Publications by Dominique Loyer - AI, Explainable AI, Information Credibility">
+    <meta name="keywords" content="publications, research papers, preprints, DOI, citations">
+    <title>Publications - Dominique Loyer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --border-color: rgba(88, 166, 255, 0.3);
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --accent: #58a6ff;
+            --accent-dark: #1f6feb;
+            --success: #3fb950;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(13, 17, 23, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent) 0%, #79c0ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Filter Controls */
+        .filters-section {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .filter-label {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(88, 166, 255, 0.1);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        /* Citation Format Selector */
+        .citation-format {
+            padding: 0.5rem 1rem;
+            background: rgba(88, 166, 255, 0.1);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .citation-format:hover {
+            background: rgba(88, 166, 255, 0.2);
+        }
+
+        /* Publication Card */
+        .publication-card {
+            background: rgba(22, 27, 34, 0.95);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .publication-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 24px rgba(88, 166, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .pub-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .pub-metadata {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(88, 166, 255, 0.1);
+        }
+
+        .pub-meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .pub-meta-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pub-meta-value {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .pub-abstract {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .pub-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pub-tag {
+            background: rgba(88, 166, 255, 0.1);
+            color: var(--accent);
+            padding: 0.375rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid rgba(88, 166, 255, 0.3);
+        }
+
+        .pub-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .action-btn {
+            padding: 0.65rem 1.25rem;
+            background: rgba(88, 166, 255, 0.1);
+            border: 1px solid var(--border-color);
+            color: var(--accent);
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn:hover {
+            background: rgba(88, 166, 255, 0.2);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* Citation Modal */
+        .citation-box {
+            background: rgba(13, 17, 23, 0.95);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .citation-box.active {
+            max-height: 500px;
+        }
+
+        .citation-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .citation-tab {
+            padding: 0.75rem 1rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .citation-tab:hover {
+            color: var(--accent);
+        }
+
+        .citation-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .citation-content {
+            background: rgba(13, 17, 23, 0.95);
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: auto;
+            display: none;
+        }
+
+        .citation-content.active {
+            display: block;
+        }
+
+        .copy-btn {
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(63, 185, 80, 0.1);
+            border: 1px solid rgba(63, 185, 80, 0.3);
+            color: var(--success);
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: rgba(63, 185, 80, 0.2);
+            border-color: var(--success);
+        }
+
+        /* Footer */
+        .footer-container {
+            background: rgba(20, 25, 35, 0.95);
+            border-top: 2px solid var(--border-color);
+            padding: 2rem;
+            margin-top: auto;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .footer-content a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .footer-content a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .pub-metadata {
+                gap: 1rem;
+            }
+
+            .publication-card {
+                padding: 1.5rem;
+            }
+
+            .filters-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.75rem;
+            }
+
+            .pub-title {
+                font-size: 1.1rem;
+            }
+
+            .pub-actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="nav-logo">Dominique Loyer</a>
+            <ul class="nav-links">
+                <li><a href="/publications.html">Publications</a></li>
+                <li><a href="/conferences.html">Conferences</a></li>
+                <li><a href="/projects.html">Projects</a></li>
+                <li><a href="/teaching.html">Teaching</a></li>
+                <li><a href="/index-fr.html">FR</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="page-header">
+            <h1>Publications & Research</h1>
+            <p>Peer-reviewed papers, preprints, and research outputs on AI transparency, information credibility, and algorithmic governance.</p>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="filters-section">
+            <div class="filter-group">
+                <span class="filter-label">Filter by Type:</span>
+                <button class="filter-btn active" onclick="filterPublications('all')">All</button>
+                <button class="filter-btn" onclick="filterPublications('paper')">Papers</button>
+                <button class="filter-btn" onclick="filterPublications('preprint')">Preprints</button>
+                <button class="filter-btn" onclick="filterPublications('thesis')">Thesis</button>
+            </div>
+            <div class="filter-group" style="margin-left: auto;">
+                <span class="filter-label">Citation Format:</span>
+                <select class="citation-format" onchange="changeCitationFormat(this.value)">
+                    <option value="apa">APA 7th</option>
+                    <option value="acl">ACL</option>
+                    <option value="bibtex">BibTeX</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Publications -->
+        <div id="publications-list">
+            <!-- Thesis -->
+            <div class="publication-card" data-type="thesis" data-year="2025">
+                <div class="pub-title">Le Léviathan Algorithmique : pouvoir, opacité et responsabilité à l'ére de l'intelligence artificielle</div>
+                
+                <div class="pub-metadata">
+                    <div class="pub-meta-item">
+                        <span class="pub-meta-label">Author</span>
+                        <span class="pub-meta-value">Dominique S. Loyer</span>
+                    </div>
+                    <div class="pub-meta-item">
+                        <span class="pub-meta-label">Year</span>
+                        <span class="pub-meta-value">2025</span>
+                    </div>
+                    <div class="pub-meta-item">
+                        <span class="pub-meta-label">Type</span>
+                        <span class="pub-meta-value">PhD Thesis (Examen de Synthèse Doctoral)</span>
+                    </div>
+                    <div class="pub-meta-item">
+                        <span class="pub-meta-label">DOI</span>
+                        <span class="pub-meta-value">10.13140/RG.2.2.28011.20002</span>
+                    </div>
+                    <div class="pub-meta-item">
+                        <span class="pub-meta-label">Institution</span>
+                        <span class="pub-meta-value">UQAM</span>
+                    </div>
+                </div>
+
+                <div class="pub-abstract">
+                    Examination of algorithmic systems through the lens of classical bureaucratic theory (Weber), contemporary bureaucratic critique (Graeber), and digital governance (Zuboff). Explores the power dynamics, opacity, and accountability mechanisms in algorithmic decision-making systems.
+                </div>
+
+                <div class="pub-tags">
+                    <span class="pub-tag">Algorithmic Bureaucracy</span>
+                    <span class="pub-tag">AI Governance</span>
+                    <span class="pub-tag">Digital Accountability</span>
+                    <span class="pub-tag">Surveillance Capitalism</span>
+                </div>
+
+                <div class="pub-actions">
+                    <button class="action-btn" onclick="toggleCitation(this, 'thesis-1')">📋 Citation</button>
+                    <a href="https://doi.org/10.13140/RG.2.2.28011.20002" target="_blank" class="action-btn">🔗 ResearchGate</a>
+                </div>
+
+                <div class="citation-box" id="thesis-1">
+                    <div class="citation-tabs">
+                        <button class="citation-tab active" onclick="showCitationTab(this, 'apa')">APA 7th</button>
+                        <button class="citation-tab" onclick="showCitationTab(this, 'acl')">ACL</button>
+                        <button class="citation-tab" onclick="showCitationTab(this, 'bibtex')">BibTeX</button>
+                    </div>
+                    <div class="citation-content active" data-format="apa">
+Loyer, D. S. (2025). Le Léviathan algorithmique : pouvoir, opacité et responsabilité à l'ére de l'intelligence artificielle [Doctoral dissertation, Université du Québec à Montréal]. https://doi.org/10.13140/RG.2.2.28011.20002
+                    </div>
+                    <div class="citation-content" data-format="acl">
+Dominique S. Loyer. 2025. Le Léviathan algorithmique : pouvoir, opacité et responsabilité à l'ére de l'intelligence artificielle. Ph.D. thesis, Université du Québec à Montréal.
+                    </div>
+                    <div class="citation-content" data-format="bibtex">
+@phdthesis{loyer2025leviathan,
+  author = {Loyer, Dominique S.},
+  title = {Le Léviathan algorithmique : pouvoir, opacité et responsabilité à l'ére de l'intelligence artificielle},
+  school = {Université du Québec à Montréal},
+  year = {2025},
+  doi = {10.13140/RG.2.2.28011.20002}
+}
+                    </div>
+                    <button class="copy-btn" onclick="copyCitation(this)">📋 Copy Citation</button>
+                </div>
+            </div>
+
+            <!-- Paper 1 -->
+            <div class="publication-card" data-type="preprint" data-year="2025">
+                <div class="pub-title">Modeling a Hybrid System (Predicate-Logic-Based + ML/AI) for Verifying the Credibility of Information Sources</div>
+                
+                <div class="pub-metadata">
+                    <div class="pub-meta-item">
+                        <span class="pub-meta-label">Author</span>
+                        <span class="pub-meta-value">Dominique S. Loyer</span>
+                    </div>
+                    <div class="pub-meta-item">
+                        <span class="pub-meta-label">Year</span>
+                        <span class="pub-meta-value">2025</span>
+                    </div>
+                    <div class="pub-meta-item">
+                        <span class="pub-meta-label">Type</span>
+                        <span class="pub-meta-value">Preprint</span>
+                    </div>
+                    <div class="pub-meta-item">
+                        <span class="pub-meta-label">DOI</span>
+                        <span class="pub-meta-value">10.13140/RG.2.2.36348.24961</span>
+                    </div>
+                    <div class="pub-meta-item">
+                        <span class="pub-meta-label">Status</span>
+                        <span class="pub-meta-value">Under Review</span>
+                    </div>
+                </div>
+
+                <div class="pub-abstract">
+                    This paper presents a neuro-symbolic approach combining predicate-logic ontologies with machine learning techniques for assessing information source credibility. The hybrid system leverages domain knowledge encoded in logical predicates with the adaptive learning capabilities of neural networks.
+                </div>
+
+                <div class="pub-tags">
+                    <span class="pub-tag">Neuro-Symbolic AI</span>
+                    <span class="pub-tag">Information Credibility</span>
+                    <span class="pub-tag">Ontologies</span>
+                    <span class="pub-tag">Machine Learning</span>
+                </div>
+
+                <div class="pub-actions">
+                    <button class="action-btn" onclick="toggleCitation(this, 'paper-1')">📋 Citation</button>
+                    <a href="https://doi.org/10.13140/RG.2.2.36348.24961" target="_blank" class="action-btn">🔗 ResearchGate</a>
+                </div>
+
+                <div class="citation-box" id="paper-1">
+                    <div class="citation-tabs">
+                        <button class="citation-tab active" onclick="showCitationTab(this, 'apa')">APA 7th</button>
+                        <button class="citation-tab" onclick="showCitationTab(this, 'acl')">ACL</button>
+                        <button class="citation-tab" onclick="showCitationTab(this, 'bibtex')">BibTeX</button>
+                    </div>
+                    <div class="citation-content active" data-format="apa">
+Loyer, D. S. (2025). Modeling a hybrid system (predicate-logic-based + ML/AI) for verifying the credibility of information sources. https://doi.org/10.13140/RG.2.2.36348.24961
+                    </div>
+                    <div class="citation-content" data-format="acl">
+Dominique S. Loyer. 2025. Modeling a hybrid system (predicate-logic-based + ML/AI) for verifying the credibility of information sources.
+                    </div>
+                    <div class="citation-content" data-format="bibtex">
+@article{loyer2025hybrid,
+  author = {Loyer, Dominique S.},
+  title = {Modeling a Hybrid System (Predicate-Logic-Based + ML/AI) for Verifying the Credibility of Information Sources},
+  year = {2025},
+  doi = {10.13140/RG.2.2.36348.24961}
+}
+                    </div>
+                    <button class="copy-btn" onclick="copyCitation(this)">📋 Copy Citation</button>
+                </div>
+            </div>
+
+            <!-- Paper 2 -->
+            <div class="publication-card" data-type="preprint" data-year="2025">
+                <div class="pub-title">Hybrid System Ontology for Information Source Verification</div>
+                
+                <div class="pub-metadata">
+                    <div class="pub-meta-item">
+                        <span class="pub-meta-label">Author</span>
+                        <span class="pub-meta-value">Dominique S. Loyer</span>
+                    </div>
+                    <div class="pub-meta-item">
+                        <span class="pub-meta-label">Year</span>
+                        <span class="pub-meta-value">2025</span>
+                    </div>
+                    <div class="pub-meta-item">
+                        <span class="pub-meta-label">Type</span>
+                        <span class="pub-meta-value">Preprint</span>
+                    </div>
+                    <div class="pub-meta-item">
+                        <span class="pub-meta-label">Keywords</span>
+                        <span class="pub-meta-value">Ontology Engineering</span>
+                    </div>
+                </div>
+
+                <div class="pub-abstract">
+                    Detailed ontological framework for modeling information source credibility factors. This work provides formal definitions and relationships between key concepts in information verification, creating a foundation for hybrid AI systems.
+                </div>
+
+                <div class="pub-tags">
+                    <span class="pub-tag">Ontology Engineering</span>
+                    <span class="pub-tag">Knowledge Graphs</span>
+                    <span class="pub-tag">Information Verification</span>
+                </div>
+
+                <div class="pub-actions">
+                    <button class="action-btn" onclick="toggleCitation(this, 'paper-2')">📋 Citation</button>
+                </div>
+
+                <div class="citation-box" id="paper-2">
+                    <div class="citation-tabs">
+                        <button class="citation-tab active" onclick="showCitationTab(this, 'apa')">APA 7th</button>
+                        <button class="citation-tab" onclick="showCitationTab(this, 'acl')">ACL</button>
+                        <button class="citation-tab" onclick="showCitationTab(this, 'bibtex')">BibTeX</button>
+                    </div>
+                    <div class="citation-content active" data-format="apa">
+Loyer, D. S. (2025). Hybrid system ontology for information source verification.
+                    </div>
+                    <div class="citation-content" data-format="acl">
+Dominique S. Loyer. 2025. Hybrid system ontology for information source verification.
+                    </div>
+                    <div class="citation-content" data-format="bibtex">
+@article{loyer2025ontology,
+  author = {Loyer, Dominique S.},
+  title = {Hybrid System Ontology for Information Source Verification},
+  year = {2025}
+}
+                    </div>
+                    <button class="copy-btn" onclick="copyCitation(this)">📋 Copy Citation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-container">
+        <div class="footer-content">
+            <p>© 2026 Dominique Loyer • <a href="https://github.com/DominiqueLoyer">GitHub</a> • <a href="https://scholar.google.com/citations?user=JmRd6U0AAAAJ">Google Scholar</a> • <a href="https://orcid.org/0009-0003-9713-7109">ORCID</a></p>
+            <p>Doctoral Researcher in Cognitive Informatics • UQAM</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleCitation(btn, citationId) {
+            const citationBox = document.getElementById(citationId);
+            citationBox.classList.toggle('active');
+            btn.textContent = citationBox.classList.contains('active') ? '✕ Hide Citation' : '📋 Citation';
+        }
+
+        function showCitationTab(btn, format) {
+            // Hide all citation contents
+            const citationBox = btn.closest('.citation-box');
+            const contents = citationBox.querySelectorAll('.citation-content');
+            contents.forEach(c => c.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = citationBox.querySelectorAll('.citation-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            // Show selected format and mark tab as active
+            citationBox.querySelector(`[data-format="${format}"]`).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        function copyCitation(btn) {
+            const citationBox = btn.closest('.citation-box');
+            const activeCitation = citationBox.querySelector('.citation-content.active');
+            const text = activeCitation.textContent.trim();
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            });
+        }
+
+        function filterPublications(type) {
+            const cards = document.querySelectorAll('.publication-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            // Update active button
+            buttons.forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filter cards
+            cards.forEach(card => {
+                if (type === 'all' || card.dataset.type === type) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function changeCitationFormat(format) {
+            // This can be extended to change all citations at once
+            console.log('Citation format changed to:', format);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!--
+CONFIRMATION: NEITHER Mermaid JS NOR SVG were used anywhere in the output.
+PALETTE: Vibrant Tech (Deep Blue #1E3A8A, Bright Cyan #06B6D4, Energetic Orange #F97316, Crisp Green #10B981, Purple #8B5CF6)
+PLAN:
+- Intro: Project overview and context.
+- Section 1: Acquis vs Écarts (Donut Chart - Goal: Inform on thesis completion state).
+- Section 2: Gaps Comblés (Radar Chart - Goal: Compare traditional NeSy vs SysCRED).
+- Section 3: Biais WEIRD (Stacked Bar - Goal: Compare media diet composition).
+- Section 4: Pipeline (HTML Grid Timeline - Goal: Show schedule over time).
+-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilan Stratégique SysCRED</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F3F4F6; color: #1F2937; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        .timeline-grid { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 0.5rem; }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+    </style>
+</head>
+<body class="antialiased pb-20">
+
+    <header class="bg-[#1E3A8A] text-white py-16 px-6 shadow-lg mb-10 border-b-8 border-[#06B6D4]">
+        <div class="max-w-6xl mx-auto">
+            <div class="inline-block bg-[#F97316] text-white font-bold py-1 px-3 rounded-full text-sm mb-4 tracking-widest uppercase">Audit de Thèse</div>
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">Architecture SysCRED</h1>
+            <p class="text-xl text-blue-100 max-w-3xl mb-6">Bilan de Thèse et Perspectives Stratégiques en Informatique Cognitive. Une approche hybride neuro-symbolique pour contrer la désinformation via l'ontologie dynamique et la friction cognitive.</p>
+            <div class="flex items-center gap-4 text-sm font-semibold text-blue-200">
+                <span>&#128100; Dominique Loyer (DIC-9411)</span>
+                <span>&#128197; Avril 2026</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 space-y-12">
+
+        <section class="bg-white rounded-2xl shadow-md p-8 md:p-10 border-t-4 border-[#10B981]">
+            <h2 class="text-3xl font-bold text-[#1E3A8A] mb-4">1. État des Lieux : Fondations et Acquis</h2>
+            <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                L'objectif initial de créer une "prothèse cognitive" transparente est largement atteint. La version V3.0 actuelle démontre une hybridation NeSy fonctionnelle, combinant l'extraction d'entités neuronales et le raisonnement ontologique (GraphRAG). L'évaluation via les benchmarks LIAR et TREC prouve la robustesse du système. Le défi restant réside dans l'ouverture du système vers des bases de connaissances mondiales.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <div class="space-y-6">
+                    <div class="bg-green-50 p-5 rounded-xl border-l-4 border-green-500">
+                        <h3 class="font-bold text-green-800 text-lg mb-2">&#10003; Modules Complétés (Acquis)</h3>
+                        <ul class="list-disc list-inside text-green-700 space-y-1 ml-4">
+                            <li>Hybridation NeSy (NER + Ontologie)</li>
+                            <li>GraphRAG couplé avec LLM (Gemini)</li>
+                            <li>Benchmarks de validation (LIAR, TREC)</li>
+                            <li>Dashboard xAI (Transparence D3.js)</li>
+                        </ul>
+                    </div>
+                    <div class="bg-orange-50 p-5 rounded-xl border-l-4 border-orange-500">
+                        <h3 class="font-bold text-orange-800 text-lg mb-2">&#8987; Écarts à Combler (En cours)</h3>
+                        <ul class="list-disc list-inside text-orange-700 space-y-1 ml-4">
+                            <li>Enrichissement externe (DBpedia/Wikidata)</li>
+                            <li>Boucle de rétroaction cognitive</li>
+                            <li>Profilage des biais de diète médiatique</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-2xl shadow-md p-8 md:p-10 border-t-4 border-[#8B5CF6]">
+            <h2 class="text-3xl font-bold text-[#1E3A8A] mb-4">2. Apport Scientifique : Combler les Lacunes</h2>
+            <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                SysCRED se positionne à l'intersection critique de deux disciplines. En IA Neuro-Symbolique, il résout le problème des ontologies statiques grâce au GraphRAG dynamique, limitant les raccourcis de raisonnement. En Sciences Cognitives, au lieu de censurer, il introduit une "friction cognitive" qui force l'utilisateur à passer d'une pensée rapide (Système 1) à une réflexion analytique (Système 2).
+            </p>
+
+            <div class="chart-container" style="max-width: 700px;">
+                <canvas id="radarChart"></canvas>
+            </div>
+            <p class="text-center text-sm text-gray-500 mt-4 italic">Comparaison des capacités architecturales : Systèmes NeSy traditionnels vs Architecture SysCRED V3.0</p>
+        </section>
+
+        <section class="bg-white rounded-2xl shadow-md p-8 md:p-10 border-t-4 border-[#06B6D4]">
+            <h2 class="text-3xl font-bold text-[#1E3A8A] mb-4">3. Profilage Cognitif et Biais WEIRD</h2>
+            <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                La réactance des utilisateurs face à la correction est un obstacle majeur. La solution de conception de SysCRED est de ne pas profiler l'utilisateur, mais sa <strong>diète médiatique</strong>. En quantifiant la provenance des sources, le système peut alerter sur la surreprésentation de sociétés WEIRD (Western, Educated, Industrialized, Rich, Democratic) et encourager une ouverture vers le Sud global, favorisant ainsi la pensée critique.
+            </p>
+
+            <div class="chart-container" style="height: 250px;">
+                <canvas id="weirdChart"></canvas>
+            </div>
+            <div class="bg-blue-50 text-blue-800 p-4 rounded-lg mt-6 text-center font-medium">
+                Intervention ciblée : "Le saviez-vous ? 95% des sources liées à cette rumeur proviennent de sociétés dites WEIRD. Consulter des médias diversifiés offre une autre perspective."
+            </div>
+        </section>
+
+        <section class="bg-white rounded-2xl shadow-md p-8 md:p-10 border-t-4 border-[#F97316]">
+            <h2 class="text-3xl font-bold text-[#1E3A8A] mb-6">4. Pipeline de Développement (2026)</h2>
+            <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                La trajectoire vers la soutenance est structurée en quatre phases itératives, allant de l'intégration d'API externes à la rédaction finale des chapitres de la thèse.
+            </p>
+
+            <div class="overflow-x-auto">
+                <div class="min-w-[700px]">
+                    <div class="timeline-grid text-sm font-bold text-gray-500 text-center mb-2">
+                        <div>Avr</div><div>Mai</div><div>Juin</div><div>Juil</div><div>Aoû</div><div>Sep</div><div>Oct</div><div>Nov</div><div>Déc</div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="relative h-12 bg-gray-100 rounded-lg flex items-center">
+                            <div class="absolute left-0 w-[22%] h-full bg-[#06B6D4] opacity-90 rounded-lg flex items-center px-4 shadow-sm">
+                                <span class="text-white font-bold whitespace-nowrap text-sm">Phase 1: Enrichissement API</span>
+                            </div>
+                        </div>
+
+                        <div class="relative h-12 bg-gray-100 rounded-lg flex items-center">
+                            <div class="absolute left-[11%] w-[22%] h-full bg-[#10B981] opacity-90 rounded-lg flex items-center px-4 shadow-sm">
+                                <span class="text-white font-bold whitespace-nowrap text-sm">Phase 2: Profilage WEIRD</span>
+                            </div>
+                        </div>
+
+                        <div class="relative h-12 bg-gray-100 rounded-lg flex items-center">
+                            <div class="absolute left-[33%] w-[22%] h-full bg-[#8B5CF6] opacity-90 rounded-lg flex items-center px-4 shadow-sm">
+                                <span class="text-white font-bold whitespace-nowrap text-sm">Phase 3: Évaluation (TREC/LIAR)</span>
+                            </div>
+                        </div>
+
+                        <div class="relative h-12 bg-gray-100 rounded-lg flex items-center">
+                            <div class="absolute left-[44%] w-[55%] h-full bg-[#F97316] opacity-90 rounded-lg flex items-center px-4 shadow-sm">
+                                <span class="text-white font-bold whitespace-nowrap text-sm">Phase 4: Rédaction & Dépôt Thèse</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const wrapLabel = (label) => {
+            if (label.length <= 16) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + word).length > 16) {
+                    if (currentLine) lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            });
+            if (currentLine) lines.push(currentLine.trim());
+            return lines;
+        };
+
+        const standardTooltipConfig = {
+            tooltip: {
+                callbacks: {
+                    title: function(tooltipItems) {
+                        const item = tooltipItems[0];
+                        let label = item.chart.data.labels[item.dataIndex];
+                        if (Array.isArray(label)) {
+                            return label.join(' ');
+                        } else {
+                            return label;
+                        }
+                    }
+                }
+            }
+        };
+
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#4B5563';
+
+        const ctxStatus = document.getElementById('statusChart').getContext('2d');
+        const labelsStatus = ['Acquis (GraphRAG, NER, xAI)'.split(' '), 'En cours (Google KG, WEIRD)'.split(' ')];
+        
+        new Chart(ctxStatus, {
+            type: 'doughnut',
+            data: {
+                labels: labelsStatus,
+                datasets: [{
+                    data: [75, 25],
+                    backgroundColor: ['#10B981', '#F97316'],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: { position: 'bottom' },
+                    ...standardTooltipConfig
+                }
+            }
+        });
+
+        const ctxRadar = document.getElementById('radarChart').getContext('2d');
+        const rawLabelsRadar = [
+            "Ontologie Dynamique (Temps Réel)",
+            "Grounding des LLMs",
+            "Friction Cognitive (xAI)",
+            "Évaluation Standardisée (TREC)",
+            "Ciblage des Biais"
+        ];
+        const wrappedLabelsRadar = rawLabelsRadar.map(wrapLabel);
+
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: wrappedLabelsRadar,
+                datasets: [
+                    {
+                        label: 'SysCRED V3.0',
+                        data: [95, 90, 85, 90, 80],
+                        backgroundColor: 'rgba(6, 182, 212, 0.4)',
+                        borderColor: '#06B6D4',
+                        pointBackgroundColor: '#06B6D4',
+                        borderWidth: 3
+                    },
+                    {
+                        label: 'NeSy Traditionnel / LLMs',
+                        data: [30, 40, 20, 60, 10],
+                        backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                        borderColor: '#8B5CF6',
+                        pointBackgroundColor: '#8B5CF6',
+                        borderWidth: 2,
+                        borderDash: [5, 5]
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(0,0,0,0.1)' },
+                        suggestedMin: 0,
+                        suggestedMax: 100,
+                        ticks: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: { position: 'top' },
+                    ...standardTooltipConfig
+                }
+            }
+        });
+
+        const ctxWeird = document.getElementById('weirdChart').getContext('2d');
+        new Chart(ctxWeird, {
+            type: 'bar',
+            data: {
+                labels: [['Diète Médiatique', 'Standard (Traditionnelle)'], ['Objectif SysCRED', '(Diversification)']],
+                datasets: [
+                    {
+                        label: 'Sources WEIRD (Nord Global)',
+                        data: [95, 50],
+                        backgroundColor: '#1E3A8A',
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Sources Sud Global / Diversifiées',
+                        data: [5, 50],
+                        backgroundColor: '#F97316',
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                scales: {
+                    x: { stacked: true, max: 100, ticks: { callback: function(value) { return value + '%' } } },
+                    y: { stacked: true }
+                },
+                plugins: {
+                    legend: { position: 'top' },
+                    ...standardTooltipConfig
+                }
+            }
+        });
+    </script>
+</body>
+</html>

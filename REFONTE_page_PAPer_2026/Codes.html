@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dominique Loyer | Portfolio de Codes</title>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":
+  new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src=
+  "https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,"script","dataLayer","GTM-PRP2NSM4");</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3LQWHW6NDT"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-3LQWHW6NDT");
+  </script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+  <link rel="icon" type="image/png" href="/peace.png"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    :root{
+      --green:#00ff41; --green-dim:#00cc33; --green-dark:#004d1a;
+      --bg:#0a0a0a; --bg-card:#0f1a0f; --bg-card2:#0d150d;
+      --border:#00ff41; --border-dim:#005511;
+      --font:"Courier New",Courier,monospace;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body::before{content:"";pointer-events:none;position:fixed;inset:0;
+      background:repeating-linear-gradient(to bottom,transparent 0px,transparent 3px,
+      rgba(0,0,0,0.07) 3px,rgba(0,0,0,0.07) 4px);z-index:9999}
+    body{margin:0;background:var(--bg);color:var(--green);
+      font-family:var(--font);font-size:13px;padding-bottom:60px}
+
+    /* HEADER */
+    header{background:var(--bg);border-bottom:1px solid var(--border);
+      padding:.6rem 1rem;text-align:center}
+    header h1{margin:0;font-size:1rem;letter-spacing:.12em;
+      color:var(--green);text-shadow:0 0 8px var(--green)}
+    header h1::before{content:"$ ";color:var(--green-dim)}
+
+    /* NAV */
+    nav{background:var(--bg-card);border-bottom:1px solid var(--border-dim);padding:.3rem 0}
+    nav ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center}
+    nav ul li{position:relative}
+    nav ul li a{display:block;padding:7px 13px;color:var(--green-dim);text-decoration:none;
+      font-size:.78rem;letter-spacing:.05em;transition:color .2s,background .2s;
+      border-right:1px solid var(--border-dim)}
+    nav ul li a:hover{color:var(--green);background:var(--green-dark);text-shadow:0 0 6px var(--green)}
+    .dropdown-content{display:none;position:absolute;top:100%;left:0;
+      background:var(--bg-card2);border:1px solid var(--border-dim);min-width:200px;z-index:100}
+    .dropdown-content a{border-right:none!important;border-bottom:1px solid var(--border-dim)}
+    .dropdown:hover .dropdown-content{display:block}
+
+    /* MAIN */
+    main{max-width:980px;margin:0 auto;padding:1.5rem 1rem 4rem}
+
+    /* DISCLAIMER BANNER */
+    .disclaimer-banner{
+      border-left:4px solid #ff3333;
+      background:#1a0000;
+      padding:.85rem 1.1rem;
+      margin-bottom:1.8rem;
+      border-radius:0 3px 3px 0;
+    }
+    .disclaimer-banner .disc-title{
+      color:#ff4444;font-size:.82rem;font-weight:bold;
+      letter-spacing:.06em;margin-bottom:.55rem;
+    }
+    .disclaimer-banner .disc-title::before{content:"\26A0\FE0F  AVERTISSEMENT \2014 Disclaimer"}
+    .disclaimer-banner ul{
+      list-style:none;margin:.2rem 0 0 0;padding:0;
+      font-size:.76rem;color:#cc3333;line-height:2;
+    }
+    .disclaimer-banner ul li::before{content:"\2022  "}
+    .disclaimer-banner cite{font-style:italic;color:#dd4444}
+
+    /* PAGE TITLE */
+    .page-title{font-size:.95rem;font-weight:bold;color:var(--green);
+      text-shadow:0 0 8px var(--green);border-bottom:1px solid var(--border-dim);
+      padding-bottom:.4rem;margin-bottom:.3rem;letter-spacing:.06em}
+    .page-title::before{content:">> ";color:var(--green-dim)}
+    .page-subtitle{font-size:.75rem;color:#00aa22;margin-bottom:1.2rem}
+
+    /* SPONSOR */
+    .sponsor-bar{display:flex;align-items:center;gap:.6rem;margin-bottom:1.6rem;flex-wrap:wrap}
+    .sponsor-bar img{height:20px}
+
+    /* ARTICLES */
+    article{border:1px solid var(--border-dim);margin-bottom:2rem;
+      background:var(--bg-card);border-radius:3px;overflow:hidden;
+      box-shadow:0 0 10px rgba(0,255,65,.06)}
+    .art-header{background:#0d1a0d;border-bottom:1px solid var(--border-dim);padding:.8rem 1rem}
+    .art-header h2{margin:0 0 .3rem;font-size:.82rem;color:var(--green);
+      text-shadow:0 0 6px var(--green);letter-spacing:.04em}
+    .art-header p{margin:.2rem 0;font-size:.72rem;color:#00aa22}
+    .art-keywords{font-size:.66rem;color:#005511;margin-top:.25rem}
+
+    /* CODE */
+    .code-wrap{position:relative}
+    .btn-copy{position:absolute;top:.5rem;right:.5rem;z-index:10;
+      padding:.25rem .65rem;font-size:.65rem;font-family:var(--font);
+      background:#1a2a1a;border:1px solid #005511;color:#00cc33;
+      cursor:pointer;border-radius:2px;opacity:.8;transition:all .2s}
+    .btn-copy:hover{opacity:1;background:var(--green-dark);color:var(--green);border-color:var(--green)}
+    .btn-copy.copied{color:#00ff41;border-color:#00ff41;background:#003311}
+    pre{margin:0!important;max-height:420px;overflow:auto}
+    pre code.hljs{white-space:pre-wrap;word-break:break-all;
+      font-size:.73rem;background:#0d0d0d!important}
+
+    /* CITATION FOOTER */
+    .art-footer{background:#0a120a;border-top:1px solid var(--border-dim);
+      padding:.6rem 1rem;font-size:.68rem;color:#005511}
+    .art-footer strong{color:#00aa22}
+    .art-footer cite{font-style:italic;color:#00882a}
+    .art-footer a{color:#00882a;text-decoration:none}
+    .art-footer a:hover{color:var(--green)}
+
+    /* FOOTER */
+    footer{background:var(--bg-card);border-top:1px solid var(--border-dim);
+      color:var(--green-dim);padding:.4rem 1rem;position:fixed;
+      width:100%;bottom:0;display:flex;flex-wrap:wrap;align-items:center;
+      gap:.5rem;font-size:.7rem;z-index:500}
+    footer a{color:var(--green-dim);text-decoration:none;font-family:var(--font)}
+    footer a:hover{color:var(--green)}
+    .footer-divider{color:var(--border-dim)}
+    .shields-row{display:flex;align-items:center;gap:.35rem;flex-wrap:wrap}
+    .shields-row img{height:16px;border:none}
+
+    @media(max-width:768px){
+      nav ul{flex-direction:column;align-items:flex-start}
+      nav ul li a{border-right:none;border-bottom:1px solid var(--border-dim);width:100%}
+      footer{position:relative}
+    }
+  </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PRP2NSM4"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<header>
+  <h1>Coding Showcase &mdash; Portfolio de Codes</h1>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="https://dominiqueloyer.github.io/">About</a></li>
+    <li><a href="https://github.com/DominiqueLoyer">Github Projects</a></li>
+    <li><a href="https://dominiqueloyer.github.io/papers.html">Papers</a></li>
+    <li><a href="https://syscred.uqam.ca">sysCRED</a></li>
+    <li><a href="https://dominiqueloyer.github.io/lectures.html">Lectures</a></li>
+    <li><a href="https://dominiqueloyer.github.io/Codes.html">My Coding</a></li>
+    <li><a href="https://dominiqueloyer.github.io/ontology.html">Researcher&#39;s Ontology</a></li>
+    <li><a href="https://dominiqueloyer.github.io/mapmind.html">xAI MapMind</a></li>
+    <li><a href="https://plateforme-isc.uqam.ca">Plateforme UQAM</a></li>
+    <li class="dropdown">
+      <a href="#">Children&#39;s Corner &#9662;</a>
+      <div class="dropdown-content">
+        <a href="https://dominiqueloyer.github.io/childrenCorner.html">Children&#39;s Corner I</a>
+        <a href="https://dominiqueloyer.github.io/childrenCorner2.html">Children&#39;s Corner II</a>
+        <a href="https://dominiqueloyer.github.io/pong.html">Children&#39;s Corner III</a>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+<main>
+  <div class="page-title">Coding Showcase</div>
+  <p class="page-subtitle">Mostly Python, R, Bash &mdash; <em>Use at your own risk!</em></p>
+
+  <!-- ============================================================ -->
+  <!-- DISCLAIMER BANNER                                            -->
+  <!-- ============================================================ -->
+  <div class="disclaimer-banner">
+    <div class="disc-title"></div>
+    <ul>
+      <li>Codes fournis <strong>tels quels</strong>, sans garantie d&#39;aucune sorte.</li>
+      <li>L&#39;auteur d&eacute;cline toute responsabilit&eacute; pour tout dommage r&eacute;sultant de leur utilisation.</li>
+      <li>Certains scripts n&eacute;cessitent des d&eacute;pendances sp&eacute;cifiques &mdash; v&eacute;rifiez votre environnement.</li>
+      <li>Utilisation &agrave; <strong>vos propres risques</strong> &mdash; <em>use at your own risk</em>.</li>
+      <li>Toute reproduction doit citer : <cite>Loyer, D. (2024&ndash;2026). dominiqueloyer.github.io</cite></li>
+    </ul>
+  </div>
+
+  <!-- SPONSORS -->
+  <div class="sponsor-bar">
+    <a href="https://www.buymeacoffee.com/dominiqueloyer" target="_blank">
+      <img src="https://img.shields.io/badge/Buy%20me%20a%20coffee-FFDD00?logo=buy-me-a-coffee&logoColor=black" alt="Buy me a coffee"/>
+    </a>
+    <a href="https://github.com/sponsors/DominiqueLoyer" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/Sponsoriser-DominiqueLoyer-EA4AAA?logo=github-sponsors" alt="Sponsorisez sur GitHub"/>
+    </a>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- ARTICLE 1 : RI TP1                                           -->
+  <!-- ============================================================ -->
+  <article>
+    <div class="art-header">
+      <h2>(code propre) RI_tp1_6avril25.ipynb</h2>
+      <p>Configure un environnement complet pour la recherche d&#39;information : installation Pyserini/Lucene,
+         indexation, requ&ecirc;tes BM25 / TF-IDF / RM3, &eacute;valuation TREC.</p>
+      <p class="art-keywords">Mots-cl&eacute;s : Recherche d&#39;information &middot; Pyserini &middot; Indexation &middot; BM25 &middot; TREC</p>
+    </div>
+    <div class="code-wrap">
+      <button class="btn-copy" onclick="copyCode(this)">&#10247; Copier</button>
+      <pre><code class="language-python"># === &Eacute;tape 0 : Configuration Compl&egrave;te ===
+import os, sys, subprocess, time, glob, re, json, nltk
+from tqdm.notebook import tqdm
+import traceback
+
+print("--- D&eacute;but de la Configuration Compl&egrave;te ---")
+
+# [1/8] Java 21
+subprocess.run("apt-get update -qq && apt-get install -y openjdk-21-jdk-headless -qq",
+               shell=True, check=True, timeout=180)
+
+# [2/8] update-alternatives
+java_path = "/usr/lib/jvm/java-21-openjdk-amd64/bin/java"
+if os.path.exists(java_path):
+    subprocess.run(f"update-alternatives --install /usr/bin/java java {java_path} 1", shell=True)
+    subprocess.run(f"update-alternatives --set java {java_path}", shell=True)
+os.environ["JAVA_HOME"] = "/usr/lib/jvm/java-21-openjdk-amd64"
+
+# [3/8] outils build
+subprocess.run("apt-get install -y build-essential cmake -qq", shell=True, check=True, timeout=180)
+
+# [4/8] pybind11
+subprocess.run(f"{sys.executable} -m pip install pybind11 -q", shell=True, check=True, timeout=60)
+
+# [5/8] Pyserini + NLTK + pytrec_eval
+subprocess.run(f"{sys.executable} -m pip install pyserini nltk pytrec_eval",
+               shell=True, check=True, timeout=600)
+
+# [6/8] NLTK ressources
+for res in ["wordnet","stopwords","punkt","omw-1.4","punkt_tab"]:
+    nltk.download(res, quiet=True)
+
+# [7/8] Chemins
+DRIVE_PROJECT_PATH = "/content/drive/My Drive/Projet_RI/TREC"
+OUTPUT_DIR         = "/content/ap_output"
+CORPUS_DIR         = os.path.join(OUTPUT_DIR, "corpus")
+INDEX_DIR_BASELINE = os.path.join(OUTPUT_DIR, "indexes/baseline")
+INDEX_DIR_PREPROC  = os.path.join(OUTPUT_DIR, "indexes/preprocessed")
+RUN_DIR            = os.path.join(OUTPUT_DIR, "runs")
+EVAL_DIR           = os.path.join(OUTPUT_DIR, "eval")
+for d in [OUTPUT_DIR,CORPUS_DIR,INDEX_DIR_BASELINE,INDEX_DIR_PREPROC,RUN_DIR,EVAL_DIR]:
+    os.makedirs(d, exist_ok=True)
+
+# [8/8] Pr&eacute;traitement
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import word_tokenize
+stop_words_set = set(stopwords.words("english"))
+lemmatizer     = WordNetLemmatizer()
+
+def preprocess_text(text):
+    if not isinstance(text, str): return ""
+    tokens = word_tokenize(text.lower())
+    return " ".join(lemmatizer.lemmatize(w) for w in tokens
+                    if w.isalpha() and w not in stop_words_set)
+
+print("--- Configuration Compl&egrave;te Termin&eacute;e ---")</code></pre>
+    </div>
+    <div class="art-footer">
+      <strong>Citation :</strong> Loyer, D. (2025).
+      <cite>(code propre)_RI_tp1_6avril25.ipynb</cite> [Code source].
+      <a href="https://dominiqueloyer.github.io/Codes.html">dominiqueloyer.github.io/Codes.html</a>
+    </div>
+  </article>
+
+  <!-- ============================================================ -->
+  <!-- ARTICLE 2 : R Census                                         -->
+  <!-- ============================================================ -->
+  <article>
+    <div class="art-header">
+      <h2>1mars2018.R</h2>
+      <p>Chargement, nettoyage et mod&eacute;lisation de donn&eacute;es Census.
+         Arbre de d&eacute;cision (rpart) et r&eacute;seau neuronal (nnet) pour pr&eacute;dire les groupes de revenus.</p>
+      <p class="art-keywords">Mots-cl&eacute;s : R &middot; Arbre de d&eacute;cision &middot; R&eacute;seau neuronal &middot; Census &middot; Pr&eacute;diction</p>
+    </div>
+    <div class="code-wrap">
+      <button class="btn-copy" onclick="copyCode(this)">&#10247; Copier</button>
+      <pre><code class="language-r">## Auteur : Dominique Loyer
+## Questions 1-2 : Exploration des donn&eacute;es Census
+
+Census &lt;- read.csv("~/Desktop/CensusClean.csv")
+summary(Census)
+str(Census)
+
+pwc &lt;- readxl::read_excel("Census.xlsx")
+
+master        &lt;- subset(pwc, Education %in% "Masters")
+master50kplus &lt;- subset(master, `Income Group` %in% "&gt;50K")
+dim(master50kplus)
+
+doctorate        &lt;- subset(pwc, Education %in% "Doctorate")
+doctorate50kplus &lt;- subset(doctorate, `Income Group` %in% "&gt;50K")
+dim(doctorate50kplus)
+
+## Question 3 : Nettoyage et normalisation
+pwcClean$workclass      &lt;- as.factor(pwcClean$workclass)
+pwcClean$`Income Group` &lt;- as.factor(pwcClean$`Income Group`)
+pwcClean$Education      &lt;- as.factor(pwcClean$Education)
+pwcClean$Gender         &lt;- as.factor(pwcClean$Gender)
+
+normalize &lt;- function(x) (x - min(x)) / (max(x) - min(x))
+pwcClean$Age                      &lt;- normalize(pwcClean$Age)
+pwcClean$`Demographic Adjustment` &lt;- normalize(pwcClean$`Demographic Adjustment`)
+pwcClean$`capital-gain`           &lt;- normalize(pwcClean$`capital-gain`)
+pwcClean$`hours-per-week`         &lt;- normalize(pwcClean$`hours-per-week`)
+
+## Arbre de d&eacute;cision (rpart)
+library(rpart); library(rpart.plot)
+mytreeadult &lt;- rpart(`Income Group` ~ Education + workclass + Gender +
+                     Age + `hours-per-week`,
+                     data=pwcClean, method="class",
+                     control=rpart.control(minsplit=1))
+rpart.plot(mytreeadult, type=3, extra=101, fallen.leaves=TRUE)
+
+## Partition train / validation
+index     &lt;- sample(1:nrow(pwcClean), 20000)
+pwc.test  &lt;- pwcClean[ index,]
+pwc.valid &lt;- pwcClean[-index,]
+
+## R&eacute;seau neuronal nnet (10 neurones cach&eacute;s)
+library(nnet)
+set.seed(99999999)
+pwc.net &lt;- nnet(`Income Group` ~ ., data=pwc.test, size=10)
+pwc.valid$est.income &lt;- predict(pwc.net, pwc.valid, type="class")
+table(pwc.valid$`Income Group`, pwc.valid$est.income)</code></pre>
+    </div>
+    <div class="art-footer">
+      <strong>Citation :</strong> Loyer, D. (2018).
+      <cite>1mars2018.R</cite> [Code source].
+      <a href="https://dominiqueloyer.github.io/Codes.html">dominiqueloyer.github.io/Codes.html</a>
+    </div>
+  </article>
+
+  <!-- ============================================================ -->
+  <!-- ARTICLE 3 : ARIMA                                            -->
+  <!-- ============================================================ -->
+  <article>
+    <div class="art-header">
+      <h2>ARIMA.R</h2>
+      <p>S&eacute;rie chronologique de ventes : d&eacute;composition saisonni&egrave;re,
+         mod&egrave;le ARIMA automatique et pr&eacute;visions &agrave; 20 p&eacute;riodes.</p>
+      <p class="art-keywords">Mots-cl&eacute;s : R &middot; ARIMA &middot; S&eacute;ries temporelles &middot; Pr&eacute;vision &middot; forecast</p>
+    </div>
+    <div class="code-wrap">
+      <button class="btn-copy" onclick="copyCode(this)">&#10247; Copier</button>
+      <pre><code class="language-r">library(forecast)
+
+sales &lt;- read.csv("sales.csv")
+sales &lt;- ts(sales[,1], start=1995, freq=12)
+
+# D&eacute;composition saisonni&egrave;re
+apts &lt;- decompose(sales)
+plot(apts)
+
+# Mod&egrave;le ARIMA automatique
+arima_model &lt;- auto.arima(sales)
+arima_model
+accuracy(arima_model)
+
+# Pr&eacute;vision 20 p&eacute;riodes
+plot(forecast(arima_model, 20))</code></pre>
+    </div>
+    <div class="art-footer">
+      <strong>Citation :</strong> Loyer, D. (2024).
+      <cite>ARIMA.R</cite> [Code source].
+      <a href="https://dominiqueloyer.github.io/Codes.html">dominiqueloyer.github.io/Codes.html</a>
+    </div>
+  </article>
+
+  <!-- ============================================================ -->
+  <!-- ARTICLE 4 : Neural MT (Helsinki-NLP)                         -->
+  <!-- ============================================================ -->
+  <article>
+    <div class="art-header">
+      <h2>neural_mt_en_ru.py</h2>
+      <p>Traduction automatique neuronale Anglais &rarr; Russe avec Helsinki-NLP/opus-mt.
+         &Eacute;valuation BLEU via sacrebleu.</p>
+      <p class="art-keywords">Mots-cl&eacute;s : NMT &middot; Helsinki-NLP &middot; MarianMT &middot; BLEU &middot; HuggingFace</p>
+    </div>
+    <div class="code-wrap">
+      <button class="btn-copy" onclick="copyCode(this)">&#10247; Copier</button>
+      <pre><code class="language-python">from transformers import MarianMTModel, MarianTokenizer
+import sacrebleu
+
+MODEL_NAME = "Helsinki-NLP/opus-mt-en-ru"
+tokenizer  = MarianTokenizer.from_pretrained(MODEL_NAME)
+model      = MarianMTModel.from_pretrained(MODEL_NAME)
+
+def translate(texts: list) -> list:
+    inputs = tokenizer(texts, return_tensors="pt",
+                       padding=True, truncation=True, max_length=512)
+    translated = model.generate(**inputs)
+    return [tokenizer.decode(t, skip_special_tokens=True) for t in translated]
+
+# Exemple
+src = ["The quick brown fox jumps over the lazy dog.",
+       "Artificial intelligence is transforming research."]
+tgt = translate(src)
+for s, t in zip(src, tgt):
+    print(f"EN: {s}")
+    print(f"RU: {t}
+")
+
+# Score BLEU
+refs  = [["&Bystryj korichnevyj lis prygaet cherez lenivoyu sobaku."]]
+hyps  = [tgt[0]]
+bleu  = sacrebleu.corpus_bleu(hyps, refs)
+print(f"BLEU score : {bleu.score:.2f}")</code></pre>
+    </div>
+    <div class="art-footer">
+      <strong>Citation :</strong> Loyer, D. (2025).
+      <cite>neural_mt_en_ru.py</cite> [Code source].
+      <a href="https://dominiqueloyer.github.io/Codes.html">dominiqueloyer.github.io/Codes.html</a>
+      &mdash; voir aussi :
+      <a href="https://doi.org/10.13140/RG.2.2.17980.55687" target="_blank">
+        DOI 10.13140/RG.2.2.17980.55687</a>
+    </div>
+  </article>
+
+  <!-- ============================================================ -->
+  <!-- ARTICLE 5 : sysCRED fact-checking snippet                    -->
+  <!-- ============================================================ -->
+  <article>
+    <div class="art-header">
+      <h2>sysCRED &mdash; systemFactChecking (extrait)</h2>
+      <p>Syst&egrave;me neuro-symbolique d&#39;&eacute;valuation de la cr&eacute;dibilit&eacute; de l&#39;information.
+         R&egrave;gles de pr&eacute;dicats ontologiques + module ML.</p>
+      <p class="art-keywords">Mots-cl&eacute;s : Neuro-symbolic AI &middot; Fact-checking &middot; Credibility &middot; OWL &middot; Python</p>
+    </div>
+    <div class="code-wrap">
+      <button class="btn-copy" onclick="copyCode(this)">&#10247; Copier</button>
+      <pre><code class="language-python">"""
+sysCRED - systemFactChecking v2.2.1
+DOI : 10.5281/zenodo.18436691
+"""
+from owlready2 import get_ontology, sync_reasoner_pellet
+import numpy as np
+
+ONTO_PATH = "syscred_ontology.owl"
+onto = get_ontology(ONTO_PATH).load()
+
+def evaluate_source_credibility(source_uri: str) -> dict:
+    """
+    &Eacute;value la cr&eacute;dibilit&eacute; d'une source via r&egrave;gles de pr&eacute;dicats OWL
+    et module de scoring neuro-symbolique.
+    """
+    with onto:
+        sync_reasoner_pellet(infer_property_values=True)
+
+    source = onto.search_one(iri=source_uri)
+    if source is None:
+        return {"error": "Source non trouv&eacute;e dans l'ontologie"}
+
+    scores = {
+        "authority"    : getattr(source, "hasAuthorityScore",  [0])[0],
+        "accuracy"     : getattr(source, "hasAccuracyScore",   [0])[0],
+        "transparency" : getattr(source, "hasTransparency",    [0])[0],
+        "bias"         : getattr(source, "hasBiasScore",       [0])[0],
+    }
+    credibility = float(np.mean(list(scores.values())))
+    return {
+        "source"      : source_uri,
+        "scores"      : scores,
+        "credibility" : round(credibility, 3),
+        "label"       : "CREDIBLE" if credibility >= .65 else "UNCERTAIN"
+    }
+
+if __name__ == "__main__":
+    result = evaluate_source_credibility("http://syscred.uqam.ca/sources#Reuters")
+    print(result)</code></pre>
+    </div>
+    <div class="art-footer">
+      <strong>Citation :</strong> Loyer, D. (2026).
+      <cite>systemFactChecking v2.2.1</cite> [Software].
+      Zenodo.
+      <a href="https://doi.org/10.5281/zenodo.18436691" target="_blank">
+        DOI 10.5281/zenodo.18436691</a>
+    </div>
+  </article>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
+    <img alt="CC BY-NC-SA 4.0" style="border-width:0;height:14px"
+         src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/>
+  </a>
+  <a href="mailto:votreconsultant&#64;gmail.com">(&596;) MMXXVI Dominique Loyer &#9993;</a>
+  <span class="footer-divider">|</span>
+  <div class="shields-row">
+    <a href="https://orcid.org/0009-0003-9713-7109" target="_blank">
+      <img src="https://img.shields.io/badge/ORCID-0009--0003--9713--7109-green.svg" alt="ORCID"/>
+    </a>
+    <a href="https://scholar.google.com/citations?user=JmRd6U0AAAAJ" target="_blank">
+      <img src="https://img.shields.io/badge/Google%20Scholar-Profile-blue" alt="Google Scholar"/>
+    </a>
+    <a href="https://www.researchgate.net/profile/Dominique-Loyer" target="_blank">
+      <img src="https://img.shields.io/badge/ResearchGate-Profile-00CCBB" alt="ResearchGate"/>
+    </a>
+    <a href="https://dominiqueloyer.github.io" target="_blank">
+      <img src="https://img.shields.io/badge/Website-dominiqueloyer.github.io-orange" alt="Website"/>
+    </a>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll("pre code").forEach(function(el){
+    hljs.highlightElement(el);
+  });
+
+  function copyCode(btn) {
+    var code = btn.closest(".code-wrap").querySelector("code");
+    navigator.clipboard.writeText(code.innerText || code.textContent).then(function(){
+      btn.textContent = "\u2714 Copi\u00e9 !";
+      btn.classList.add("copied");
+      setTimeout(function(){
+        btn.textContent = "\u29c7 Copier";
+        btn.classList.remove("copied");
+      }, 2000);
+    });
+  }
+</script>
+</body>
+</html>
