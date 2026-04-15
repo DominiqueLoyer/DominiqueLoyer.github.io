@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Magie des Maths derrière vos Écrans</title>
+    <!-- Tailwind CSS pour le style -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(2rem); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.7s ease-out forwards;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-300 min-h-screen">
+    <!-- HEADER -->
+    <header class="py-16 px-6 text-center">
+        <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4">
+            La Magie des Maths <br class="hidden md:block"/>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">derrière vos Écrans</span>
+        </h1>
+        <p class="max-w-2xl mx-auto text-lg text-slate-400">Comment prédire si vous aimerez un film que vous n'avez jamais vu ?</p>
+    </header>
+
+    <!-- MAIN GRID -->
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- PANNEAU 1 -->
+            <div class="animate-fade-in-up bg-slate-900/40 border border-slate-800 rounded-2xl p-6 md:col-span-1" style="animation-delay: 0ms;">
+                <h3 class="text-lg font-bold text-white mb-4">Le Problème</h3>
+                <p class="text-sm mb-4">Le défi : Remplir les vides d'une matrice géante.</p>
+                <div class="p-4 bg-slate-900/50 rounded-lg border border-slate-800 font-mono text-xs text-center grid grid-cols-4 gap-2">
+                    <span class="text-slate-600">U\F</span><span class="text-slate-300">F1</span><span class="text-slate-300">F2</span><span class="text-slate-300">F3</span>
+                    <span class="text-slate-300">Alice</span><span class="text-emerald-400">5</span><span class="text-cyan-400">?</span><span class="text-emerald-400">4</span>
+                    <span class="text-slate-300">Bob</span><span class="text-cyan-400">?</span><span class="text-emerald-400">1</span><span class="text-cyan-400">?</span>
+                </div>
+            </div>
+
+            <!-- PANNEAU 2 -->
+            <div class="animate-fade-in-up bg-slate-900/40 border border-slate-800 rounded-2xl p-6 md:col-span-2" style="animation-delay: 100ms;">
+                <h3 class="text-lg font-bold text-white mb-4">Étape 1 : Trouver les Similitudes</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="p-4 bg-slate-950/50 rounded-xl border border-slate-800">
+                        <h4 class="font-semibold text-slate-200 text-sm mb-2">Pearson (Tendances)</h4>
+                        <div class="font-mono text-xs text-center py-2 bg-black/40 mb-2">sim(u,v) ≈ Corrélation</div>
+                        <p class="text-xs text-slate-400">Mesure si 2 utilisateurs varient de la même façon.</p>
+                    </div>
+                    <div class="p-4 bg-slate-950/50 rounded-xl border border-slate-800">
+                        <h4 class="font-semibold text-slate-200 text-sm mb-2">Cosinus (Angle)</h4>
+                        <div class="font-mono text-xs text-center py-2 bg-black/40 mb-2">sim(x,y) = cos(θ)</div>
+                        <p class="text-xs text-slate-400">Angle entre deux vecteurs de notes.</p>
+                    </div>
+                    <div class="p-4 bg-slate-950/50 rounded-xl border border-slate-800">
+                        <h4 class="font-semibold text-slate-200 text-sm mb-2">Jaccard (Ensemble)</h4>
+                        <div class="font-mono text-xs text-center py-2 bg-black/40 mb-2">J(A,B) = |A ∩ B| / |A ∪ B|</div>
+                        <p class="text-xs text-slate-400">Pourcentage d'éléments communs.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANNEAU 3 -->
+            <div class="animate-fade-in-up bg-gradient-to-br from-slate-900 to-indigo-950/20 border border-slate-800 rounded-2xl p-6 md:col-span-3" style="animation-delay: 200ms;">
+                <h3 class="text-lg font-bold text-white mb-4">Le Cœur : Factorisation Matricielle</h3>
+                <p class="text-sm text-slate-400 mb-4">La grosse matrice se brise en deux matrices fines (P et Q) représentant les facteurs latents.</p>
+                <div class="p-4 bg-black/40 rounded-lg border border-purple-500/20 font-mono text-center text-xl text-white">
+                    r̂<sub>ui</sub> = μ + b<sub>u</sub> + b<sub>i</sub> + q<sub>i</sub><sup>T</sup>p<sub>u</sub>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</body>
+</html>
