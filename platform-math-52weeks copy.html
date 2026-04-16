@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plateforme Mathématiques - 52 Semaines</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        /* SIDEBAR */
+        .sidebar {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+            padding: 30px 20px;
+            color: white;
+            overflow-y: auto;
+            height: 100vh;
+        }
+        
+        .logo {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .phase {
+            margin-bottom: 25px;
+        }
+        
+        .phase-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #667eea;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .module-btn {
+            display: block;
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 5px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid transparent;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-size: 13px;
+        }
+        
+        .module-btn:hover {
+            background: rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+        
+        .module-btn.active {
+            background: #667eea;
+            border-color: #764ba2;
+            font-weight: bold;
+        }
+        
+        /* MAIN CONTENT */
+        .main-content {
+            padding: 40px;
+            overflow-y: auto;
+            height: 100vh;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .progress-info {
+            text-align: right;
+        }
+        
+        .progress-bar {
+            width: 200px;
+            height: 10px;
+            background: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.5s;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .lesson {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .lesson h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .lesson-content {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        
+        .exercise {
+            background: white;
+            border: 2px solid #eee;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .exercise h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .question {
+            margin-bottom: 15px;
+        }
+        
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            padding: 10px 15px;
+            background: #f0f0f0;
+            border: 2px solid transparent;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option:hover {
+            background: #e0e0e0;
+            border-color: #667eea;
+        }
+        
+        .option.selected {
+            background: #667eea;
+            color: white;
+            border-color: #764ba2;
+        }
+        
+        .option.correct {
+            background: #27ae60;
+            color: white;
+            border-color: #229954;
+        }
+        
+        .option.incorrect {
+            background: #e74c3c;
+            color: white;
+            border-color: #c0392b;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #eee;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #ddd;
+        }
+        
+        .feedback {
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .feedback.show {
+            display: block;
+        }
+        
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .table-responsive {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .badge-week {
+            background: #667eea;
+            color: white;
+        }
+        
+        .badge-completed {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .math-formula {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+            font-style: italic;
+        }
+        
+        .achievement {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .achievement-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                height: auto;
+            }
+            .main-content {
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="logo">📚 Math Learning Hub</div>
+            
+            <!-- Phase 1 -->
+            <div class="phase">
+                <div class="phase-title">Phase 1: Fondamentaux (13 sem)</div>
+                <button class="module-btn active" onclick="loadModule('logique')">
+                    🧠 Logique & Raisonnement
+                </button>
+                <button class="module-btn" onclick="loadModule('ensembles')">
+                    🎯 Théorie des Ensembles
+                </button>
+                <button class="module-btn" onclick="loadModule('linearalgebra')">
+                    📐 Algèbre Linéaire
+                </button>
+                <button class="module-btn" onclick="loadModule('structures')">
+                    🏗️ Structures Discrètes
+                </button>
+            </div>
+            
+            <!-- Phase 2 -->
+            <div class="phase">
+                <div class="phase-title">Phase 2: Appliquées (13 sem)</div>
+                <button class="module-btn" onclick="loadModule('probabilites')">
+                    🎲 Probabilités
+                </button>
+                <button class="module-btn" onclick="loadModule('analyse')">
+                    📊 Analyse & Calcul
+                </button>
+                <button class="module-btn" onclick="loadModule('optimisation')">
+                    ⚡ Optimisation
+                </button>
+            </div>
+            
+            <!-- Phase 3 -->
+            <div class="phase">
+                <div class="phase-title">Phase 3: Informatique (13 sem)</div>
+                <button class="module-btn" onclick="loadModule('bigoanalysis')">
+                    📈 Big O & Complexité
+                </button>
+                <button class="module-btn" onclick="loadModule('algorithmes')">
+                    💻 Algorithmes
+                </button>
+                <button class="module-btn" onclick="loadModule('graphes')">
+                    🌐 Théorie des Graphes
+                </button>
+            </div>
+            
+            <!-- Phase 4 -->
+            <div class="phase">
+                <div class="phase-title">Phase 4: Spécialisations (13 sem)</div>
+                <button class="module-btn" onclick="loadModule('crypto')">
+                    🔐 Cryptographie
+                </button>
+                <button class="module-btn" onclick="loadModule('ia')">
+                    🤖 IA & Tenseurs
+                </button>
+                <button class="module-btn" onclick="loadModule('neuro')">
+                    🧬 Neuro-Symbolisme
+                </button>
+            </div>
+        </div>
+        
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="header">
+                <div class="title">📖 Formation Mathématique 52 Semaines</div>
+                <div class="progress-info">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 15%"></div>
+                    </div>
+                    <div>Semaine 1/52</div>
+                </div>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Exercices Complétés</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">0%</div>
+                    <div class="stat-label">Taux de Réussite</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Modules Terminés</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Jours Consécutifs</div>
+                </div>
+            </div>
+            
+            <!-- SECTION: LOGIQUE -->
+            <div id="logique" class="content-section active">
+                <div class="lesson">
+                    <h3>🧠 Semaine 1-4: Logique et Raisonnement Mathématique</h3>
+                    <div class="lesson-content">
+                        <p><strong>Objectif:</strong> Maîtriser les bases de la logique propositionnelle, les techniques de preuve et la théorie des ensembles.</p>
+                        <p style="margin-top: 10px;"><strong>Domaines couverts:</strong></p>
+                        <ul style="margin-left: 20px;">
+                            <li>Propositions et tables de vérité</li>
+                            <li>Connecteurs logiques (∧, ∨, ¬, ⇒, ⇔)</li>
+                            <li>Règles d'inférence (Modus Ponens, Modus Tollens)</li>
+                            <li>Techniques de preuve (induction, contraposition, contradiction)</li>
+                            <li>Ensembles et relations</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="exercise">
+                    <h4>✏️ Exercice 1: Tables de Vérité</h4>
+                    <div class="question">
+                        <div class="question-text">Complétez la table de vérité pour P ∨ Q (OU logique):</div>
+                        <div class="table-responsive">
+                            <table>
+                                <tr>
+                                    <th>P</th>
+                                    <th>Q</th>
+                                    <th>P ∨ Q</th>
+                                </tr>
+                                <tr>
+                                    <td>V</td>
+                                    <td>V</td>
+                                    <td>
+                                        <div class="options" style="flex-direction: row;">
+                                            <button class="option" onclick="checkAnswer(this, true)">V</button>
+                                            <button class="option" onclick="checkAnswer(this, false)">F</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>V</td>
+                                    <td>F</td>
+                                    <td>
+                                        <div class="options" style="flex-direction: row;">
+                                            <button class="option" onclick="checkAnswer(this, true)">V</button>
+                                            <button class="option" onclick="checkAnswer(this, false)">F</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>F</td>
+                                    <td>V</td>
+                                    <td>
+                                        <div class="options" style="flex-direction: row;">
+                                            <button class="option" onclick="checkAnswer(this, true)">V</button>
+                                            <button class="option" onclick="checkAnswer(this, false)">F</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>F</td>
+                                    <td>F</td>
+                                    <td>
+                                        <div class="options" style="flex-direction: row;">
+                                            <button class="option" onclick="checkAnswer(this, false)">V</button>
+                                            <button class="option" onclick="checkAnswer(this, true)">F</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="exercise">
+                    <h4>✏️ Exercice 2: Modus Ponens</h4>
+                    <div class="question">
+                        <div class="question-text">Si P ⇒ Q est vrai et P est vrai, qu'peut-on conclure?</div>
+                        <div class="options">
+                            <button class="option" onclick="checkQuestionAnswer(this, true)">Q est vrai</button>
+                            <button class="option" onclick="checkQuestionAnswer(this, false)">Q est faux</button>
+                            <button class="option" onclick="checkQuestionAnswer(this, false)">On ne peut pas conclure</button>
+                        </div>
+                    </div>
+                    <div class="feedback incorrect" style="display: none;">
+                        ❌ Incorrect. Le Modus Ponens dit: si P ⇒ Q et P, alors Q
+                    </div>
+                    <div class="feedback correct" style="display: none;">
+                        ✅ Correct! C'est la règle du Modus Ponens
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECTION: ENSEMBLES -->
+            <div id="ensembles" class="content-section">
+                <div class="lesson">
+                    <h3>🎯 Théorie des Ensembles</h3>
+                    <div class="lesson-content">
+                        <p>Vous pouvez accéder aux leçons détaillées via le fichier du programme complet.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECTION: LINEAR ALGEBRA -->
+            <div id="linearalgebra" class="content-section">
+                <div class="lesson">
+                    <h3>📐 Algèbre Linéaire</h3>
+                    <div class="lesson-content">
+                        <p><strong>Contenu développé:</strong> Vecteurs, matrices, déterminants, valeurs propres, SVD, QR, Cholesky</p>
+                        <p style="margin-top: 15px;"><strong>Formule clé - SVD:</strong></p>
+                        <div class="math-formula">
+                            $$A = U\Sigma V^T$$
+                            <br><br>
+                            où U est orthogonale (m×m), Σ diagonale (m×n), V^T orthogonale (n×n)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECTION: BIG O ANALYSIS -->
+            <div id="bigoanalysis" class="content-section">
+                <div class="lesson">
+                    <h3>📈 Analyse de Complexité - Big O, Omega, Theta</h3>
+                    <div class="lesson-content">
+                        <p><strong>CECI EST CRUCIAL POUR ANALYSER VOS ALGORITHMES!</strong></p>
+                        <p style="margin-top: 15px;"><strong>Hiérarchie de complexité:</strong></p>
+                        <div style="background: white; padding: 15px; border-radius: 5px; margin: 15px 0;">
+                            O(1) < O(log n) < O(√n) < O(n) < O(n log n) < O(n²) < O(n³) < O(2^n) < O(n!)
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="exercise">
+                    <h4>✏️ Exercice: Classer les Fonctions</h4>
+                    <div class="question">
+                        <div class="question-text">Classez ces fonctions du plus rapide au plus lent:</div>
+                        <div style="background: #f0f0f0; padding: 15px; margin: 15px 0; border-radius: 5px;">
+                            <strong>Options:</strong> n², 2^n, n log n, n!, 1000n, log(n), √n, n^1.5
+                        </div>
+                        <p style="margin-top: 15px; font-style: italic; color: #666;">
+                            Réponse: log n < √n < n < n log n < n^1.5 < n² < 2^n < n!
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="autres" class="content-section">
+                <div class="achievement">
+                    <div class="achievement-icon">🎓</div>
+                    <div>Contenu supplémentaire en développement...</div>
+                    <p style="margin-top: 10px; font-size: 14px;">Le programme complet de 52 semaines est disponible dans le fichier téléchargé</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function loadModule(moduleId) {
+            // Masquer tous les modules
+            document.querySelectorAll('.content-section').forEach(el => {
+                el.classList.remove('active');
+            });
+            // Afficher le module sélectionné
+            document.getElementById(moduleId).classList.add('active');
+            
+            // Mettre à jour les boutons
+            document.querySelectorAll('.module-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+        
+        function checkAnswer(element, isCorrect) {
+            if (isCorrect) {
+                element.classList.add('correct');
+                element.parentElement.style.pointerEvents = 'none';
+            } else {
+                element.classList.add('incorrect');
+            }
+        }
+        
+        function checkQuestionAnswer(element, isCorrect) {
+            element.parentElement.style.pointerEvents = 'none';
+            
+            const feedbackElements = element.parentElement.nextElementSibling;
+            
+            if (isCorrect) {
+                element.classList.add('correct');
+                feedbackElements.classList.remove('incorrect');
+                feedbackElements.classList.add('correct', 'show');
+            } else {
+                element.classList.add('incorrect');
+                feedbackElements.classList.remove('correct');
+                feedbackElements.classList.add('incorrect', 'show');
+            }
+        }
+        
+        // Initialisation MathJax
+        document.addEventListener('DOMContentLoaded', function() {
+            MathJax.typesetPromise().catch(err => console.log(err));
+        });
+    </script>
+</body>
+</html>
