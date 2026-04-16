@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Météo Montréal – UQAM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ══ TOKENS ══════════════════════════════════════════════════ */
+:root,[data-theme="light"]{
+  --color-bg:#f7f6f2;--color-surface:#f9f8f5;--color-surface-2:#fbfbf9;
+  --color-surface-offset:#f3f0ec;--color-surface-dynamic:#e6e4df;
+  --color-border:#d4d1ca;--color-divider:#dcd9d5;
+  --color-text:#28251d;--color-text-muted:#7a7974;--color-text-faint:#bab9b4;
+  --color-primary:#01696f;--color-primary-hover:#0c4e54;
+  --color-primary-hl:color-mix(in oklch,#01696f 12%,#f9f8f5);
+  --color-success:#437a22;--color-success-hl:color-mix(in oklch,#437a22 12%,#f9f8f5);
+  --color-warning:#964219;--color-warning-hl:color-mix(in oklch,#964219 12%,#f9f8f5);
+  --color-blue:#006494;--color-blue-hl:color-mix(in oklch,#006494 12%,#f9f8f5);
+  --color-error:#a12c7b;
+  --shadow-sm:0 1px 2px oklch(0.2 0.01 80/.06);
+  --shadow-md:0 4px 12px oklch(0.2 0.01 80/.09);
+  --shadow-lg:0 12px 36px oklch(0.2 0.01 80/.13);
+  --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-2xl:1.25rem;--r-full:9999px;
+  --sp1:.25rem;--sp2:.5rem;--sp3:.75rem;--sp4:1rem;--sp5:1.25rem;--sp6:1.5rem;
+  --sp8:2rem;--sp10:2.5rem;--sp12:3rem;
+  --tx-xs:clamp(.75rem,.7rem + .25vw,.875rem);
+  --tx-sm:clamp(.875rem,.8rem + .35vw,1rem);
+  --tx-base:clamp(1rem,.95rem + .25vw,1.125rem);
+  --tx-lg:clamp(1.125rem,1rem + .75vw,1.5rem);
+  --tx-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+  --tx-hero:clamp(2.5rem,1rem + 4vw,4.5rem);
+  --font:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;
+  --ease:180ms cubic-bezier(.16,1,.3,1);
+}
+[data-theme="dark"]{
+  --color-bg:#111010;--color-surface:#191817;--color-surface-2:#1f1e1c;
+  --color-surface-offset:#1c1b19;--color-surface-dynamic:#2a2927;
+  --color-border:#393836;--color-divider:#252422;
+  --color-text:#cdccca;--color-text-muted:#797876;--color-text-faint:#4a4947;
+  --color-primary:#4f98a3;--color-primary-hover:#227f8b;
+  --color-primary-hl:color-mix(in oklch,#4f98a3 14%,#191817);
+  --color-success:#6daa45;--color-success-hl:color-mix(in oklch,#6daa45 14%,#191817);
+  --color-warning:#fdab43;--color-warning-hl:color-mix(in oklch,#fdab43 14%,#191817);
+  --color-blue:#5591c7;--color-blue-hl:color-mix(in oklch,#5591c7 14%,#191817);
+  --color-error:#d163a7;
+  --shadow-sm:0 1px 3px oklch(0 0 0/.28);--shadow-md:0 4px 16px oklch(0 0 0/.38);
+  --shadow-lg:0 14px 44px oklch(0 0 0/.5);
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme]){
+  --color-bg:#111010;--color-surface:#191817;--color-surface-2:#1f1e1c;
+  --color-surface-offset:#1c1b19;--color-surface-dynamic:#2a2927;
+  --color-border:#393836;--color-divider:#252422;
+  --color-text:#cdccca;--color-text-muted:#797876;--color-text-faint:#4a4947;
+  --color-primary:#4f98a3;--color-primary-hover:#227f8b;
+  --color-primary-hl:color-mix(in oklch,#4f98a3 14%,#191817);
+  --color-success:#6daa45;--color-success-hl:color-mix(in oklch,#6daa45 14%,#191817);
+  --color-warning:#fdab43;--color-warning-hl:color-mix(in oklch,#fdab43 14%,#191817);
+  --color-blue:#5591c7;--color-blue-hl:color-mix(in oklch,#5591c7 14%,#191817);
+  --color-error:#d163a7;
+  --shadow-sm:0 1px 3px oklch(0 0 0/.28);--shadow-md:0 4px 16px oklch(0 0 0/.38);
+  --shadow-lg:0 14px 44px oklch(0 0 0/.5);
+}}
+
+/* ══ BASE ════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth}
+body{min-height:100dvh;font-family:var(--font);font-size:var(--tx-base);color:var(--color-text);background:var(--color-bg);display:flex;align-items:flex-start;justify-content:center;padding:var(--sp6) var(--sp4)}
+button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
+a,button{transition:color var(--ease),background var(--ease),border-color var(--ease),box-shadow var(--ease),opacity var(--ease)}
+:focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--r-sm)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ══ WIDGET SHELL ════════════════════════════════════════════ */
+.widget{width:100%;max-width:680px;display:flex;flex-direction:column;gap:0}
+
+/* ══ TOP BAR ════════════════════════════════════════════════ */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:var(--sp3);margin-bottom:var(--sp4)}
+.topbar-left{display:flex;align-items:center;gap:var(--sp3)}
+.logo{width:36px;height:36px;border-radius:var(--r-md);background:var(--color-primary);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo svg{color:#fff}
+.site-name{font-size:var(--tx-sm);font-weight:600;color:var(--color-text);line-height:1.2}
+.site-sub{font-size:var(--tx-xs);color:var(--color-text-muted);font-family:var(--mono)}
+.topbar-right{display:flex;align-items:center;gap:var(--sp2)}
+
+/* ══ STATUS BADGE ════════════════════════════════════════════ */
+.badge{display:flex;align-items:center;gap:var(--sp2);padding:3px var(--sp3);border-radius:var(--r-full);font-size:var(--tx-xs);font-family:var(--mono);white-space:nowrap;border:1px solid transparent}
+.badge.ok{background:var(--color-success-hl);color:var(--color-success);border-color:color-mix(in oklch,var(--color-success) 28%,transparent)}
+.badge.loading{background:var(--color-warning-hl);color:var(--color-warning);border-color:color-mix(in oklch,var(--color-warning) 28%,transparent)}
+.badge.error{background:color-mix(in oklch,var(--color-error) 12%,var(--color-surface));color:var(--color-error);border-color:color-mix(in oklch,var(--color-error) 28%,transparent)}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+.dot.live{animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.75)}}
+
+.btn-icon{width:30px;height:30px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);border:1px solid var(--color-border);background:var(--color-surface)}
+.btn-icon:hover{color:var(--color-text);background:var(--color-surface-offset)}
+
+/* ══ HERO CARD ═══════════════════════════════════════════════ */
+.hero-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-2xl);box-shadow:var(--shadow-md);overflow:hidden;margin-bottom:var(--sp3)}
+.hero-inner{padding:var(--sp6) var(--sp6) var(--sp5)}
+.condition-row{display:flex;align-items:center;justify-content:space-between;gap:var(--sp4);margin-bottom:var(--sp4)}
+.condition-text{font-size:var(--tx-sm);color:var(--color-text-muted);font-weight:500}
+.time-label{font-size:var(--tx-xs);font-family:var(--mono);color:var(--color-text-faint)}
+.temp-row{display:flex;align-items:flex-end;gap:var(--sp3);margin-bottom:var(--sp2)}
+.temp-main{font-size:var(--tx-hero);font-weight:300;line-height:1;color:var(--color-text);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.temp-unit{font-size:var(--tx-xl);font-weight:300;color:var(--color-text-muted);align-self:flex-start;margin-top:.4em}
+.feels-like{font-size:var(--tx-sm);color:var(--color-text-muted);margin-bottom:var(--sp5)}
+
+/* quick stats row */
+.quick-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp3);padding:var(--sp4) var(--sp6);border-top:1px solid var(--color-divider);background:var(--color-surface-offset)}
+.qs-item{display:flex;flex-direction:column;gap:2px}
+.qs-label{font-size:var(--tx-xs);color:var(--color-text-faint);font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em}
+.qs-val{font-size:var(--tx-sm);font-weight:500;color:var(--color-text);font-variant-numeric:tabular-nums}
+
+/* ══ DAILY CARD ══════════════════════════════════════════════ */
+.daily-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-2xl);box-shadow:var(--shadow-sm);margin-bottom:var(--sp3);overflow:hidden}
+.daily-header{padding:var(--sp3) var(--sp5);border-bottom:1px solid var(--color-divider);background:var(--color-surface-2)}
+.daily-title{font-size:var(--tx-xs);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-muted)}
+.daily-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.daily-item{display:flex;flex-direction:column;align-items:center;gap:var(--sp2);padding:var(--sp5) var(--sp3);border-right:1px solid var(--color-divider)}
+.daily-item:last-child{border-right:none}
+.daily-icon{font-size:1.6rem;line-height:1}
+.daily-lbl{font-size:var(--tx-xs);font-family:var(--mono);color:var(--color-text-faint);text-transform:uppercase;letter-spacing:.05em;text-align:center}
+.daily-val{font-size:var(--tx-sm);font-weight:600;color:var(--color-text);font-variant-numeric:tabular-nums;text-align:center}
+.daily-val.hot{color:var(--color-warning)}
+.daily-val.cold{color:var(--color-blue)}
+
+/* ══ FOOTER BAR ══════════════════════════════════════════════ */
+.footer-bar{display:flex;align-items:center;justify-content:space-between;gap:var(--sp4);padding:var(--sp3) var(--sp5);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-xl);box-shadow:var(--shadow-sm)}
+.footer-src{font-size:var(--tx-xs);font-family:var(--mono);color:var(--color-text-faint)}
+.footer-src a{color:var(--color-primary);text-decoration:none}
+.footer-src a:hover{text-decoration:underline}
+.countdown-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:3px;min-width:160px}
+.countdown-lbl{font-size:var(--tx-xs);font-family:var(--mono);color:var(--color-text-faint)}
+.cnt-track{width:100%;height:3px;background:var(--color-border);border-radius:var(--r-full);overflow:hidden}
+.cnt-fill{height:100%;background:var(--color-primary);border-radius:var(--r-full);transition:width 1s linear;width:100%}
+.btn-refresh{display:flex;align-items:center;gap:var(--sp2);padding:var(--sp2) var(--sp4);border-radius:var(--r-full);background:var(--color-primary);color:#fff;font-size:var(--tx-xs);font-weight:500;box-shadow:var(--shadow-sm)}
+.btn-refresh:hover{background:var(--color-primary-hover);box-shadow:var(--shadow-md)}
+.btn-refresh svg{flex-shrink:0}
+.btn-refresh.spin svg{animation:rot .7s linear}
+@keyframes rot{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+/* ══ SKELETON ════════════════════════════════════════════════ */
+.skeleton-wrap{display:none}
+.skeleton-wrap.active{display:flex;flex-direction:column;gap:var(--sp3)}
+.sk{border-radius:var(--r-md);background:linear-gradient(90deg,var(--color-surface-offset) 25%,var(--color-surface-dynamic) 50%,var(--color-surface-offset) 75%);background-size:200% 100%;animation:sk 1.6s ease-in-out infinite}
+@keyframes sk{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.sk-hero{height:160px;border-radius:var(--r-2xl)}
+.sk-row{height:96px;border-radius:var(--r-2xl)}
+
+/* ══ ERROR ═══════════════════════════════════════════════════ */
+.error-box{display:none;flex-direction:column;align-items:center;gap:var(--sp3);padding:var(--sp10);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-2xl);text-align:center}
+.error-box.active{display:flex}
+.error-box svg{color:var(--color-error);opacity:.75}
+.error-box p{font-size:var(--tx-sm);color:var(--color-text-muted);max-width:32ch}
+
+/* data content visibility */
+.data-content{display:none}
+.data-content.active{display:contents}
+
+/* ══ RESPONSIVE ══════════════════════════════════════════════ */
+@media(max-width:520px){
+  .quick-stats{grid-template-columns:repeat(2,1fr);gap:var(--sp2)}
+  .daily-grid{grid-template-columns:repeat(2,1fr)}
+  .daily-item:nth-child(2){border-right:none}
+  .daily-item:nth-child(1),.daily-item:nth-child(2){border-bottom:1px solid var(--color-divider)}
+  .footer-bar{flex-wrap:wrap}
+  .countdown-wrap{min-width:100%;align-items:flex-start}
+  .btn-refresh{width:100%;justify-content:center}
+  .temp-main{font-size:clamp(3rem,12vw,5rem)}
+}
+</style>
+</head>
+<body>
+<div class="widget" role="main">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="logo" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="site-name">Météo Montréal</div>
+        <div class="site-sub">Campus UQAM · Open-Meteo</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="badge loading" id="badge" role="status" aria-live="polite">
+        <span class="dot" id="dot"></span>
+        <span id="badge-txt">Chargement…</span>
+      </div>
+      <button class="btn-icon" id="theme-btn" aria-label="Basculer mode sombre/clair" title="Thème">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Skeleton -->
+  <div class="skeleton-wrap active" id="skeleton" aria-hidden="true">
+    <div class="sk sk-hero"></div>
+    <div class="sk sk-row"></div>
+  </div>
+
+  <!-- Error -->
+  <div class="error-box" id="error-box" role="alert">
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+      <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+    </svg>
+    <strong>Données indisponibles</strong>
+    <p id="error-msg">Impossible de joindre Open-Meteo. Vérifiez votre connexion.</p>
+  </div>
+
+  <!-- Data content -->
+  <div class="data-content" id="data-content">
+
+    <!-- Hero card -->
+    <div class="hero-card">
+      <div class="hero-inner">
+        <div class="condition-row">
+          <span class="condition-text" id="condition">—</span>
+          <span class="time-label" id="time-label">—</span>
+        </div>
+        <div class="temp-row">
+          <span class="temp-main" id="temp">—</span>
+          <span class="temp-unit">°C</span>
+        </div>
+        <div class="feels-like" id="feels">Ressenti —</div>
+      </div>
+      <div class="quick-stats">
+        <div class="qs-item">
+          <span class="qs-label">Humidité</span>
+          <span class="qs-val" id="humidity">—</span>
+        </div>
+        <div class="qs-item">
+          <span class="qs-label">Vent</span>
+          <span class="qs-val" id="wind">—</span>
+        </div>
+        <div class="qs-item">
+          <span class="qs-label">Précip.</span>
+          <span class="qs-val" id="precip">—</span>
+        </div>
+        <div class="qs-item">
+          <span class="qs-label">Pression</span>
+          <span class="qs-val" id="pressure">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Daily card -->
+    <div class="daily-card">
+      <div class="daily-header">
+        <span class="daily-title">Statistiques du jour</span>
+      </div>
+      <div class="daily-grid">
+        <div class="daily-item">
+          <span class="daily-icon">🌡️</span>
+          <span class="daily-lbl">Max</span>
+          <span class="daily-val hot" id="d-tmax">—</span>
+        </div>
+        <div class="daily-item">
+          <span class="daily-icon">❄️</span>
+          <span class="daily-lbl">Min</span>
+          <span class="daily-val cold" id="d-tmin">—</span>
+        </div>
+        <div class="daily-item">
+          <span class="daily-icon">🌧️</span>
+          <span class="daily-lbl">Précip.</span>
+          <span class="daily-val" id="d-precip">—</span>
+        </div>
+        <div class="daily-item">
+          <span class="daily-icon">🌨️</span>
+          <span class="daily-lbl">Neige</span>
+          <span class="daily-val" id="d-snow">—</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /data-content -->
+
+  <!-- Footer bar -->
+  <div class="footer-bar">
+    <span class="footer-src">
+      <a href="https://open-meteo.com" target="_blank" rel="noopener noreferrer">open-meteo.com</a>
+      &nbsp;·&nbsp; 45.5088°N 73.5678°O
+    </span>
+    <div class="countdown-wrap">
+      <span class="countdown-lbl" id="cnt-lbl">—</span>
+      <div class="cnt-track" aria-hidden="true">
+        <div class="cnt-fill" id="cnt-fill"></div>
+      </div>
+    </div>
+    <button class="btn-refresh" id="btn-refresh" aria-label="Rafraîchir les données météo">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="23 4 23 10 17 10"/>
+        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+      </svg>
+      Rafraîchir
+    </button>
+  </div>
+
+</div><!-- /widget -->
+
+<script>
+(function(){
+"use strict";
+
+/* ── Config ─────────────────────────────────────────── */
+var LAT      = 45.5088;
+var LON      = -73.5678;
+var INTERVAL = 30 * 60 * 1000;
+var API      = "https://api.open-meteo.com/v1/forecast";
+
+/* ── WMO codes ──────────────────────────────────────── */
+var WMO = {
+  0:"Ciel dégagé ☀️", 1:"Principalement dégagé 🌤",
+  2:"Partiellement nuageux ⛅", 3:"Couvert ☁️",
+  45:"Brouillard 🌫", 48:"Brouillard givrant 🌫❄️",
+  51:"Bruine légère 🌦", 53:"Bruine modérée 🌦", 55:"Bruine dense 🌧",
+  61:"Pluie légère 🌧", 63:"Pluie modérée 🌧", 65:"Pluie forte 🌧",
+  71:"Neige légère 🌨", 73:"Neige modérée 🌨", 75:"Neige forte 🌨", 77:"Grains de neige 🌨",
+  80:"Averses légères 🌦", 81:"Averses modérées 🌦", 82:"Averses violentes ⛈",
+  85:"Averses de neige 🌨", 86:"Averses de neige forte 🌨",
+  95:"Orage ⛈", 96:"Orage avec grêle ⛈🌩", 99:"Orage violent avec grêle ⛈🌩"
+};
+
+/* ── DOM refs ───────────────────────────────────────── */
+var $ = function(id){ return document.getElementById(id); };
+var badge    = $("badge"), dot = $("dot"), badgeTxt = $("badge-txt");
+var skeleton = $("skeleton"), errorBox = $("error-box"), dataDiv = $("data-content");
+var errorMsg = $("error-msg");
+var cond     = $("condition"), timeLbl = $("time-label");
+var tempEl   = $("temp"), feelsEl = $("feels");
+var humEl    = $("humidity"), windEl = $("wind");
+var precipEl = $("precip"), pressEl = $("pressure");
+var dTmax    = $("d-tmax"), dTmin = $("d-tmin");
+var dPrecip  = $("d-precip"), dSnow = $("d-snow");
+var cntLbl   = $("cnt-lbl"), cntFill = $("cnt-fill");
+var btnRef   = $("btn-refresh");
+
+var nextRef  = Date.now() + INTERVAL;
+
+/* ── Helpers ────────────────────────────────────────── */
+function pad(n){ return String(n).padStart(2,"0"); }
+function fmt(d){ return d.getHours()+"h"+pad(d.getMinutes())+":"+pad(d.getSeconds()); }
+function windDir(deg){
+  var dirs=["N","NE","E","SE","S","SO","O","NO"];
+  return dirs[Math.round(deg/45)%8];
+}
+function setStatus(s){
+  badge.className="badge "+s;
+  if(s==="ok"){ badgeTxt.textContent="En direct"; dot.className="dot live"; }
+  else if(s==="loading"){ badgeTxt.textContent="Chargement\u2026"; dot.className="dot"; }
+  else { badgeTxt.textContent="Erreur"; dot.className="dot"; }
+}
+
+/* ── Fetch ──────────────────────────────────────────── */
+function fetchWeather(){
+  setStatus("loading");
+  skeleton.classList.add("active");
+  errorBox.classList.remove("active");
+  dataDiv.classList.remove("active");
+  btnRef.classList.add("spin");
+
+  var params = new URLSearchParams({
+    latitude: LAT,
+    longitude: LON,
+    current: [
+      "temperature_2m","apparent_temperature","relative_humidity_2m",
+      "wind_speed_10m","wind_direction_10m","precipitation",
+      "weather_code","surface_pressure"
+    ].join(","),
+    daily: [
+      "temperature_2m_max","temperature_2m_min",
+      "precipitation_sum","snowfall_sum"
+    ].join(","),
+    timezone: "America/Toronto",
+    forecast_days: 1,
+    wind_speed_unit: "kmh",
+    precipitation_unit: "mm"
+  });
+
+  fetch(API + "?" + params.toString())
+    .then(function(r){
+      if(!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    })
+    .then(function(data){
+      render(data);
+      skeleton.classList.remove("active");
+      dataDiv.classList.add("active");
+      setStatus("ok");
+      btnRef.classList.remove("spin");
+      nextRef = Date.now() + INTERVAL;
+    })
+    .catch(function(e){
+      skeleton.classList.remove("active");
+      errorBox.classList.add("active");
+      errorMsg.textContent = e.message || "Impossible de joindre Open-Meteo.";
+      setStatus("error");
+      btnRef.classList.remove("spin");
+      nextRef = Date.now() + INTERVAL;
+    });
+}
+
+/* ── Render ─────────────────────────────────────────── */
+function render(data){
+  var cur   = data.current || {};
+  var daily = data.daily   || {};
+
+  var wmo  = cur.weather_code || 0;
+  cond.textContent = WMO[wmo] || ("Code WMO " + wmo);
+  timeLbl.textContent = fmt(new Date());
+
+  var t = cur.temperature_2m;
+  tempEl.textContent  = (t !== undefined && t !== null) ? Math.round(t*10)/10 : "—";
+
+  var fl = cur.apparent_temperature;
+  feelsEl.textContent = "Ressenti " + ((fl !== undefined && fl !== null)
+    ? Math.round(fl*10)/10 + " °C" : "—");
+
+  humEl.textContent    = (cur.relative_humidity_2m !== undefined && cur.relative_humidity_2m !== null)
+    ? cur.relative_humidity_2m + " %" : "—";
+
+  var ws = cur.wind_speed_10m;
+  var wd = cur.wind_direction_10m || 0;
+  windEl.textContent   = (ws !== undefined && ws !== null)
+    ? ws + " km/h " + windDir(wd) : "—";
+
+  precipEl.textContent = (cur.precipitation !== undefined && cur.precipitation !== null)
+    ? cur.precipitation + " mm" : "—";
+
+  pressEl.textContent  = (cur.surface_pressure !== undefined && cur.surface_pressure !== null)
+    ? Math.round(cur.surface_pressure) + " hPa" : "—";
+
+  var tmax = (daily.temperature_2m_max || [])[0];
+  var tmin = (daily.temperature_2m_min || [])[0];
+  var pd   = (daily.precipitation_sum  || [])[0];
+  var sn   = (daily.snowfall_sum       || [])[0];
+
+  dTmax.textContent   = (tmax !== undefined && tmax !== null) ? tmax + " °C" : "—";
+  dTmin.textContent   = (tmin !== undefined && tmin !== null) ? tmin + " °C" : "—";
+  dPrecip.textContent = (pd   !== undefined && pd   !== null) ? pd   + " mm" : "—";
+  dSnow.textContent   = (sn   !== undefined && sn   !== null) ? sn   + " cm" : "—";
+}
+
+/* ── Countdown tick ─────────────────────────────────── */
+function tick(){
+  var rem = Math.max(0, nextRef - Date.now());
+  var pct = ((INTERVAL - rem) / INTERVAL) * 100;
+  var m   = Math.floor(rem / 60000);
+  var s   = Math.floor((rem % 60000) / 1000);
+  cntFill.style.width = pct.toFixed(1) + "%";
+  if(rem <= 0){ cntLbl.textContent = "Rafraîchissement\u2026"; fetchWeather(); }
+  else { cntLbl.textContent = "Prochain : " + pad(m) + ":" + pad(s); }
+}
+
+/* ── Theme toggle ───────────────────────────────────── */
+var html  = document.documentElement;
+var theme = matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light";
+html.setAttribute("data-theme", theme);
+var themeBtn = $("theme-btn");
+function updateThemeIcon(){
+  themeBtn.innerHTML = theme === "light"
+    ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'
+    : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+}
+themeBtn.addEventListener("click", function(){
+  theme = theme === "dark" ? "light" : "dark";
+  html.setAttribute("data-theme", theme);
+  updateThemeIcon();
+});
+
+/* ── Init ───────────────────────────────────────────── */
+btnRef.addEventListener("click", function(){ nextRef = Date.now() + INTERVAL; fetchWeather(); });
+fetchWeather();
+setInterval(tick, 1000);
+})();
+</script>
+</body>
+</html>
