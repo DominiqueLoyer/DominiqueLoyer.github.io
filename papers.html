@@ -116,7 +116,12 @@
     .dropdown-content { display: none; position: absolute; top: 100%; left: 0; background: var(--bg-card2); border: 1px solid var(--border-dim); min-width: 200px; z-index: 100; }
     .dropdown-content a { border-right: none !important; border-bottom: 1px solid var(--border-dim); }
     .dropdown:hover .dropdown-content { display: block; }
-     main { max-width: 900px; margin: 0; padding: 1rem 1rem 4rem; }
+     main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 1rem 4rem;
+}
+
     .section-title { font-size: 1rem; font-weight: bold; color: var(--green); text-shadow: 0 0 8px var(--green); border-bottom: 1px solid var(--border-dim); padding-bottom: 0.3rem; margin-top: 2rem; margin-bottom: 1rem; letter-spacing: 0.1em; }
     .section-title::before { content: ">> "; color: var(--green-dim); }
     .citation-card { background: var(--bg-card); border: 1px solid var(--border-dim); border-left: 3px solid var(--green-dim); padding: 0.75rem 1rem; margin-bottom: 0.9rem; border-radius: 2px; transition: border-color 0.2s, box-shadow 0.2s; }
@@ -133,7 +138,24 @@
     .bibtex-toggle:hover { background: var(--green-dark); color: var(--green); }
     .bibtex-block { display: none; margin-top: 0.5rem; background: #060f06; border: 1px solid var(--border-dim); padding: 0.6rem 0.8rem; font-size: 0.72rem; line-height: 1.5; color: #33aa55; white-space: pre; overflow-x: auto; border-radius: 2px; }
     .bibtex-block.open { display: block; }
-    footer { background: var(--bg-card); border-top: 1px solid var(--border-dim); color: var(--green-dim); padding: 0.4rem 1rem; position: fixed; width: 100%; bottom: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.7rem; }
+footer {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-dim);
+  color: var(--green-dim);
+  padding: 0.4rem 1rem;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start !important;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  text-align: left;
+}
     footer a { color: var(--green-dim); text-decoration: none; }
     footer a:hover { color: var(--green); text-decoration: underline; }
     footer img { vertical-align: middle; }
@@ -146,6 +168,14 @@
       .dropdown-content { position: relative; }
       footer { position: relative; }
     }
+    .shields-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start !important;
+  gap: 0.4rem;
+}
+
   </style>
   <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
