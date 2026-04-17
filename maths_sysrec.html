@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'évolution des Systèmes de Recommandation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 350px;
+        max-height: 400px;
+      }
+      @media (max-width: 768px) {
+        .chart-container {
+          height: 300px;
+          max-height: 350px;
+        }
+      }
+      .diagram-box {
+        @apply p-3 bg-white rounded-lg shadow-md text-center text-sm font-semibold text-gray-700 border border-gray-200;
+      }
+      .diagram-arrow {
+        @apply text-3xl font-light text-gray-400;
+      }
+      .nn-layer {
+        @apply flex flex-col space-y-2;
+      }
+      .nn-neuron {
+        @apply w-10 h-10 bg-white rounded-full border-2 border-[#70C1B3] shadow;
+      }
+      .graph-node {
+        @apply w-16 h-16 rounded-full flex items-center justify-center font-semibold text-xs shadow-md;
+      }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  <main class="container mx-auto max-w-7xl px-4 py-12">
+    
+    <header class="text-center mb-16">
+      <h1 class="text-4xl md:text-5xl font-bold text-[#00A6A6] mb-4">Comment Netflix sait ce que vous aimez ?</h1>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">Une exploration visuelle des "recettes" mathématiques qui devinent vos goûts.</p>
+    </header>
+
+    <div class="bg-white rounded-lg shadow-xl p-6 md:p-10 mb-12 border border-gray-100">
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">Ce n'est pas de la magie, ce sont des maths !</h2>
+      <p class="text-lg text-gray-600 mb-6">
+        Vous êtes-vous déjà demandé comment YouTube ou Spotify semblent lire dans vos pensées ? Ce sont des algorithmes complexes, appelés "systèmes de recommandation", qui analysent des données pour prédire ce qui vous plaira. Ce voyage montre comment ces algorithmes ont évolué, d'idées simples à des intelligences artificielles complexes.
+      </p>
+      <div class="bg-gradient-to-r from-[#00A6A6] to-[#70C1B3] rounded-lg p-8 text-white text-center">
+        <div class="text-6xl font-bold mb-2">~75-80%</div>
+        <div class="text-xl font-medium">
+          Du contenu regardé sur les grandes plateformes est initié par une recommandation.
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+      <div class="bg-white rounded-lg shadow-lg p-6">
+        <h3 class="text-2xl font-bold text-[#00A6A6] mb-3">1. Le "Dis-moi qui tu suis..." (Filtrage Collaboratif)</h3>
+        <p class="text-gray-600 mb-4">
+          C'est l'idée la plus simple : si vous avez les mêmes goûts que d'autres personnes, on vous recommandera les choses qu'ils ont aimées (et que vous n'avez pas encore vues).
+        </p>
+        <div class="p-4 bg-gray-50 rounded-lg">
+          <h4 class="font-semibold text-center mb-3">La Logique : Trouver un "Jumeau de Goûts"</h4>
+          <div class="flex flex-col md:flex-row items-center justify-around space-y-4 md:space-y-0">
+            <div class="text-center">
+              <div class="diagram-box bg-blue-100 border-blue-200">Vous</div>
+              <div class="text-2xl my-1">▼</div>
+              <div class="diagram-box">Aime : 🔵 🟢 🟡</div>
+            </div>
+            <div class="text-center">
+              <div class="diagram-box bg-orange-100 border-orange-200">Votre Jumeau</div>
+              <div class="text-2xl my-1">▼</div>
+              <div class="diagram-box">Aime : 🔵 🟢 🔴</div>
+            </div>
+          </div>
+          <div class="text-center my-4">
+            <div class="text-gray-500 text-sm">Goûts similaires détectés !</div>
+            <div class="diagram-arrow">▼</div>
+            <div class="diagram-box bg-green-100 border-green-200 text-green-800">Recommander 🔴 à Vous</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-lg p-6">
+        <h3 class="text-2xl font-bold text-[#00A6A6] mb-3">Calculer la Similarité</h3>
+        <p class="text-gray-600 mb-4">
+          La première étape consiste à trouver vos "jumeaux" en calculant un score de similarité (comme la Corrélation de Pearson). Les utilisateurs avec un score élevé ont plus de "poids" dans vos recommandations.
+        </p>
+        <div class="chart-container">
+          <canvas id="cfBarChart"></canvas>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-lg p-6">
+        <h3 class="text-2xl font-bold text-[#00A6A6] mb-3">2. La "Recette Secrète" (Factorisation Matricielle)</h3>
+        <p class="text-gray-600 mb-4">
+          Cette méthode est plus maligne. Elle suppose que chaque film est une "recette" d'ingrédients cachés (facteurs latents) et que vous avez des préférences pour ces ingrédients (ex: "Action", "Romance", "Humour").
+        </p>
+        <div class="p-4 bg-gray-50 rounded-lg text-center">
+          <h4 class="font-semibold mb-3">Compresser les Goûts</h4>
+          <div class="flex items-center justify-center space-x-2">
+            <div class="diagram-box bg-gray-100 w-32 h-32 flex items-center justify-center">1M Utilisateurs x 100k Films (Matrice Géante)</div>
+            <div class="diagram-arrow text-[#F8B195]">►</div>
+            <div class="flex flex-col space-y-2">
+              <div class="diagram-box bg-blue-100 border-blue-200 w-32">1M Utilisateurs x 30 Facteurs</div>
+              <div class="font-bold text-xl text-gray-400">+</div>
+              <div class="diagram-box bg-orange-100 border-orange-200 w-32">30 Facteurs x 100k Films</div>
+            </div>
+          </div>
+          <p class="text-sm text-gray-500 mt-3">Le système "apprend" les 30 ingrédients secrets qui expliquent le mieux toutes les notes connues.</p>
+        </div>
+      </div>
+      
+      <div class="bg-white rounded-lg shadow-lg p-6">
+        <h3 class="text-2xl font-bold text-[#00A6A6] mb-3">Comparer les "Recettes" des Films</h3>
+        <p class="text-gray-600 mb-4">
+          Votre note prédite est simplement le "match" entre votre profil de goûts et la recette du film. Un blockbuster Sci-Fi et une comédie romantique ont des recettes très différentes.
+        </p>
+        <div class="chart-container">
+          <canvas id="mfStackedBarChart"></canvas>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-lg p-6 md:col-span-2">
+        <h3 class="text-2xl font-bold text-[#00A6A6] mb-3">3. Le "Super-Cerveau" (Deep Learning)</h3>
+        <p class="text-gray-600 mb-4">
+          Les recettes simples manquent des interactions complexes. Par exemple, vous aimez "Action" + "Comédie", mais pas "Action" toute seule. Le Deep Learning utilise un "cerveau" artificiel (réseau de neurones) pour apprendre ces relations compliquées.
+        </p>
+        <div class="p-4 bg-gray-50 rounded-lg">
+          <h4 class="font-semibold text-center mb-4">Le Chemin du Réseau Neuronal</h4>
+          <div class="flex items-center justify-center space-x-4 md:space-x-8">
+            <div class="flex flex-col space-y-2 text-center">
+              <div class="diagram-box bg-blue-100 border-blue-200">Facteurs Utilisateur</div>
+              <div class="diagram-box bg-orange-100 border-orange-200">Facteurs Film</div>
+            </div>
+            <div class="diagram-arrow text-[#F8B195]">►</div>
+            <div class="nn-layer">
+              <div class="nn-neuron"></div>
+              <div class="nn-neuron"></div>
+              <div class="nn-neuron"></div>
+              <div class="nn-neuron"></div>
+            </div>
+            <div class="diagram-arrow text-[#F8B195]">►</div>
+            <div class="nn-layer">
+              <div class="nn-neuron"></div>
+              <div class="nn-neuron"></div>
+            </div>
+            <div class="diagram-arrow text-[#F8B195]">►</div>
+            <div class="diagram-box bg-green-100 border-green-200 text-green-800 h-16 w-16 flex items-center justify-center">Prédiction (ex: 4.75 étoiles)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-lg p-6">
+        <h3 class="text-2xl font-bold text-[#00A6A6] mb-3">4. Le "Réseau Social" des Films (GNNs)</h3>
+        <p class="text-gray-600 mb-4">
+          Cette méthode voit tout comme un grand réseau social connectant utilisateurs et films. Pour comprendre vos goûts, l'algorithme "propage des messages" à travers le réseau, collectant l'info de vos films, des autres gens qui les ont aimés, etc.
+        </p>
+        <div class="p-4 bg-gray-50 rounded-lg text-center">
+          <h4 class="font-semibold mb-3">Apprendre des Connexions</h4>
+          <div class="grid grid-cols-3 gap-2 items-center">
+            <div class="text-right">
+              <div class="diagram-box bg-green-100 inline-block">Film A</div>
+              <div class="diagram-box bg-green-100 inline-block mt-2">Film B</div>
+            </div>
+            <div class="text-center">
+              <div class="diagram-arrow text-xs -mb-2">◄ 1er Voisin ►</div>
+              <div class="graph-node bg-blue-100 border-2 border-blue-300">Vous</div>
+              <div class="diagram-arrow text-xs -mt-2">◄ (Aime) ►</div>
+            </div>
+            <div>
+              <div class="diagram-box bg-orange-100 inline-block">Film C</div>
+            </div>
+            <div></div>
+            <div class="text-center text-sm text-gray-500">
+              <div class="diagram-arrow">▼</div>
+              Info des "amis de vos amis"
+            </div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-lg p-6">
+        <h3 class="text-2xl font-bold text-[#00A6A6] mb-3">5. Le "Professeur de Français" (LLMs)</h3>
+        <p class="text-gray-600 mb-4">
+          La frontière actuelle. Cette méthode traite votre historique de goûts comme une *phrase*. Le modèle (un Transformer) lit cette "phrase" et devine quel "mot" (film) la complète le mieux.
+        </p>
+        <div class="p-4 bg-gray-50 rounded-lg">
+          <h4 class="font-semibold text-center mb-3">"Attention" sur Votre Historique</h4>
+          <p class="text-sm text-gray-600 text-center mb-4">Pour prédire le prochain film, le modèle accorde plus ou moins d'"attention" à ce que vous avez vu avant.</p>
+          <div class="chart-container h-64 max-h-72">
+            <canvas id="llmDonutChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-lg p-6 md:col-span-2">
+        <h3 class="text-2xl font-bold text-[#00A6A6] mb-3">L'Évolution en un clin d'œil</h3>
+        <p class="text-gray-600 mb-4">
+          Chaque nouvelle méthode est devenue plus complexe, plus coûteuse en calcul, et plus "opaque" (difficile à comprendre pour un humain).
+        </p>
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-max divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Approche</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Opération Centrale</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Complexité</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Niveau "Boîte Noire"</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap font-medium">Filtrage Collaboratif</td>
+                <td class="px-6 py-4 whitespace-nowrap">Moyenne Pondérée par Similarité</td>
+                <td class="px-6 py-4 whitespace-nowrap">Faible</td>
+                <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Faible (Explicable)</span></td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap font-medium">Factorisation Matricielle</td>
+                <td class="px-6 py-4 whitespace-nowrap">Produit Scalaire de Vecteurs Latents</td>
+                <td class="px-6 py-4 whitespace-nowrap">Moyenne</td>
+                <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">Moyenne (Facteurs abstraits)</span></td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap font-medium">Deep Learning (NCF)</td>
+                <td class="px-6 py-4 whitespace-nowrap">Fonctions de Réseau Non-linéaires</td>
+                <td class="px-6 py-4 whitespace-nowrap">Élevée</td>
+                <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 py-1 bg-orange-100 text-orange-800 rounded-full text-xs">Élevée (Opaque)</span></td>
+              </tr>
+<tr>
+                <td class="px-6 py-4 whitespace-nowrap font-medium">Graph Neural Networks</td>
+                <td class="px-6 py-4 whitespace-nowrap">Agrégation de Voisins sur Graphe</td>
+                <td class="px-6 py-4 whitespace-nowrap">Élevée</td>
+                <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs">Très Élevée (Structurelle)</span></td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap font-medium">LLMs (Transformers)</td>
+                <td class="px-6 py-4 whitespace-nowrap">Mécanisme d'Auto-Attention</td>
+                <td class="px-6 py-4 whitespace-nowrap">Très Élevée</td>
+                <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs">Extrême (Émergente)</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    (function() {
+      "use strict";
+
+      const primaryColor = '#00A6A6';
+      const secondaryColor = '#70C1B3';
+      const accentColor1 = '#F8B195';
+      const accentColor2 = '#F3FFBD';
+      const neutralColor = '#B2DBBF';
+
+      function processLabels(labels, charLimit = 16) {
+        return labels.map(label => {
+          if (typeof label === 'string' && label.length > charLimit) {
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+              if ((currentLine + ' ' + word).trim().length > charLimit && currentLine.length > 0) {
+                lines.push(currentLine);
+                currentLine = word;
+              } else {
+                currentLine = (currentLine + ' ' + word).trim();
+              }
+            });
+            lines.push(currentLine);
+            return lines;
+          }
+          return label;
+        });
+      }
+
+      const tooltipTitleCallback = {
+        plugins: {
+          tooltip: {
+            callbacks: {
+              title: function(tooltipItems) {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                  return label.join(' ');
+                } else {
+                  return label;
+                }
+              }
+            }
+          }
+        }
+      };
+
+      const baseChartOptions = {
+        maintainAspectRatio: false,
+        responsive: true,
+        plugins: tooltipTitleCallback.plugins
+      };
+
+      const cfBarCtx = document.getElementById('cfBarChart');
+      if (cfBarCtx) {
+        new Chart(cfBarCtx, {
+          type: 'bar',
+          data: {
+            labels: ['Ami A (Jumeau)', 'Ami B', 'Ami C', 'Ami D'],
+            datasets: [{
+              label: 'Score de Similarité (%)',
+              data: [90, 70, 45, 10],
+              backgroundColor: [primaryColor, secondaryColor, neutralColor, accentColor1],
+              borderColor: 'rgba(255, 255, 255, 0)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            ...baseChartOptions,
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 100
+              }
+            },
+            plugins: {
+              ...baseChartOptions.plugins,
+              legend: {
+                display: false
+              }
+            }
+          }
+        });
+      }
+
+      const mfStackedBarCtx = document.getElementById('mfStackedBarChart');
+      if (mfStackedBarCtx) {
+        new Chart(mfStackedBarCtx, {
+          type: 'bar',
+          data: {
+            labels: processLabels(['Blockbuster Sci-Fi', 'Comédie Romantique']),
+            datasets: [
+              {
+                label: 'Facteur 1 (Action)',
+                data: [50, 5],
+                backgroundColor: primaryColor,
+              },
+              {
+                label: 'Facteur 2 (Comédie)',
+                data: [10, 60],
+                backgroundColor: secondaryColor,
+              },
+              {
+                label: 'Facteur 3 (Drame/Sérieux)',
+                data: [40, 35],
+                backgroundColor: accentColor1,
+              }
+            ]
+          },
+          options: {
+            ...baseChartOptions,
+            scales: {
+              x: { stacked: true },
+              y: { stacked: true }
+            },
+            indexAxis: 'y',
+            plugins: {
+              ...baseChartOptions.plugins,
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }
+        });
+      }
+
+      const llmDonutCtx = document.getElementById('llmDonutChart');
+      if (llmDonutCtx) {
+        new Chart(llmDonutCtx, {
+          type: 'doughnut',
+          data: {
+            labels: processLabels(['Vu : "Star Wars"', 'Vu : "Inception"', 'Vu : "Barbie"']),
+            datasets: [{
+              label: 'Poids d\'Attention',
+              data: [50, 48, 2],
+              backgroundColor: [primaryColor, secondaryColor, accentColor1],
+              hoverOffset: 4
+            }]
+          },
+          options: {
+            ...baseChartOptions,
+            plugins: {
+              ...baseChartOptions.plugins,
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }
+        });
+      }
+
+    })();
+  </script>
+</body>
+</html>

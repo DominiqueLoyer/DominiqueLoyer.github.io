@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plateforme de Formation Mathématique</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0f172a;
+            --secondary: #38bdf8;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --error: #ef4444;
+            --bg-light: #f0f9ff;
+            --bg-dark: #001f3f;
+            --text-dark: #1e293b;
+            --text-light: #f1f5f9;
+            --border: #cbd5e1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-light) 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, var(--primary-dark) 0%, #1e3a5f 100%);
+            color: var(--text-light);
+            padding: 30px 20px;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+        }
+
+        .module-section {
+            margin-bottom: 25px;
+        }
+
+        .module-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--secondary);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .module-list {
+            list-style: none;
+        }
+
+        .module-item {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            font-size: 14px;
+        }
+
+        .module-item:hover {
+            background: rgba(56, 189, 248, 0.2);
+            border-left-color: var(--secondary);
+        }
+
+        .module-item.active {
+            background: var(--secondary);
+            color: var(--primary-dark);
+            font-weight: 600;
+            border-left-color: var(--accent);
+        }
+
+        .progress-sidebar {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .progress-text {
+            font-size: 12px;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            width: 5%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* MAIN CONTENT */
+        .main {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-title h1 {
+            font-size: 32px;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        .header-title p {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .stat-icon {
+            font-size: 24px;
+        }
+
+        .stat-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* CONTENT CARD */
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .lesson-title {
+            font-size: 28px;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+        }
+
+        .lesson-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--bg-light);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-week {
+            background: #dbeafe;
+            color: var(--primary);
+        }
+
+        .badge-difficulty {
+            background: #fef08a;
+            color: #854d0e;
+        }
+
+        /* EXERCISES */
+        .exercises-section {
+            margin-top: 40px;
+        }
+
+        .exercise {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .exercise:hover {
+            border-color: var(--secondary);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.1);
+        }
+
+        .exercise-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+        }
+
+        .exercise-content {
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .truth-table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .truth-table th,
+        .truth-table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            font-weight: 500;
+        }
+
+        .truth-table th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .truth-table tr:hover {
+            background: #f0f9ff;
+        }
+
+        /* INTERACTIVE ELEMENTS */
+        .input-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .input-box {
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--secondary);
+        }
+
+        .checkbox-item label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        /* BUTTONS */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(2, 132, 199, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: #f0f9ff;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-error {
+            background: var(--error);
+            color: white;
+        }
+
+        /* FEEDBACK */
+        .feedback {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        .feedback-success {
+            background: #dcfce7;
+            color: #166534;
+            border-left: 4px solid var(--success);
+        }
+
+        .feedback-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid var(--error);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .main {
+                padding: 20px;
+            }
+
+            .header {
+                flex-direction: column;
+            }
+
+            .header-stats {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .content-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">🧮</span>
+                <span>MathMaîtrise</span>
+            </div>
+
+            <div class="module-section">
+                <div class="module-title">Bloc 1: Logique (Sem. 1-3)</div>
+                <ul class="module-list">
+                    <li class="module-item active" onclick="loadModule(1, 'logic-intro')">📘 Intro à la logique</li>
+                    <li class="module-item" onclick="loadModule(2, 'logic-prop')">🔗 Logique propositionnelle</li>
+                    <li class="module-item" onclick="loadModule(3, 'logic-proof')">✓ Techniques de preuve</li>
+                    <li class="module-item" onclick="loadModule(4, 'logic-sets')">∈ Théorie des ensembles</li>
+                </ul>
+            </div>
+
+            <div class="module-section">
+                <div class="module-title">Bloc 2: Algèbre (Sem. 4-6)</div>
+                <ul class="module-list">
+                    <li class="module-item" onclick="loadModule(5, 'algebra-linear')">➡️ Algèbre linéaire</li>
+                    <li class="module-item" onclick="loadModule(6, 'algebra-matrices')">🟦 Matrices & systèmes</li>
+                    <li class="module-item" onclick="loadModule(7, 'algebra-decomp')">🔀 Décompositions</li>
+                </ul>
+            </div>
+
+            <div class="module-section">
+                <div class="module-title">Bloc 3: Graphes (Sem. 7-9)</div>
+                <ul class="module-list">
+                    <li class="module-item" onclick="loadModule(8, 'graphs-intro')">🕸️ Introduction aux graphes</li>
+                    <li class="module-item" onclick="loadModule(9, 'graphs-algo')">⚙️ Algorithmes graphes</li>
+                    <li class="module-item" onclick="loadModule(10, 'graphs-trees')">🌳 Arbres & applications</li>
+                </ul>
+            </div>
+
+            <div class="progress-sidebar">
+                <div class="progress-text">PROGRESSION GLOBALE</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div style="font-size: 12px; color: var(--secondary);" id="progressText">
+                    Semaine 1/20 - 5%
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main">
+            <div class="header">
+                <div class="header-title">
+                    <h1 id="pageTitle">Introduction à la Logique Mathématique</h1>
+                    <p id="pageSubtitle">Comprendre les bases de la logique formelle</p>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">📚</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Exercices</div>
+                            <div class="stat-value" id="exerciseCount">0/5</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Complétés</div>
+                            <div class="stat-value" id="completedCount">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Précision</div>
+                            <div class="stat-value" id="accuracyCount">0%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LESSON CONTENT -->
+            <div class="content-card">
+                <h2 class="lesson-title" id="lessonTitle">Leçon 1: Introduction à la Logique Mathématique</h2>
+                <div class="lesson-meta">
+                    <div class="meta-item">
+                        <span class="badge badge-week">Semaine 1</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="badge badge-difficulty">Débutant</span>
+                    </div>
+                    <div class="meta-item">📖 Durée estimée: 45 minutes</div>
+                </div>
+
+                <div id="lessonContent"></div>
+            </div>
+
+            <!-- EXERCISES SECTION -->
+            <div class="content-card">
+                <h2 class="lesson-title">Exercices pratiques</h2>
+                <div class="exercises-section" id="exercisesContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DATA STRUCTURE
+        const modules = {
+            'logic-intro': {
+                title: 'Introduction à la Logique Mathématique',
+                subtitle: 'Comprendre les bases de la logique formelle',
+                week: 1,
+                difficulty: 'Débutant',
+                content: `
+                    <h3>Qu'est-ce que la logique mathématique?</h3>
+                    <p>La logique mathématique étudie les règles du raisonnement rigoureux. Elle est essentielle en informatique, programmation, et IA.</p>
+                    
+                    <h3>Les Propositions</h3>
+                    <p>Une <strong>proposition</strong> est une affirmation qui peut être VRAI (V) ou FAUX (F).</p>
+                    <ul style="margin: 15px 0 15px 20px;">
+                        <li><strong>✅ "2 + 2 = 4"</strong> → Proposition VRAIE</li>
+                        <li><strong>❌ "Paris est la capitale de l'Espagne"</strong> → Proposition FAUSSE</li>
+                        <li><strong>❌ "Ouvre la porte!"</strong> → Pas une proposition (ordre)</li>
+                    </ul>
+
+                    <h3>Les Opérateurs Logiques</h3>
+                    <table class="truth-table">
+                        <tr>
+                            <th>Opérateur</th>
+                            <th>Symbole</th>
+                            <th>Signification</th>
+                        </tr>
+                        <tr>
+                            <td><strong>NON</strong></td>
+                            <td>¬P</td>
+                            <td>Négation de P</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ET</strong></td>
+                            <td>P ∧ Q</td>
+                            <td>Vrai si P ET Q sont vrais</td>
+                        </tr>
+                        <tr>
+                            <td><strong>OU</strong></td>
+                            <td>P ∨ Q</td>
+                            <td>Vrai si au moins un est vrai</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IMPLIQUE</strong></td>
+                            <td>P ⇒ Q</td>
+                            <td>Si P alors Q</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ÉQUIVALENCE</strong></td>
+                            <td>P ⇔ Q</td>
+                            <td>P et Q ont la même valeur</td>
+                        </tr>
+                    </table>
+
+                    <h3>Table de Vérité: ET (∧)</h3>
+                    <table class="truth-table">
+                        <tr>
+                            <th>P</th>
+                            <th>Q</th>
+                            <th>P ∧ Q</th>
+                        </tr>
+                        <tr>
+                            <td>V</td>
+                            <td>V</td>
+                            <td><strong>V</strong></td>
+                        </tr>
+                        <tr>
+                            <td>V</td>
+                            <td>F</td>
+                            <td><strong>F</strong></td>
+                        </tr>
+                        <tr>
+                            <td>F</td>
+                            <td>V</td>
+                            <td><strong>F</strong></td>
+                        </tr>
+                        <tr>
+                            <td>F</td>
+                            <td>F</td>
+                            <td><strong>F</strong></td>
+                        </tr>
+                    </table>
+                `,
+                exercises: [
+                    {
+                        type: 'truth-table',
+                        title: 'Exercice 1: Table de vérité pour OU (∨)',
+                        description: 'Complète la table de vérité pour P ∨ Q (OU logique):',
+                        rows: [
+                            { p: 'V', q: 'V', answer: 'V' },
+                            { p: 'V', q: 'F', answer: 'V' },
+                            { p: 'F', q: 'V', answer: 'V' },
+                            { p: 'F', q: 'F', answer: 'F' }
+                        ]
+                    },
+                    {
+                        type: 'truth-table',
+                        title: 'Exercice 2: Table de vérité pour IMPLICATION (⇒)',
+                        description: 'Complète la table de vérité pour P ⇒ Q (SI... ALORS):',
+                        rows: [
+                            { p: 'V', q: 'V', answer: 'V' },
+                            { p: 'V', q: 'F', answer: 'F' },
+                            { p: 'F', q: 'V', answer: 'V' },
+                            { p: 'F', q: 'F', answer: 'V' }
+                        ]
+                    },
+                    {
+                        type: 'multiple-choice',
+                        title: 'Exercice 3: Reconnaître une proposition',
+                        description: 'Laquelle est une proposition valide?',
+                        options: [
+                            { text: 'Ouvre la porte!', correct: false },
+                            { text: '5 est un nombre premier', correct: true },
+                            { text: 'Quel est ton nom?', correct: false },
+                            { text: 'Ferme cette fenêtre', correct: false }
+                        ]
+                    },
+                    {
+                        type: 'logic-evaluation',
+                        title: 'Exercice 4: Évaluation logique',
+                        description: 'Évalue les expressions suivantes:',
+                        expressions: [
+                            { expr: 'V ∧ V', answer: 'V' },
+                            { expr: 'V ∨ F', answer: 'V' },
+                            { expr: '¬V', answer: 'F' }
+                        ]
+                    }
+                ]
+            },
+            'logic-prop': {
+                title: 'Logique Propositionnelle et Règles d\'Inférence',
+                subtitle: 'Combiner les propositions et appliquer les règles logiques',
+                week: 2,
+                difficulty: 'Intermédiaire',
+                content: `
+                    <h3>Rappel: Logique Propositionnelle</h3>
+                    <p>La logique propositionnelle s'intéresse aux propositions et leurs relations. Les propositions sont liées par des connecteurs logiques (ET, OU, NON, etc.).</p>
+                    
+                    <h3>Règles d'Inférence Fondamentales</h3>
+                    
+                    <h4>1. Modus Ponens (MP)</h4>
+                    <p>Si <strong>P ⇒ Q</strong> et <strong>P</strong> sont vrais, alors <strong>Q</strong> est vrai.</p>
+                    <blockquote style="background: #f0f9ff; padding: 12px; margin: 10px 0; border-left: 4px solid var(--primary);">
+                        <strong>Exemple:</strong> "Si il pleut, alors le sol est mouillé." + "Il pleut." = "Le sol est mouillé."
+                    </blockquote>
+
+                    <h4>2. Modus Tollens (MT)</h4>
+                    <p>Si <strong>P ⇒ Q</strong> et <strong>¬Q</strong> sont vrais, alors <strong>¬P</strong> est vrai.</p>
+                    <blockquote style="background: #f0f9ff; padding: 12px; margin: 10px 0; border-left: 4px solid var(--primary);">
+                        <strong>Exemple:</strong> "Si il pleut, alors le sol est mouillé." + "Le sol n'est pas mouillé." = "Il ne pleut pas."
+                    </blockquote>
+
+                    <h4>3. Hypothetical Syllogism (HS)</h4>
+                    <p>Si <strong>P ⇒ Q</strong> et <strong>Q ⇒ R</strong> sont vrais, alors <strong>P ⇒ R</strong> est vrai.</p>
+                    
+                    <h4>4. Disjunctive Syllogism (DS)</h4>
+                    <p>Si <strong>P ∨ Q</strong> et <strong>¬P</strong> sont vrais, alors <strong>Q</strong> est vrai.</p>
+                `,
+                exercises: [
+                    {
+                        type: 'inference',
+                        title: 'Exercice 1: Modus Ponens',
+                        description: 'Applique la règle Modus Ponens. Que peux-tu conclure?',
+                        premise1: 'P ⇒ Q: "Si le nombre est divisible par 4, alors il est pair"',
+                        premise2: 'P: "Le nombre est divisible par 4"',
+                        answer: 'Q: "Le nombre est pair"'
+                    }
+                ]
+            }
+        };
+
+        let currentModule = 'logic-intro';
+        let stats = {
+            completed: 0,
+            correct: 0,
+            total: 0
+        };
+
+        // LOAD MODULE
+        function loadModule(moduleNumber, moduleId) {
+            currentModule = moduleId;
+            const module = modules[moduleId];
+            
+            // Update UI
+            document.querySelectorAll('.module-item').forEach(item => item.classList.remove('active'));
+            event.target.closest('.module-item').classList.add('active');
+
+            document.getElementById('lessonTitle').textContent = `Leçon ${moduleNumber}: ${module.title}`;
+            document.getElementById('lessonContent').innerHTML = module.content;
+            document.getElementById('pageTitle').textContent = module.title;
+            document.getElementById('pageSubtitle').textContent = module.subtitle;
+            document.getElementById('exercisesContainer').innerHTML = '';
+
+            // Render exercises
+            renderExercises(module.exercises);
+
+            // Update progress
+            const progress = (moduleNumber / 20) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `Semaine ${moduleNumber}/20 - ${Math.round(progress)}%`;
+            document.getElementById('exerciseCount').textContent = `0/${module.exercises.length}`;
+        }
+
+        // RENDER EXERCISES
+        function renderExercises(exercises) {
+            const container = document.getElementById('exercisesContainer');
+            
+            exercises.forEach((exercise, index) => {
+                const exerciseEl = document.createElement('div');
+                exerciseEl.className = 'exercise';
+                
+                let content = `
+                    <div class="exercise-title">${exercise.title}</div>
+                    <div class="exercise-content">${exercise.description}</div>
+                `;
+
+                if (exercise.type === 'truth-table') {
+                    content += renderTruthTable(exercise, index);
+                } else if (exercise.type === 'multiple-choice') {
+                    content += renderMultipleChoice(exercise, index);
+                } else if (exercise.type === 'inference') {
+                    content += renderInference(exercise, index);
+                }
+
+                exerciseEl.innerHTML = content;
+                container.appendChild(exerciseEl);
+            });
+        }
+
+        // RENDER TRUTH TABLE
+        function renderTruthTable(exercise, index) {
+            let html = `
+                <table class="truth-table">
+                    <tr>
+                        <th>P</th>
+                        <th>Q</th>
+                        <th>Votre réponse</th>
+                        <th>Correct?</th>
+                    </tr>
+            `;
+
+            exercise.rows.forEach((row, rowIndex) => {
+                html += `
+                    <tr>
+                        <td>${row.p}</td>
+                        <td>${row.q}</td>
+                        <td>
+                            <select class="input-box" id="answer-${index}-${rowIndex}">
+                                <option value="">--</option>
+                                <option value="V">V (Vrai)</option>
+                                <option value="F">F (Faux)</option>
+                            </select>
+                        </td>
+                        <td><span id="result-${index}-${rowIndex}"></span></td>
+                    </tr>
+                `;
+            });
+
+            html += `</table>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="checkTruthTable(${index})">Vérifier</button>
+                    <button class="btn btn-secondary" onclick="resetTruthTable(${index})">Réinitialiser</button>
+                </div>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+
+            return html;
+        }
+
+        // RENDER MULTIPLE CHOICE
+        function renderMultipleChoice(exercise, index) {
+            let html = `
+                <div class="checkbox-group">
+            `;
+
+            exercise.options.forEach((option, optIndex) => {
+                html += `
+                    <div class="checkbox-item">
+                        <input type="radio" name="choice-${index}" id="option-${index}-${optIndex}" value="${optIndex}">
+                        <label for="option-${index}-${optIndex}">${option.text}</label>
+                    </div>
+                `;
+            });
+
+            html += `
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="checkMultipleChoice(${index}, ${JSON.stringify(exercise.options).replace(/"/g, '&quot;')})">Vérifier</button>
+                </div>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+
+            return html;
+        }
+
+        // RENDER INFERENCE
+        function renderInference(exercise, index) {
+            return `
+                <div style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                    <p><strong>Prémisse 1:</strong> ${exercise.premise1}</p>
+                    <p><strong>Prémisse 2:</strong> ${exercise.premise2}</p>
+                    <p style="margin-top: 15px;"><strong>Conclusion:</strong></p>
+                    <input type="text" class="input-box" id="inference-${index}" placeholder="Écris ta conclusion...">
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="checkInference(${index}, '${exercise.answer}')">Vérifier</button>
+                </div>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+        }
+
+        // CHECK TRUTH TABLE
+        function checkTruthTable(exerciseIndex) {
+            const module = modules[currentModule];
+            const exercise = module.exercises[exerciseIndex];
+            let allCorrect = true;
+
+            exercise.rows.forEach((row, rowIndex) => {
+                const userAnswer = document.getElementById(`answer-${exerciseIndex}-${rowIndex}`).value;
+                const resultSpan = document.getElementById(`result-${exerciseIndex}-${rowIndex}`);
+                
+                if (userAnswer === row.answer) {
+                    resultSpan.textContent = '✅';
+                    resultSpan.style.color = 'var(--success)';
+                } else {
+                    resultSpan.textContent = '❌ ' + row.answer;
+                    resultSpan.style.color = 'var(--error)';
+                    allCorrect = false;
+                }
+            });
+
+            showFeedback(exerciseIndex, allCorrect);
+            if (allCorrect) stats.correct++;
+            stats.total++;
+            updateStats();
+        }
+
+        // CHECK MULTIPLE CHOICE
+        function checkMultipleChoice(exerciseIndex, options) {
+            const selectedOption = document.querySelector(`input[name="choice-${exerciseIndex}"]:checked`);
+            if (!selectedOption) {
+                alert('Veuillez sélectionner une réponse!');
+                return;
+            }
+
+            const selectedIndex = parseInt(selectedOption.value);
+            const isCorrect = options[selectedIndex].correct;
+
+            showFeedback(exerciseIndex, isCorrect);
+            if (isCorrect) stats.correct++;
+            stats.total++;
+            updateStats();
+        }
+
+        // CHECK INFERENCE
+        function checkInference(exerciseIndex, correctAnswer) {
+            const userAnswer = document.getElementById(`inference-${exerciseIndex}`).value.trim();
+            const isCorrect = userAnswer.toLowerCase().includes('pair') || userAnswer.toLowerCase().includes('nombre');
+
+            showFeedback(exerciseIndex, isCorrect);
+            if (isCorrect) stats.correct++;
+            stats.total++;
+            updateStats();
+        }
+
+        // SHOW FEEDBACK
+        function showFeedback(exerciseIndex, isCorrect) {
+            const feedback = document.getElementById(`feedback-${exerciseIndex}`);
+            feedback.classList.add('show');
+            
+            if (isCorrect) {
+                feedback.className = 'feedback show feedback-success';
+                feedback.innerHTML = '✅ <strong>Excellent!</strong> Ta réponse est correcte!';
+            } else {
+                feedback.className = 'feedback show feedback-error';
+                feedback.innerHTML = '❌ <strong>Pas tout à fait.</strong> Réessaie ou consulte la leçon.';
+            }
+        }
+
+        // UPDATE STATS
+        function updateStats() {
+            const accuracy = stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0;
+            document.getElementById('completedCount').textContent = stats.correct;
+            document.getElementById('accuracyCount').textContent = accuracy + '%';
+        }
+
+        // RESET TRUTH TABLE
+        function resetTruthTable(exerciseIndex) {
+            const module = modules[currentModule];
+            const exercise = module.exercises[exerciseIndex];
+            
+            exercise.rows.forEach((row, rowIndex) => {
+                document.getElementById(`answer-${exerciseIndex}-${rowIndex}`).value = '';
+                document.getElementById(`result-${exerciseIndex}-${rowIndex}`).textContent = '';
+            });
+        }
+
+        // INITIALIZE
+        document.addEventListener('DOMContentLoaded', () => {
+            loadModule(1, 'logic-intro');
+        });
+    </script>
+</body>
+</html>

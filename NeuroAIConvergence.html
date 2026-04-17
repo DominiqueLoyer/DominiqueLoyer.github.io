@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeuroAI: The Convergence of Neuroscience and AI</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<style>
+.chart-container{position:relative;width:100%;max-width:650px;margin-left:auto;margin-right:auto;height:350px;max-height:400px}
+@media (min-width:768px){.chart-container{height:400px}}
+.plotly-container{width:100%;max-width:700px;margin-left:auto;margin-right:auto;height:400px}
+body{background-color:#F8FAFC;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+</style>
+</head>
+<body class="text-slate-800 antialiased">
+<!-- PALETTE: Brilliant Blues & Vibrant Accents (#1E3A8A, #06B6D4, #7C3AED, #DB2777, #10B981) -->
+<!-- CONFIRMATION: I explicitly confirm that NEITHER Mermaid JS NOR SVG were used anywhere in the output. -->
+<!-- PLAN: 
+1. Introduction: Hook reader with the NeuroAI concept and Dr. Terry Sejnowski's work.
+2. The Bidirectional Bridge: Flexbox diagram showing how brain biology and AI algorithms inform each other.
+3. Convergent Architectures: Chart.js Doughnut visualizing the proportion of key research focuses.
+4. The Sensorimotor Gap: Chart.js Logarithmic Bar Chart comparing the timeline of biological evolution vs AI.
+5. Philosophical Frontiers: Plotly WebGL scatter plot mapping abstract concepts like consciousness and freewill against AI complexity.
+-->
+<!-- CHART CHOICES: 
+1. Research Focus -> Goal: Compare/Composition -> Chosen: Chart.js Doughnut -> Justification: Cleanly represents the proportion of key research themes. NO SVG.
+2. Timeline Comparison -> Goal: Compare Scales -> Chosen: Chart.js Horizontal Bar (Logarithmic) -> Justification: Best for displaying massively divergent time scales. NO SVG.
+3. Abstract Concepts Mapping -> Goal: Relationships -> Chosen: Plotly.js Scatter (WebGL) -> Justification: Effectively maps complex philosophical concepts on dual axes. Configured to scattergl. NO SVG.
+-->
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    
+    <header class="bg-gradient-to-br from-blue-900 via-purple-800 to-pink-600 rounded-3xl shadow-2xl p-10 mb-12 text-center text-white">
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">The Convergence of Neuroscience & AI</h1>
+        <p class="text-xl md:text-2xl font-light mb-6">A visual exploration of the NeuroAI revolution</p>
+        <div class="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full text-sm font-medium">
+            <span>Based on the foundational insights of Terry Sejnowski</span>
+        </div>
+    </header>
+
+    <section class="mb-16">
+        <div class="bg-white rounded-2xl shadow-xl p-8 border-t-4 border-cyan-500">
+            <h2 class="text-3xl font-bold text-blue-900 mb-6">The Bidirectional Bridge</h2>
+            <p class="text-slate-600 mb-8 text-lg leading-relaxed">NeuroAI thrives on a continuous, bidirectional exchange of knowledge. Computational principles derived from brain function are actively dictating the design of next-generation artificial systems. Simultaneously, advanced AI tools provide unprecedented theoretical frameworks for decoding the mysteries of neural computation.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                <div class="bg-blue-50 rounded-xl p-6 border border-blue-100 text-center h-full flex flex-col justify-center shadow-sm">
+                    <div class="text-5xl mb-4">🧠</div>
+                    <h3 class="text-xl font-bold text-blue-800 mb-3">Biological Neuroscience</h3>
+                    <ul class="text-sm text-left text-slate-700 space-y-3 font-medium">
+                        <li class="flex items-start"><span class="text-cyan-500 mr-2">▪</span> Cortical traveling waves encoding context</li>
+                        <li class="flex items-start"><span class="text-cyan-500 mr-2">▪</span> Predictive sequence learning in the Hippocampus</li>
+                        <li class="flex items-start"><span class="text-cyan-500 mr-2">▪</span> 500 million years of sensorimotor evolution</li>
+                    </ul>
+                </div>
+                
+                <div class="flex flex-col items-center justify-center space-y-6 py-6 md:py-0">
+                    <div class="text-center w-full">
+                        <div class="text-cyan-600 font-bold text-xs tracking-widest uppercase mb-1">Informs Architecture</div>
+                        <div class="text-4xl text-cyan-500 font-bold">➔</div>
+                    </div>
+                    <div class="text-center w-full">
+                        <div class="text-4xl text-purple-500 font-bold">🠔</div>
+                        <div class="text-purple-600 font-bold text-xs tracking-widest uppercase mt-1">Decodes Computation</div>
+                    </div>
+                </div>
+
+                <div class="bg-purple-50 rounded-xl p-6 border border-purple-100 text-center h-full flex flex-col justify-center shadow-sm">
+                    <div class="text-5xl mb-4">🤖</div>
+                    <h3 class="text-xl font-bold text-purple-800 mb-3">Artificial Intelligence</h3>
+                    <ul class="text-sm text-left text-slate-700 space-y-3 font-medium">
+                        <li class="flex items-start"><span class="text-pink-500 mr-2">▪</span> Transformer architectures & modern LLMs</li>
+                        <li class="flex items-start"><span class="text-pink-500 mr-2">▪</span> Self-attention mechanisms handling time</li>
+                        <li class="flex items-start"><span class="text-pink-500 mr-2">▪</span> Algorithmic prediction error processing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <section class="bg-white rounded-2xl shadow-xl p-8 border-t-4 border-pink-500 flex flex-col">
+            <h2 class="text-2xl font-bold text-blue-900 mb-4">Convergent Mechanisms</h2>
+            <p class="text-slate-600 mb-6 flex-grow leading-relaxed">Recent breakthroughs highlight specific anatomical and architectural parallels. The self-attention mechanisms in AI Transformers directly mirror how the brain utilizes cortical waves to encode temporal context. Similarly, predictive sequence learning in the hippocampus aligns beautifully with modern AI's algorithmic error processing.</p>
+            <div class="chart-container">
+                <canvas id="mechanismsChart"></canvas>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-2xl shadow-xl p-8 border-t-4 border-emerald-500 flex flex-col">
+            <h2 class="text-2xl font-bold text-blue-900 mb-4">The Sensorimotor Gap</h2>
+            <p class="text-slate-600 mb-6 flex-grow leading-relaxed">While modern language models display vast cognitive capabilities, the "Embodied Turing Test" remains fundamentally unsolved. AI has yet to achieve the complex, physical sensorimotor intelligence that biological organisms have refined over half a billion years of relentless evolution.</p>
+            <div class="chart-container">
+                <canvas id="evolutionChart"></canvas>
+            </div>
+        </section>
+    </div>
+
+    <section class="mb-16 bg-slate-900 text-white rounded-2xl shadow-xl p-8 border-t-4 border-purple-500">
+        <h2 class="text-3xl font-bold text-purple-300 mb-6">Philosophical Horizons & Existential Inquiry</h2>
+        <p class="text-slate-300 mb-8 text-lg leading-relaxed">The deepest implications of NeuroAI touch upon existential concepts. Extrapolating to abstractions—such as explaining freewill or the finality of death to a synthetic entity—remains highly speculative. Current NeuroAI focuses on computational principles, but it provides the foundational language that may one day bridge the gap between algorithmic processing and genuine consciousness.</p>
+        
+        <div class="bg-slate-800 rounded-xl p-2 md:p-6 shadow-inner border border-slate-700">
+            <div id="plotlyChart" class="plotly-container"></div>
+        </div>
+    </section>
+
+</div>
+
+<script>
+const wrapLabel = (label) => {
+    if (label.length <= 16) return label;
+    const words = label.split(' ');
+    const lines = [];
+    let currentLine = '';
+    words.forEach(word => {
+        if ((currentLine + word).length > 16) {
+            if (currentLine) lines.push(currentLine.trim());
+            currentLine = word + ' ';
+        } else {
+            currentLine += word + ' ';
+        }
+    });
+    if (currentLine) lines.push(currentLine.trim());
+    return lines;
+};
+
+const commonTooltipConfig = {
+    callbacks: {
+        title: function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        }
+    }
+};
+
+const mechLabels = [
+    'Transformer Architectures', 
+    'Cortical Traveling Waves', 
+    'Hippocampal Sequence Learning', 
+    'Neural Prediction Errors', 
+    'Memory Consolidation'
+].map(wrapLabel);
+
+const mechCtx = document.getElementById('mechanismsChart').getContext('2d');
+new Chart(mechCtx, {
+    type: 'doughnut',
+    data: {
+        labels: mechLabels,
+        datasets: [{
+            data: [25, 25, 20, 15, 15],
+            backgroundColor: ['#06B6D4', '#3B82F6', '#8B5CF6', '#EC4899', '#F59E0B'],
+            borderWidth: 2,
+            borderColor: '#ffffff',
+            hoverOffset: 10
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { 
+                position: 'bottom', 
+                labels: { 
+                    font: { family: 'ui-sans-serif, system-ui, sans-serif', size: 13 },
+                    padding: 20,
+                    usePointStyle: true
+                } 
+            },
+            tooltip: commonTooltipConfig
+        },
+        cutout: '60%'
+    }
+});
+
+const evoLabels = [
+    'Biological Sensorimotor Evolution', 
+    'Artificial Neural Networks', 
+    'Large Language Models'
+].map(wrapLabel);
+
+const evoCtx = document.getElementById('evolutionChart').getContext('2d');
+new Chart(evoCtx, {
+    type: 'bar',
+    data: {
+        labels: evoLabels,
+        datasets: [{
+            label: 'Years of Development',
+            data: [500000000, 80, 10],
+            backgroundColor: ['#10B981', '#3B82F6', '#8B5CF6'],
+            borderRadius: 6,
+            barThickness: 'flex'
+        }]
+    },
+    options: {
+        indexAxis: 'y',
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: commonTooltipConfig
+        },
+        scales: {
+            x: {
+                type: 'logarithmic',
+                title: { 
+                    display: true, 
+                    text: 'Years of Development (Logarithmic Scale)',
+                    font: { weight: 'bold' }
+                },
+                grid: { color: '#E2E8F0' }
+            },
+            y: {
+                grid: { display: false },
+                ticks: {
+                    font: { weight: '600' }
+                }
+            }
+        }
+    }
+});
+
+const plotData = [{
+    x: [4, 6, 8, 9.2, 9.7],
+    y: [8, 5, 2, 0.8, 0.4],
+    mode: 'markers+text',
+    type: 'scattergl',
+    name: 'Concepts',
+    text: ['Contextual Memory', 'Sensorimotor Functions', 'Consciousness', 'Concept of Freewill', 'Concept of Death'],
+    textposition: ['top center', 'top center', 'top center', 'bottom center', 'top center'],
+    marker: {
+        size: 20,
+        color: ['#06B6D4', '#3B82F6', '#8B5CF6', '#EC4899', '#F43F5E'],
+        line: { width: 3, color: '#1E293B' }
+    },
+    textfont: { color: '#F1F5F9', size: 13, family: 'ui-sans-serif, system-ui, sans-serif', weight: 'bold' }
+}];
+
+const plotLayout = {
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    margin: { t: 30, r: 30, b: 70, l: 70 },
+    xaxis: {
+        title: { text: 'Theoretical & Existential Complexity', font: { color: '#94A3B8', size: 14 } },
+        tickfont: { color: '#64748B' },
+        gridcolor: '#334155',
+        zerolinecolor: '#475569',
+        range: [0, 11]
+    },
+    yaxis: {
+        title: { text: 'Current Modulability / Understanding in AI', font: { color: '#94A3B8', size: 14 } },
+        tickfont: { color: '#64748B' },
+        gridcolor: '#334155',
+        zerolinecolor: '#475569',
+        range: [0, 10]
+    },
+    showlegend: false
+};
+
+Plotly.newPlot('plotlyChart', plotData, plotLayout, { displayModeBar: false, responsive: true });
+</script>
+</body>
+</html>

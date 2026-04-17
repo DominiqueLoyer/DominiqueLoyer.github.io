@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sysCRED : Vers une Souveraineté de l'Explication</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --slate-950: #020617;
+            --indigo-accent: #6366f1;
+            --emerald-accent: #10b981;
+            --rose-accent: #f43f5e;
+        }
+        body {
+            background-color: var(--slate-950);
+            color: #f8fafc;
+            font-family: 'Outfit', sans-serif;
+        }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+        }
+        .chart-container {
+            position: relative;
+            height: 350px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="py-12 border-b border-slate-800 bg-slate-900/50">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div>
+                    <span class="px-3 py-1 text-xs font-bold tracking-widest bg-indigo-500/20 text-indigo-400 rounded-full border border-indigo-500/30 uppercase">
+                        Phase de Rédaction : sysCRED v3.0
+                    </span>
+                    <h1 class="text-4xl md:text-5xl font-black mt-4 bg-gradient-to-r from-white via-indigo-200 to-slate-500 bg-clip-text text-transparent">
+                        L'Architecture du Contre-Pouvoir
+                    </h1>
+                </div>
+                <div class="text-right">
+                    <p class="text-slate-400 font-mono text-sm">ORCID: 0009-0003-9713-7109</p>
+                    <p class="text-indigo-400 font-bold">Dominique Loyer, UQAM</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12 space-y-16">
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="glass-panel p-8">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <span class="text-rose-500">◈</span> L'Automatisation du Soupçon
+                </h2>
+                <p class="text-slate-300 leading-relaxed mb-6">
+                    Dans le <em>Léviathan Algorithmique</em>, la bureaucratie ne se contente plus de classer ; elle <strong>prédit la déviance</strong>. 
+                    Le passage du wébérisme au neuro-symbolique est une réponse à l'opacité des scores de crédit et de fraude.
+                </p>
+                <div class="space-y-4">
+                    <div class="flex items-start gap-4 p-4 bg-slate-800/50 rounded-xl border-l-4 border-rose-500">
+                        <div>
+                            <h4 class="font-bold text-rose-400">Injustice Algorithmique</h4>
+                            <p class="text-sm text-slate-400">Exemple du <em>Toeslagenaffaire</em> : Corrélation ≠ Causalité.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 bg-slate-800/50 rounded-xl border-l-4 border-emerald-500">
+                        <div>
+                            <h4 class="font-bold text-emerald-400">Solution sysCRED</h4>
+                            <p class="text-sm text-slate-400">Utilisation d'ontologies RDF pour forcer la traçabilité logique.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-panel p-8">
+                <h3 class="text-center text-slate-400 font-mono text-xs uppercase mb-4">Distribution de la Crédibilité (Hybride)</h3>
+                <div class="chart-container">
+                    <canvas id="hybridDistribution"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="glass-panel p-8">
+            <div class="flex flex-col md:flex-row gap-8 items-center">
+                <div class="md:w-1/3">
+                    <h2 class="text-2xl font-bold mb-4">Espace Vectoriel de Responsabilité</h2>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                        Cette visualisation représente le "raisonnement" de sysCRED. Les points ne sont pas de simples données, mais des <strong>items d'information</strong> ancrés dans une ontologie.
+                    </p>
+                    <ul class="text-xs space-y-3 font-mono text-slate-500">
+                        <li><span class="text-indigo-400">X:</span> Analyse Sémantique (NLP)</li>
+                        <li><span class="text-emerald-400">Y:</span> Validation Ontologique (Règles)</li>
+                        <li><span class="text-rose-400">Z:</span> Score E-E-A-T (Autorité)</li>
+                    </ul>
+                </div>
+                <div class="md:w-2/3 w-full h-[500px] rounded-2xl overflow-hidden bg-slate-950/50 border border-slate-800">
+                    <div id="logic3d" class="w-full h-full"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glass-panel p-6 border-t-4 border-indigo-500">
+                <h3 class="font-bold mb-2">Rule Engine</h3>
+                <code class="text-xs text-indigo-300 block bg-black/30 p-3 rounded mb-4">
+                    ?x is HighRisk :- <br>
+                    &nbsp;&nbsp;hasNewDomain(?x), <br>
+                    &nbsp;&nbsp;hasSentimentIntensity(?x, >0.8).
+                </code>
+                <p class="text-xs text-slate-500">Traduction du doute en prédicat logique formel.</p>
+            </div>
+            <div class="glass-panel p-6 border-t-4 border-emerald-500">
+                <h3 class="font-bold mb-2">Neuro-Symbolic</h3>
+                <p class="text-sm text-slate-400">Fusion des poids synaptiques et des axiomes de subsomption pour éviter les hallucinations.</p>
+            </div>
+            <div class="glass-panel p-6 border-t-4 border-rose-500">
+                <h3 class="font-bold mb-2">Accountability</h3>
+                <p class="text-sm text-slate-400">Génération automatique de rapports d'explicabilité pour l'utilisateur final.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="py-12 text-center text-slate-600 border-t border-slate-900">
+        <p class="text-sm font-mono tracking-tighter">SYSCRED_V3 // UQAM // 2026</p>
+    </footer>
+
+    <script>
+        // Chart 1: Hybrid Distribution (Doughnut)
+        const ctxDist = document.getElementById('hybridDistribution').getContext('2d');
+        new Chart(ctxDist, {
+            type: 'doughnut',
+            data: {
+                labels: ['Validation Symbolique (Règles)', 'Inférence Neurale (Probabilités)', 'Evidence Externe (API)'],
+                datasets: [{
+                    data: [40, 35, 25],
+                    backgroundColor: ['#6366f1', '#10b981', '#f43f5e'],
+                    hoverOffset: 20,
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 10 } } }
+                },
+                cutout: '75%'
+            }
+        });
+
+        // Chart 2: 3D Logic Space (Plotly)
+        const generatePoints = (n, baseColor) => {
+            return {
+                x: Array.from({length: n}, () => Math.random()),
+                y: Array.from({length: n}, () => Math.random()),
+                z: Array.from({length: n}, () => Math.random()),
+                mode: 'markers',
+                marker: { size: 4, color: baseColor, opacity: 0.6 },
+                type: 'scatter3d'
+            };
+        };
+
+        const trace1 = generatePoints(40, '#6366f1'); // Symbolique
+        const trace2 = generatePoints(40, '#10b981'); // Neuronal
+        
+        const layout = {
+            margin: {l:0, r:0, b:0, t:0},
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            scene: {
+                xaxis: { showgrid: true, gridcolor: '#1e293b', zeroline: false, showticklabels: false },
+                yaxis: { showgrid: true, gridcolor: '#1e293b', zeroline: false, showticklabels: false },
+                zaxis: { showgrid: true, gridcolor: '#1e293b', zeroline: false, showticklabels: false }
+            },
+            showlegend: false
+        };
+
+        Plotly.newPlot('logic3d', [trace1, trace2], layout);
+    </script>
+</body>
+</html>
