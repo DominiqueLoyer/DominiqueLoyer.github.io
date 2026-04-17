@@ -1053,6 +1053,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 </script>
 
+
+<!-- SCRIPT -->
+<script>
+  function toggleBibtex(btn) {
+    var pre = btn.nextElementSibling;
+    pre.classList.toggle('open');
+    btn.textContent = pre.classList.contains('open') ? '\u2716 Fermer' : '\u{1F3F7} BibTeX';
+  }
+</script>
+</center>
   <!-- FOOTER -->
 <footer>
   <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0">
@@ -1084,17 +1094,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </a>
   </div>
 </footer>
-
-
-
-<!-- SCRIPT -->
-<script>
-  function toggleBibtex(btn) {
-    var pre = btn.nextElementSibling;
-    pre.classList.toggle('open');
-    btn.textContent = pre.classList.contains('open') ? '\u2716 Fermer' : '\u{1F3F7} BibTeX';
-  }
-</script>
-
+  
 </body>
 </html>
