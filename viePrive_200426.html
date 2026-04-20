@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moteur de Recommandation - Cours Interactif IA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @keyframes fadeInSlideUp {
+            from { opacity: 0; transform: translateY(1rem); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeInSlideUp 0.5s ease-out forwards;
+        }
+        /* Cache les éléments par défaut avant que le JS ne s'exécute pour éviter les clignotements */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body class="bg-slate-100 font-sans text-slate-900">
+
+<div class="min-h-screen flex flex-col md:flex-row">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="w-full md:w-72 bg-white border-r border-slate-200 flex-shrink-0 md:h-screen md:sticky top-0 overflow-y-auto">
+        <div class="p-6 border-b border-slate-100">
+            <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center mb-4 shadow-sm">
+                <i data-lucide="cpu" class="text-white w-6 h-6"></i>
+            </div>
+            <h2 class="text-xl font-bold text-slate-800 leading-tight">Moteur de<br/>Recommandation</h2>
+            <p class="text-xs text-slate-500 mt-2">Cours Interactif IA</p>
+        </div>
+        
+        <nav class="p-4 space-y-1" id="sidebar-nav">
+            <button class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-200" data-target="intro">
+                <i data-lucide="network" class="w-5 h-5 tab-icon"></i>
+                <span class="text-sm">Bases & Similarité</span>
+            </button>
+            <button class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-200" data-target="matrix">
+                <i data-lucide="database" class="w-5 h-5 tab-icon"></i>
+                <span class="text-sm">Factorisation Matricielle</span>
+            </button>
+            <button class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-200" data-target="netflix">
+                <i data-lucide="film" class="w-5 h-5 tab-icon"></i>
+                <span class="text-sm">Le Cas Netflix</span>
+            </button>
+            <button class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-200" data-target="hybrid">
+                <i data-lucide="cpu" class="w-5 h-5 tab-icon"></i>
+                <span class="text-sm">Systèmes Hybrides</span>
+            </button>
+            <button class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-200" data-target="context">
+                <i data-lucide="map-pin" class="w-5 h-5 tab-icon"></i>
+                <span class="text-sm">IA Contextuelle</span>
+            </button>
+            <button class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-200" data-target="privacy">
+                <i data-lucide="shield-check" class="w-5 h-5 tab-icon"></i>
+                <span class="text-sm">Vie Privée</span>
+            </button>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 p-6 md:p-12 overflow-x-hidden">
+        <div class="max-w-4xl mx-auto relative">
+            
+            <!-- SECTION: Intro -->
+            <div id="intro" class="tab-content active space-y-8 animate-fade-in">
+                <div class="text-center space-y-4">
+                    <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900">La Magie des Maths derrière vos Écrans</h1>
+                    <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                        Comment prédire si vous aimerez un film que vous n'avez jamais vu ? Le défi consiste à remplir les vides d'une matrice géante et clairsemée.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="bg-slate-50 border-b border-slate-200 px-5 py-4 flex items-center gap-3">
+                            <i data-lucide="trending-up" class="w-5 h-5 text-indigo-600"></i>
+                            <h3 class="font-semibold text-slate-800">Pearson (Tendances)</h3>
+                        </div>
+                        <div class="p-5">
+                            <p class="text-slate-600 text-sm mb-4">Mesure si deux utilisateurs varient leurs notes de la même façon autour de leur moyenne.</p>
+                            <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">+1 (Jumeaux)</span> 
+                            <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-rose-100 text-rose-800">-1 (Opposés)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="bg-slate-50 border-b border-slate-200 px-5 py-4 flex items-center gap-3">
+                            <i data-lucide="calculator" class="w-5 h-5 text-indigo-600"></i>
+                            <h3 class="font-semibold text-slate-800">Cosinus (Angle)</h3>
+                        </div>
+                        <div class="p-5">
+                            <p class="text-slate-600 text-sm mb-4">Calcule l'angle entre deux vecteurs de notes. Si l'angle est nul, les goûts sont identiques.</p>
+                            <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded-r-lg font-mono text-sm text-indigo-900 my-4 overflow-x-auto">sim(x,y) = cos(θ)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="bg-slate-50 border-b border-slate-200 px-5 py-4 flex items-center gap-3">
+                            <i data-lucide="network" class="w-5 h-5 text-indigo-600"></i>
+                            <h3 class="font-semibold text-slate-800">Jaccard (Ensemble)</h3>
+                        </div>
+                        <div class="p-5">
+                            <p class="text-slate-600 text-sm mb-4">Mesure le pourcentage d'éléments communs entre deux ensembles de films vus.</p>
+                            <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded-r-lg font-mono text-sm text-indigo-900 my-4 overflow-x-auto">J(A,B) = |A ∩ B| / |A ∪ B|</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="text-2xl font-bold text-slate-800 mt-12 mb-6 border-b pb-2">Le Filtrage Collaboratif</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden border-t-4 border-t-blue-500">
+                        <div class="bg-slate-50 border-b border-slate-200 px-5 py-4 flex items-center gap-3">
+                            <i data-lucide="users" class="w-5 h-5 text-indigo-600"></i>
+                            <h3 class="font-semibold text-slate-800">User-Based (Basé Utilisateur)</h3>
+                        </div>
+                        <div class="p-5">
+                            <p class="italic text-slate-500 mb-4">« Dis-moi qui sont tes amis, je te dirai ce que tu aimes. »</p>
+                            <p class="text-slate-700">On pondère les notes des voisins similaires (sim(u,v)) pour calculer votre prédiction.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden border-t-4 border-t-purple-500">
+                        <div class="bg-slate-50 border-b border-slate-200 px-5 py-4 flex items-center gap-3">
+                            <i data-lucide="film" class="w-5 h-5 text-indigo-600"></i>
+                            <h3 class="font-semibold text-slate-800">Item-Based (Basé Article)</h3>
+                        </div>
+                        <div class="p-5">
+                            <p class="italic text-slate-500 mb-4">« Si tu as aimé Toy Story, tu aimeras Raiponce. »</p>
+                            <p class="text-slate-700">On utilise la similarité entre les films (sim(i,j)) pour prédire la note en fonction de votre historique.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION: Matrix -->
+            <div id="matrix" class="tab-content space-y-8">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Le Cœur du Réacteur : Factorisation Matricielle</h2>
+                    <p class="text-slate-600 text-lg">
+                        Au lieu de noter les films directement, on décrit utilisateurs et films par des <strong>caractéristiques cachées</strong> (facteurs latents comme l'action, l'humour, etc.).
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="bg-slate-50 border-b border-slate-200 px-5 py-4 flex items-center gap-3">
+                        <i data-lucide="calculator" class="w-5 h-5 text-indigo-600"></i>
+                        <h3 class="font-semibold text-slate-800">La Formule Magique</h3>
+                    </div>
+                    <div class="p-5">
+                        <p class="text-slate-700 mb-2">La note prédite r̂<sub>ui</sub> est le produit scalaire du profil du film et de l'utilisateur :</p>
+                        <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded-r-lg font-mono text-sm text-indigo-900 my-4 overflow-x-auto">r̂<sub class="text-[10px]">ui</sub> = q<sub class="text-[10px]">i</sub><sup class="text-[10px]">T</sup> p<sub class="text-[10px]">u</sub></div>
+                        
+                        <div class="mt-6">
+                            <h4 class="font-semibold text-slate-800 mb-2">Le Modèle Complet (Avec Biais)</h4>
+                            <p class="text-sm text-slate-600 mb-2">Pour être précis, on ajoute la moyenne (μ), le tempérament de l'utilisateur (b<sub>u</sub>) et la popularité du film (b<sub>i</sub>) :</p>
+                            <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded-r-lg font-mono text-sm text-indigo-900 my-4 overflow-x-auto">r̂<sub class="text-[10px]">ui</sub> = μ + b<sub class="text-[10px]">u</sub> + b<sub class="text-[10px]">i</sub> + q<sub class="text-[10px]">i</sub><sup class="text-[10px]">T</sup> p<sub class="text-[10px]">u</sub></div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="text-2xl font-bold text-slate-800 mt-10">Comment l'IA Apprend : Optimisation (SGD)</h3>
+                <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                    <ol class="space-y-4 relative border-l border-slate-300 ml-3">
+                        <li class="pl-6 relative">
+                            <span class="absolute w-6 h-6 bg-indigo-600 rounded-full flex items-center justify-center text-white text-xs font-bold -left-3 top-0 ring-4 ring-slate-50">1</span>
+                            <h4 class="font-semibold text-slate-800">Calculer l'erreur</h4>
+                            <p class="text-slate-600 text-sm mt-1">e_ui = r_ui - r̂_ui</p>
+                        </li>
+                        <li class="pl-6 relative">
+                            <span class="absolute w-6 h-6 bg-indigo-600 rounded-full flex items-center justify-center text-white text-xs font-bold -left-3 top-0 ring-4 ring-slate-50">2</span>
+                            <h4 class="font-semibold text-slate-800">Corriger les profils</h4>
+                            <p class="text-slate-600 text-sm mt-1">Ajuster p_u et q_i en faisant un petit pas (γ) vers la solution.</p>
+                        </li>
+                        <li class="pl-6 relative">
+                            <span class="absolute w-6 h-6 bg-indigo-600 rounded-full flex items-center justify-center text-white text-xs font-bold -left-3 top-0 ring-4 ring-slate-50">3</span>
+                            <h4 class="font-semibold text-slate-800">Régularisation (λ)</h4>
+                            <p class="text-slate-600 text-sm mt-1">Empêche le modèle de faire du surapprentissage (trop apprendre par cœur).</p>
+                        </li>
+                        <li class="pl-6 relative">
+                            <span class="absolute w-6 h-6 bg-indigo-600 rounded-full flex items-center justify-center text-white text-xs font-bold -left-3 top-0 ring-4 ring-slate-50">4</span>
+                            <h4 class="font-semibold text-slate-800">Répéter</h4>
+                            <p class="text-slate-600 text-sm mt-1">Des millions de fois jusqu'à la convergence de l'algorithme.</p>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- SECTION: Netflix -->
+            <div id="netflix" class="tab-content space-y-8">
+                <div class="bg-slate-900 text-white rounded-2xl p-8 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 opacity-10 pointer-events-none text-9xl font-bold">N</div>
+                    <h2 class="text-3xl font-extrabold mb-4 relative z-10">L'Épopée du Netflix Prize</h2>
+                    <p class="text-slate-300 text-lg relative z-10">
+                        En 2006, Netflix lance un défi fou : 1 million de dollars pour améliorer leur algorithme de 10%. Ce concours a révolutionné l'IA.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="bg-slate-50 border-b border-slate-200 px-5 py-4 flex items-center gap-3">
+                            <i data-lucide="cpu" class="w-5 h-5 text-indigo-600"></i>
+                            <h3 class="font-semibold text-slate-800">Simon Funk : Le Hacker Visionnaire</h3>
+                        </div>
+                        <div class="p-5">
+                            <p class="text-slate-600 mb-4">Il adapte la <strong>SVD</strong> (Singular Value Decomposition) aux données massives et incomplètes via la descente de gradient.</p>
+                            <ul class="space-y-2 text-sm text-slate-700">
+                                <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-indigo-500 mt-0.5"></i> Gère les matrices où 99% des cases sont vides.</li>
+                                <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-indigo-500 mt-0.5"></i> Découvre des facteurs latents invisibles à l'humain.</li>
+                                <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-indigo-500 mt-0.5"></i> Implémentation ultralégère en langage C.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="bg-slate-50 border-b border-slate-200 px-5 py-4 flex items-center gap-3">
+                            <i data-lucide="calculator" class="w-5 h-5 text-indigo-600"></i>
+                            <h3 class="font-semibold text-slate-800">Le Bulletin de Notes (Évaluation)</h3>
+                        </div>
+                        <div class="p-5 space-y-4">
+                            <div>
+                                <h4 class="font-semibold text-slate-800 flex items-center gap-2">
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-rose-100 text-rose-800">RMSE</span> Racine de l'Erreur Quadratique Moyenne
+                                </h4>
+                                <p class="text-sm text-slate-600 mt-1">Pénalise fortement les grosses erreurs (les catastrophes). Idéal pour éviter de recommander un film détesté.</p>
+                            </div>
+                            <div class="border-t pt-4">
+                                <h4 class="font-semibold text-slate-800 flex items-center gap-2">
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">MAE</span> Erreur Absolue Moyenne
+                                </h4>
+                                <p class="text-sm text-slate-600 mt-1">Mesure l'écart moyen réel sans exagérer les extrêmes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION: Hybrid -->
+            <div id="hybrid" class="tab-content space-y-8">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-slate-900 mb-4">L'Intelligence Hybride</h2>
+                    <p class="text-slate-600 text-lg">
+                        Un système hybride ne choisit pas entre vos goûts personnels et ceux de la communauté : il <strong>fusionne</strong> les deux.
+                    </p>
+                </div>
+
+                <div class="bg-indigo-50 rounded-xl p-6 border border-indigo-100 flex flex-col md:flex-row gap-6 items-center">
+                    <div class="flex-1 space-y-3">
+                        <h3 class="font-bold text-indigo-900 text-xl">Pourquoi l'hybride ?</h3>
+                        <p class="text-indigo-800 text-sm">Le filtrage collaboratif échoue sur les nouveaux articles ("Cold Start"). Le filtrage par contenu manque de diversité. L'hybride résout ces limites en combinant les scores et en basculant automatiquement de stratégie selon la maturité du profil.</p>
+                    </div>
+                    <div class="flex-shrink-0 w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-inner border border-indigo-200">
+                        <i data-lucide="network" class="w-12 h-12 text-indigo-500"></i>
+                    </div>
+                </div>
+
+                <h3 class="text-2xl font-bold text-slate-800 mt-10 mb-6">Les Leaders du Marché</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden border-t-4 border-t-red-600">
+                        <div class="bg-slate-50 border-b border-slate-200 px-5 py-4 flex items-center gap-3">
+                            <i data-lucide="film" class="w-5 h-5 text-indigo-600"></i>
+                            <h3 class="font-semibold text-slate-800">Netflix</h3>
+                        </div>
+                        <div class="p-5">
+                            <p class="text-sm text-slate-600 mb-4">Croise l'historique de visionnage avec les micro-thèmes des films.</p>
+                            <div class="space-y-2 text-xs">
+                                <div class="flex justify-between border-b pb-1"><span class="text-slate-500">Signaux</span> <span class="font-medium">Clics, pauses</span></div>
+                                <div class="flex justify-between border-b pb-1"><span class="text-slate-500">Modèle</span> <span class="font-medium">Collab + Méta</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden border-t-4 border-t-green-500">
+                        <div class="bg-slate-50 border-b border-slate-200 px-5 py-4 flex items-center gap-3">
+                            <i data-lucide="music" class="w-5 h-5 text-indigo-600"></i>
+                            <h3 class="font-semibold text-slate-800">Spotify</h3>
+                        </div>
+                        <div class="p-5">
+                            <p class="text-sm text-slate-600 mb-4">Analyse l'audio pur (tempo) tout en scannant les playlists de la communauté.</p>
+                            <div class="space-y-2 text-xs">
+                                <div class="flex justify-between border-b pb-1"><span class="text-slate-500">Signaux</span> <span class="font-medium">Audio, skips</span></div>
+                                <div class="flex justify-between border-b pb-1"><span class="text-slate-500">Modèle</span> <span class="font-medium">NLP + Audio + Collab</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden border-t-4 border-t-orange-500">
+                        <div class="bg-slate-50 border-b border-slate-200 px-5 py-4 flex items-center gap-3">
+                            <i data-lucide="shopping-cart" class="w-5 h-5 text-indigo-600"></i>
+                            <h3 class="font-semibold text-slate-800">Amazon</h3>
+                        </div>
+                        <div class="p-5">
+                            <p class="text-sm text-slate-600 mb-4">Utilise les achats passés pour prédire le prochain besoin logistique.</p>
+                            <div class="space-y-2 text-xs">
+                                <div class="flex justify-between border-b pb-1"><span class="text-slate-500">Signaux</span> <span class="font-medium">Achats, paniers</span></div>
+                                <div class="flex justify-between border-b pb-1"><span class="text-slate-500">Modèle</span> <span class="font-medium">Item-based + Contenu</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION: Context -->
+            <div id="context" class="tab-content space-y-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-extrabold text-slate-900 mb-4">L'IA Sensible au Contexte (CARS)</h2>
+                    <p class="text-slate-600 text-lg max-w-2xl mx-auto">
+                        L'équation devient : <strong>Utilisateur &times; Article &times; Contexte</strong>. Les suggestions s'adaptent à votre réalité immédiate.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-blue-50 rounded-xl p-5 text-center border border-white/50 shadow-sm">
+                        <i data-lucide="clock" class="w-8 h-8 mx-auto mb-3 text-blue-500"></i>
+                        <h4 class="font-bold text-slate-800">Temps</h4>
+                        <p class="text-xs text-slate-600 mt-1">Heure, jour, saison</p>
+                    </div>
+                    <div class="bg-emerald-50 rounded-xl p-5 text-center border border-white/50 shadow-sm">
+                        <i data-lucide="map-pin" class="w-8 h-8 mx-auto mb-3 text-emerald-500"></i>
+                        <h4 class="font-bold text-slate-800">Espace</h4>
+                        <p class="text-xs text-slate-600 mt-1">GPS, météo, lieu</p>
+                    </div>
+                    <div class="bg-purple-50 rounded-xl p-5 text-center border border-white/50 shadow-sm">
+                        <i data-lucide="users" class="w-8 h-8 mx-auto mb-3 text-purple-500"></i>
+                        <h4 class="font-bold text-slate-800">Social</h4>
+                        <p class="text-xs text-slate-600 mt-1">Seul, amis, famille</p>
+                    </div>
+                    <div class="bg-orange-50 rounded-xl p-5 text-center border border-white/50 shadow-sm">
+                        <i data-lucide="smartphone" class="w-8 h-8 mx-auto mb-3 text-orange-500"></i>
+                        <h4 class="font-bold text-slate-800">Technique</h4>
+                        <p class="text-xs text-slate-600 mt-1">Mobile vs TV, réseau</p>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4 border-b pb-2">Comment l'IA intègre ces données ?</h3>
+                <div class="space-y-4">
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden p-5">
+                        <h4 class="font-semibold text-slate-800 flex items-center gap-2 mb-2">
+                            <span class="w-6 h-6 rounded bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold">1</span> Le Tri Sélectif (En amont)
+                        </h4>
+                        <p class="text-sm text-slate-600">Filtre les données avant le calcul. <em>Ex: S'il pleut, on ne regarde que les achats historiques faits sous la pluie.</em></p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden p-5">
+                        <h4 class="font-semibold text-slate-800 flex items-center gap-2 mb-2">
+                            <span class="w-6 h-6 rounded bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold">2</span> Le Ré-ordonnancement (En aval)
+                        </h4>
+                        <p class="text-sm text-slate-600">Génère une liste globale, puis la réorganise. <em>Ex: Remonte les dessins animés si l'heure indique que les enfants sont devant la TV.</em></p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden p-5">
+                        <h4 class="font-semibold text-slate-800 flex items-center gap-2 mb-2">
+                            <span class="w-6 h-6 rounded bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold">3</span> Le Modèle 'Tout-en-un'
+                        </h4>
+                        <p class="text-sm text-slate-600">Le contexte est une variable d'entrée mathématique directe (Factorisation de Tenseurs).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION: Privacy -->
+            <div id="privacy" class="tab-content space-y-8">
+                <div class="bg-rose-50 rounded-2xl p-8 border border-rose-100 flex flex-col md:flex-row gap-6 items-center">
+                    <div class="flex-1 space-y-4">
+                        <h2 class="text-3xl font-extrabold text-rose-900">Vie Privée vs Personnalisation</h2>
+                        <p class="text-rose-800">
+                            Le <strong>Privacy Paradox</strong> : nous valorisons notre anonymat, mais cédons souvent nos données pour une recommandation plus rapide.
+                        </p>
+                    </div>
+                    <i data-lucide="alert-triangle" class="w-16 h-16 text-rose-500 flex-shrink-0"></i>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                            <i data-lucide="shield-check" class="text-rose-500 w-5 h-5"></i> Les Risques
+                        </h3>
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden p-5">
+                            <ul class="space-y-3">
+                                <li>
+                                    <strong class="block text-slate-800 text-sm">Ré-identification</strong>
+                                    <span class="text-slate-600 text-xs">Croiser votre lieu et vos horaires suffit souvent à vous identifier même si les données sont "anonymes".</span>
+                                </li>
+                                <li>
+                                    <strong class="block text-slate-800 text-sm">Inférences Sensibles</strong>
+                                    <span class="text-slate-600 text-xs">L'IA peut déduire santé, opinions ou orientation via des clics répétitifs.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                            <i data-lucide="lock" class="text-emerald-500 w-5 h-5"></i> Les Solutions (Privacy-by-Design)
+                        </h3>
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden p-5">
+                            <ul class="space-y-3">
+                                <li>
+                                    <strong class="block text-slate-800 text-sm">Confidentialité Différentielle</strong>
+                                    <span class="text-slate-600 text-xs">Ajoute du bruit mathématique aux données. L'IA apprend les tendances globales sans voir votre comportement exact.</span>
+                                </li>
+                                <li>
+                                    <strong class="block text-slate-800 text-sm">Apprentissage Fédéré</strong>
+                                    <span class="text-slate-600 text-xs">L'algorithme voyage sur votre smartphone. Il apprend localement et ne renvoie que des mises à jour mathématiques au serveur central.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Footer -->
+            <div class="mt-16 pt-8 border-t border-slate-200 flex justify-between items-center">
+                <button id="prev-btn" class="px-4 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                    Précédent
+                </button>
+                
+                <div id="dots" class="flex gap-1.5">
+                    <!-- Généré en JS -->
+                </div>
+
+                <button id="next-btn" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                    Suivant
+                </button>
+            </div>
+            
+        </div>
+    </main>
+</div>
+
+<script>
+    // Initialisation des icônes
+    lucide.createIcons();
+
+    // Logique de navigation
+    const tabs = ['intro', 'matrix', 'netflix', 'hybrid', 'context', 'privacy'];
+    let activeTabIndex = 0;
+
+    const navButtons = document.querySelectorAll('.tab-btn');
+    const sections = document.querySelectorAll('.tab-content');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const dotsContainer = document.getElementById('dots');
+
+    function renderTabs() {
+        // Mise à jour de la barre latérale
+        navButtons.forEach((btn, idx) => {
+            const isActive = idx === activeTabIndex;
+            const icon = btn.querySelector('.tab-icon');
+            
+            if (isActive) {
+                btn.className = 'tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-200 bg-indigo-50 text-indigo-700 font-semibold shadow-sm';
+                icon.classList.remove('text-slate-400');
+                icon.classList.add('text-indigo-600');
+            } else {
+                btn.className = 'tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900';
+                icon.classList.remove('text-indigo-600');
+                icon.classList.add('text-slate-400');
+            }
+        });
+
+        // Affichage des sections
+        sections.forEach((section, idx) => {
+            if (idx === activeTabIndex) {
+                section.classList.add('active');
+                // Relancer l'animation
+                section.classList.remove('animate-fade-in');
+                void section.offsetWidth; // Force le reflow du navigateur
+                section.classList.add('animate-fade-in');
+            } else {
+                section.classList.remove('active');
+            }
+        });
+
+        // Mise à jour des boutons Précédent/Suivant
+        prevBtn.disabled = activeTabIndex === 0;
+        nextBtn.disabled = activeTabIndex === tabs.length - 1;
+
+        // Mise à jour des points indicateurs (dots)
+        dotsContainer.innerHTML = '';
+        tabs.forEach((_, idx) => {
+            const dot = document.createElement('div');
+            dot.className = `w-2 h-2 rounded-full ${activeTabIndex === idx ? 'bg-indigo-600' : 'bg-slate-300'}`;
+            dotsContainer.appendChild(dot);
+        });
+        
+        // Scroll automatique en haut du contenu lors du changement de tab
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function setTab(idx) {
+        if (idx >= 0 && idx < tabs.length) {
+            activeTabIndex = idx;
+            renderTabs();
+        }
+    }
+
+    // Écouteurs d'événements
+    navButtons.forEach((btn, idx) => {
+        btn.addEventListener('click', () => setTab(idx));
+    });
+
+    prevBtn.addEventListener('click', () => setTab(activeTabIndex - 1));
+    nextBtn.addEventListener('click', () => setTab(activeTabIndex + 1));
+
+    // Premier rendu
+    renderTabs();
+</script>
+
+</body>
+</html>
