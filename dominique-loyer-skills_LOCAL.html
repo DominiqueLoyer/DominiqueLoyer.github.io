@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dominique Loyer — Skills & Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300..700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root, [data-theme="light"] {
+      --color-bg: #f7f6f2;
+      --color-surface: #f0efe9;
+      --color-border: #d4d1ca;
+      --color-text: #28251d;
+      --color-text-muted: #7a7974;
+      --color-primary: #01696f;
+      --color-primary-hover: #0c4e54;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 0.375rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-full: 9999px;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-12: 3rem;
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    [data-theme="dark"] {
+      --color-bg: #0f0f0d;
+      --color-surface: #1a1918;
+      --color-border: #2e2d2b;
+      --color-text: #cdccca;
+      --color-text-muted: #7a7876;
+      --color-primary: #4f98a3;
+      --color-primary-hover: #6eb8c5;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100dvh;
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      color: var(--color-text);
+      background: var(--color-bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--space-3) var(--space-6);
+      background: color-mix(in oklab, var(--color-bg) 88%, transparent);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .header-name {
+      font-size: var(--text-sm); font-weight: 600; letter-spacing: 0.01em;
+      color: var(--color-text);
+      display: flex; align-items: center; gap: var(--space-2);
+    }
+    .header-logo {
+      width: 28px; height: 28px;
+    }
+    .theme-toggle {
+      background: none; border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      padding: var(--space-2);
+      color: var(--color-text-muted);
+      cursor: pointer; display: flex; align-items: center;
+      transition: color var(--transition), border-color var(--transition);
+    }
+    .theme-toggle:hover { color: var(--color-text); border-color: var(--color-text-muted); }
+
+    /* Main layout */
+    main {
+      max-width: 820px;
+      margin-inline: auto;
+      padding: var(--space-8) var(--space-6) var(--space-12);
+    }
+
+    /* Hero */
+    .hero {
+      margin-bottom: var(--space-8);
+      padding-bottom: var(--space-8);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .hero h1 {
+      font-size: var(--text-xl); font-weight: 700; letter-spacing: -0.02em;
+      color: var(--color-text); margin-bottom: var(--space-2);
+    }
+    .hero .subtitle {
+      font-size: var(--text-sm); color: var(--color-text-muted);
+    }
+    .hero .subtitle a {
+      color: var(--color-primary); text-decoration: none;
+    }
+    .hero .subtitle a:hover { text-decoration: underline; }
+
+    /* Sections */
+    .section { margin-bottom: var(--space-8); }
+    .section-label {
+      font-size: var(--text-xs);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-4);
+      display: flex; align-items: center; gap: var(--space-2);
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--color-border);
+    }
+
+    /* Tag container */
+    .tags {
+      display: flex; flex-wrap: wrap; gap: var(--space-2);
+    }
+
+    /* Base tag */
+    .tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs);
+      font-weight: 500;
+      line-height: 1.4;
+      text-decoration: none;
+      cursor: default;
+      transition: filter var(--transition), transform var(--transition);
+      white-space: nowrap;
+    }
+    .tag:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    a.tag { cursor: pointer; }
+
+    /* Neutral tag */
+    .tag-neutral {
+      background: var(--color-surface);
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+    }
+
+    /* Colored tags — tech ecosystem */
+    .tag-python  { background: #3776AB22; color: #5b9bd5; border: 1px solid #3776AB44; }
+    .tag-r       { background: #276DC322; color: #5a8fd8; border: 1px solid #276DC344; }
+    .tag-latex   { background: #1E847322; color: #2eab94; border: 1px solid #1E847344; }
+    .tag-bash    { background: #4EAA2522; color: #6dcc3d; border: 1px solid #4EAA2544; }
+    .tag-tf      { background: #FF6F0022; color: #ff9a40; border: 1px solid #FF6F0044; }
+    .tag-torch   { background: #EE4C2C22; color: #ff7059; border: 1px solid #EE4C2C44; }
+    .tag-sklearn { background: #F7931E22; color: #f7b050; border: 1px solid #F7931E44; }
+    .tag-zotero  { background: #CC272922; color: #e45c5e; border: 1px solid #CC272944; }
+    .tag-obsidian{ background: #7C3AED22; color: #a870f5; border: 1px solid #7C3AED44; }
+    .tag-notion  { background: #e8e8e822; color: var(--color-text); border: 1px solid #e8e8e844; }
+    .tag-git     { background: #F0502122; color: #f47a58; border: 1px solid #F0502144; }
+    .tag-green   { background: #22c55e22; color: #4ade80; border: 1px solid #22c55e44; }
+    .tag-blue    { background: #3b82f622; color: #60a5fa; border: 1px solid #3b82f644; }
+    .tag-indigo  { background: #6366f122; color: #818cf8; border: 1px solid #6366f144; }
+    .tag-orange  { background: #f9731622; color: #fb923c; border: 1px solid #f9731644; }
+    .tag-red     { background: #ef444422; color: #f87171; border: 1px solid #ef444444; }
+    .tag-teal    { background: #0d948022; color: #2dd4bf; border: 1px solid #0d948044; }
+    .tag-purple  { background: #a855f722; color: #d8b4fe; border: 1px solid #a855f744; }
+    .tag-yellow  { background: #eab30822; color: #fbbf24; border: 1px solid #eab30844; }
+    .tag-mono    { font-family: var(--font-mono); font-size: 0.72rem; }
+    .tag-version { background: #3b82f633; color: #93c5fd; border: 1px solid #3b82f655; font-family: var(--font-mono); }
+    .tag-doi     { background: #7c3aed22; color: #c4b5fd; border: 1px solid #7c3aed44; font-family: var(--font-mono); font-size: 0.65rem; }
+    .tag-mit     { background: #f59e0b22; color: #fcd34d; border: 1px solid #f59e0b44; }
+    .tag-colab   { background: #F9AB0022; color: #f9c84a; border: 1px solid #F9AB0044; }
+    .tag-docker  { background: #2496ED22; color: #60b8f5; border: 1px solid #2496ED44; }
+    .tag-render  { background: #46E3B722; color: #34d399; border: 1px solid #46E3B744; }
+    .tag-supa    { background: #3ECF8E22; color: #34d399; border: 1px solid #3ECF8E44; }
+    .tag-mongo   { background: #47A24822; color: #86efac; border: 1px solid #47A24844; }
+    .tag-pg      { background: #33679122; color: #7dd3fc; border: 1px solid #33679144; }
+    .tag-react   { background: #61DAFB22; color: #67e8f9; border: 1px solid #61DAFB44; }
+    .tag-node    { background: #3C873A22; color: #86efac; border: 1px solid #3C873A44; }
+    .tag-flask   { background: #ffffff22; color: var(--color-text); border: 1px solid var(--color-border); }
+
+    /* Pair: label + value */
+    .tag-pair {
+      display: inline-flex; align-items: stretch;
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      font-size: var(--text-xs); font-weight: 500;
+    }
+    .tag-pair .label {
+      padding: 4px 8px;
+      background: var(--color-surface);
+      color: var(--color-text-muted);
+    }
+    .tag-pair .value {
+      padding: 4px 10px;
+      color: #fff;
+    }
+    .val-green  { background: #22c55e; color: #fff; }
+    .val-blue   { background: #3b82f6; color: #fff; }
+    .val-orange { background: #f97316; color: #fff; }
+    .val-teal   { background: #0d9488; color: #fff; }
+    .val-yellow { background: #eab308; color: #0f0f0d; }
+    .val-purple { background: #a855f7; color: #fff; }
+    .val-red    { background: #ef4444; color: #fff; }
+    .val-gray   { background: #6b7280; color: #fff; }
+    a.tag-pair  { cursor: pointer; text-decoration: none; }
+    a.tag-pair:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+    footer {
+      text-align: center;
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      padding: var(--space-6);
+      border-top: 1px solid var(--color-border);
+    }
+    footer a { color: var(--color-primary); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 480px) {
+      main { padding: var(--space-6) var(--space-4) var(--space-8); }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-name">
+    <svg class="header-logo" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="DL">
+      <rect width="28" height="28" rx="7" fill="currentColor" fill-opacity="0.1"/>
+      <path d="M7 7h5.5c4.142 0 7.5 3.134 7.5 7s-3.358 7-7.5 7H7V7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" fill="none"/>
+      <circle cx="20" cy="21" r="2.5" fill="var(--color-primary)"/>
+    </svg>
+    DominiqueLoyer
+  </div>
+  <button class="theme-toggle" data-theme-toggle aria-label="Basculer le thème">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</header>
+
+<main>
+
+  <div class="hero">
+    <h1>Dominique Loyer</h1>
+    <p class="subtitle">
+      Doctorant · Informatique Cognitive · UQAM &nbsp;·&nbsp;
+      <a href="https://syscred.uqam.ca" target="_blank" rel="noopener noreferrer">syscred.uqam.ca</a>
+      &nbsp;·&nbsp;
+      <a href="https://orcid.org/0009-0003-9713-7109" target="_blank" rel="noopener noreferrer">ORCID</a>
+    </p>
+  </div>
+
+  <!-- Programming Languages -->
+  <section class="section">
+    <div class="section-label">Programming Languages</div>
+    <div class="tags">
+      <span class="tag tag-python">🐍 Python</span>
+      <span class="tag tag-r">🅡 R</span>
+      <span class="tag tag-latex">✦ LaTeX</span>
+      <span class="tag tag-bash">$ Bash</span>
+    </div>
+  </section>
+
+  <!-- AI/ML Frameworks -->
+  <section class="section">
+    <div class="section-label">AI/ML Frameworks</div>
+    <div class="tags">
+      <span class="tag tag-tf">⬡ TensorFlow</span>
+      <span class="tag tag-torch">🔥 PyTorch</span>
+      <span class="tag tag-sklearn">⚙ scikit-learn</span>
+    </div>
+  </section>
+
+  <!-- Research & Productivity Tools -->
+  <section class="section">
+    <div class="section-label">Research &amp; Productivity Tools</div>
+    <div class="tags">
+      <span class="tag tag-zotero">Z Zotero</span>
+      <span class="tag tag-obsidian">◈ Obsidian</span>
+      <span class="tag tag-notion">N Notion</span>
+      <span class="tag tag-git">⬡ Git</span>
+    </div>
+  </section>
+
+  <!-- sysCRED Project -->
+  <section class="section">
+    <div class="section-label">sysCRED Project</div>
+    <div class="tags">
+      <a href="https://syscred.uqam.ca" target="_blank" rel="noopener noreferrer" class="tag tag-teal">sysCRED syscred.uqam.ca</a>
+      <a href="https://github.com/domloyer/syscred" target="_blank" rel="noopener noreferrer" class="tag-pair">
+        <span class="label">⌥ version</span><span class="value val-blue">v2.4.1</span>
+      </a>
+      <a href="https://pypi.org/project/syscred/" target="_blank" rel="noopener noreferrer" class="tag-pair">
+        <span class="label">pypi package</span><span class="value val-green">2.4.1</span>
+      </a>
+      <a href="https://doi.org/10.5281/zenodo.18436691" target="_blank" rel="noopener noreferrer" class="tag-pair">
+        <span class="label">DOI</span><span class="value val-purple">10.5281/zenodo.18436691</span>
+      </a>
+      <span class="tag-pair">
+        <span class="label">🐍 Python</span><span class="value val-blue">72.4%</span>
+      </span>
+      <span class="tag-pair">
+        <span class="label">License</span><span class="value val-yellow">MIT</span>
+      </span>
+      <a href="https://colab.research.google.com" target="_blank" rel="noopener noreferrer" class="tag tag-colab">⊙ Open in Colab</a>
+    </div>
+  </section>
+
+  <!-- Ontologie & AI -->
+  <section class="section">
+    <div class="section-label">Ontologie &amp; Neuro-Symbolique</div>
+    <div class="tags">
+      <span class="tag-pair">
+        <span class="label">OWL</span><span class="value val-teal">2.0</span>
+      </span>
+      <span class="tag tag-teal">RDF Turtle</span>
+      <span class="tag tag-blue">☐ SPARQL Query Language</span>
+      <span class="tag-pair">
+        <span class="label">Ontologie</span><span class="value val-teal">OWL/SPARQL</span>
+      </span>
+      <span class="tag-pair">
+        <span class="label">AI</span><span class="value val-purple">Neuro-Symbolic</span>
+      </span>
+      <span class="tag-pair">
+        <span class="label">RAG</span><span class="value val-orange">Retrieval Augmented Generation</span>
+      </span>
+      <span class="tag-pair">
+        <span class="label">GraphRAG</span><span class="value val-blue">Knowledge Graph RAG</span>
+      </span>
+    </div>
+  </section>
+
+  <!-- Stack Technique -->
+  <section class="section">
+    <div class="section-label">Stack Technique</div>
+    <div class="tags">
+      <span class="tag-pair">
+        <span class="label">⟨/⟩ HTML</span><span class="value val-orange">13.1%</span>
+      </span>
+      <span class="tag-pair">
+        <span class="label">⊙ Jupyter</span><span class="value val-orange">11.5%</span>
+      </span>
+      <span class="tag tag-node">⬡ Node.js backend</span>
+      <span class="tag tag-flask">🌶 Flask API</span>
+      <span class="tag tag-react">⚛ React Frontend</span>
+      <span class="tag tag-teal">◈ Lucide React Icons</span>
+      <span class="tag-pair">
+        <span class="label">🐳 Docker</span><span class="value val-blue">0.2%</span>
+      </span>
+      <span class="tag-pair">
+        <span class="label">🚀 Deployed on</span><span class="value val-green">Render</span>
+      </span>
+    </div>
+  </section>
+
+  <!-- Bases de données -->
+  <section class="section">
+    <div class="section-label">Bases de données &amp; OS</div>
+    <div class="tags">
+      <span class="tag-pair">
+        <span class="label">⚡ Database</span><span class="value val-green">Supabase</span>
+      </span>
+      <span class="tag-pair">
+        <span class="label">🍃 MongoDB</span><span class="value val-gray">NoSQL</span>
+      </span>
+      <span class="tag-pair">
+        <span class="label">🐘 PostgreSQL</span><span class="value val-blue">SQL</span>
+      </span>
+      <span class="tag tag-neutral">SQL Database</span>
+      <span class="tag-pair">
+        <span class="label">🐧 Unix</span><span class="value val-gray">OS</span>
+      </span>
+    </div>
+  </section>
+
+  <!-- Automatisation -->
+  <section class="section">
+    <div class="section-label">Automatisation</div>
+    <div class="tags">
+      <span class="tag-pair">
+        <span class="label">Automation</span><span class="value val-gray">Cron | Plist | Bash</span>
+      </span>
+      <span class="tag-pair">
+        <span class="label">Automation</span><span class="value val-orange">BibTeX Extractor</span>
+      </span>
+      <span class="tag-pair">
+        <span class="label">Automation</span><span class="value val-blue">Email Filter</span>
+      </span>
+      <span class="tag-pair">
+        <span class="label">Automation</span><span class="value val-green">Auto Backup</span>
+      </span>
+      <span class="tag-pair">
+        <span class="label">Automation</span><span class="value val-purple">Terminal History Logs</span>
+      </span>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>
+    Doctorant en informatique cognitive · UQAM ·
+    Direction : Roger Nkambou &amp; Janie Brisson ·
+    <a href="https://syscred.uqam.ca" target="_blank" rel="noopener noreferrer">syscred.uqam.ca</a>
+  </p>
+</footer>
+
+<script>
+(function(){
+  const t = document.querySelector('[data-theme-toggle]');
+  const r = document.documentElement;
+  let d = r.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light');
+  r.setAttribute('data-theme', d);
+  function updateIcon() {
+    t.innerHTML = d === 'dark'
+      ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+      : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+    t.setAttribute('aria-label', 'Basculer vers mode ' + (d === 'dark' ? 'clair' : 'sombre'));
+  }
+  updateIcon();
+  t && t.addEventListener('click', () => {
+    d = d === 'dark' ? 'light' : 'dark';
+    r.setAttribute('data-theme', d);
+    updateIcon();
+  });
+})();
+</script>
+</body>
+</html>
