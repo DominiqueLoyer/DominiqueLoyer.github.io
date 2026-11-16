@@ -16,10 +16,9 @@
       --border-dim: #005511;
       --font: "Courier New", Courier, monospace;
 
-      --dom-color: #b388ff;   /* violet */
-      --rog-color: #64b5f6;   /* bleu */
-      --jan-color: #ffb74d;   /* orange */
-      --common-red: #e53935;  /* rouge */
+      --dom-color: #b388ff;     /* violet - Dominique */
+      --guest-color: #64b5f6;   /* bleu - Direction / Invite */
+      --common-red: #e53935;    /* rouge - Plage commune */
     }
 
     * { box-sizing: border-box; }
@@ -74,15 +73,29 @@
       margin-bottom: 8px;
       font-size: 0.8rem;
       color: var(--green-dim);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
     }
 
-    select {
+    select, input[type="text"] {
       background: #020802;
       color: var(--green);
       border: 1px solid var(--border-dim);
-      padding: 2px 4px;
+      padding: 3px 6px;
       font-family: var(--font);
       font-size: 0.8rem;
+      border-radius: 2px;
+    }
+
+    input[type="text"] {
+      min-width: 220px;
+    }
+
+    select:focus, input[type="text"]:focus {
+      outline: 1px solid var(--green);
+      box-shadow: 0 0 5px rgba(0,255,65,.5);
     }
 
     code {
@@ -96,17 +109,17 @@
     .legend {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 8px;
       font-size: 0.75rem;
-      margin: 6px 0 4px 0;
+      margin: 8px 0 6px 0;
       color: var(--green-dim);
     }
 
     .pill {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      padding: 1px 7px;
+      gap: 5px;
+      padding: 2px 8px;
       border-radius: 999px;
       border: 1px solid var(--border-dim);
       background: var(--bg-card2);
@@ -118,10 +131,9 @@
       border-radius: 50%;
       display: inline-block;
     }
-    .dot-dom { background: var(--dom-color); }
-    .dot-rog { background: var(--rog-color); }
-    .dot-jan { background: var(--jan-color); }
-    .dot-off { opacity: .2; }
+    .dot-dom   { background: var(--dom-color); }
+    .dot-guest { background: var(--guest-color); }
+    .dot-off   { opacity: .2; }
 
     .dot-common {
       width: 14px;
@@ -134,13 +146,13 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 6px;
+      margin-top: 8px;
       font-size: 0.8rem;
     }
 
     th, td {
       border: 1px solid var(--border-dim);
-      padding: 3px 4px;
+      padding: 4px 5px;
       text-align: center;
     }
 
@@ -165,7 +177,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2px;
+      gap: 3px;
     }
 
     .slot-label {
@@ -175,7 +187,7 @@
 
     .slot-dots {
       display: flex;
-      gap: 2px;
+      gap: 4px;
     }
 
     .slot-me {
@@ -190,15 +202,16 @@
     }
 
     button {
-      margin-top: 6px;
+      margin-top: 8px;
       margin-right: 6px;
-      padding: 3px 8px;
+      padding: 4px 10px;
       background: var(--green-dark);
       color: var(--green);
       border: 1px solid var(--border-dim);
       font-family: var(--font);
       font-size: 0.8rem;
       cursor: pointer;
+      border-radius: 2px;
     }
 
     button:hover {
@@ -214,8 +227,8 @@
       color: var(--green);
       border: 1px solid var(--border-dim);
       border-radius: 2px;
-      padding: 4px 6px;
-      margin-top: 6px;
+      padding: 6px 8px;
+      margin-top: 8px;
       font-family: var(--font);
       font-size: 0.8rem;
       resize: vertical;
@@ -239,28 +252,25 @@
   <main>
     <div class="card">
       <div class="row">
-        Je suis :
-        <select id="who">
-          <option value="dom">Dominique</option>
-          <option value="rog">Roger</option>
-          <option value="jan">Janie</option>
+        <span>Je suis :</span>
+        <select id="who-role">
+          <option value="dom">Dominique (Doctorant)</option>
+          <option value="guest" selected>Directeur(trice) / Invité(e)</option>
         </select>
-        &nbsp;|&nbsp;
-        URL personnalisée&nbsp;: <code>?user=Dominique</code>,
-        <code>?user=Roger</code>, <code>?user=Janie</code>.
+
+        <span id="name-box">
+          <input type="text" id="guest-name" placeholder="Nom ou courriel (ex: Prof. Rabbany)" value="Direction" />
+        </span>
       </div>
 
       <div class="row">
-        Horizon&nbsp;: 14 jours à partir d’aujourd’hui, créneaux
-        <code>09:00</code>, <code>10:00</code>, <code>11:00</code>,
-        <code>13:00</code>, <code>14:00</code>, <code>15:00</code>.
+        <span>Horizon : 14 jours &nbsp;|&nbsp; Créneaux : <code>09:00</code>, <code>10:00</code>, <code>11:00</code>, <code>13:00</code>, <code>14:00</code>, <code>15:00</code>.</span>
       </div>
 
       <div class="legend">
         <span class="pill"><span class="dot dot-dom"></span> Dominique</span>
-        <span class="pill"><span class="dot dot-rog"></span> Roger</span>
-        <span class="pill"><span class="dot dot-jan"></span> Janie</span>
-        <span class="pill"><span class="dot-common"></span> Plage commune (3/3)</span>
+        <span class="pill"><span class="dot dot-guest"></span> <span id="legend-guest-label">Direction</span></span>
+        <span class="pill"><span class="dot-common"></span> Plage commune (2/2)</span>
       </div>
 
       <table id="cal">
@@ -283,9 +293,7 @@
       <button id="btn-copy">Copier le texte</button>
       <button id="btn-ics">Télécharger fichier .ics</button>
 
-      <textarea id="summary" readonly>
-Aucune plage commune calculée pour l’instant.
-      </textarea>
+      <textarea id="summary" readonly>Aucune plage commune calculée pour l’instant.</textarea>
       <div id="msg" class="small"></div>
     </div>
   </main>
@@ -296,81 +304,119 @@ Aucune plage commune calculée pour l’instant.
     const DAYS = [];
     const today = new Date();
     today.setHours(0,0,0,0);
-    for (let i=0;i<14;i++){
+    for (let i = 0; i < 14; i++) {
       const d = new Date(today);
-      d.setDate(d.getDate()+i);
+      d.setDate(d.getDate() + i);
       const y = d.getFullYear();
-      const m = String(d.getMonth()+1).padStart(2,"0");
-      const day = String(d.getDate()).padStart(2,"0");
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
       const iso = `${y}-${m}-${day}`;
-      const weekday = d.toLocaleDateString("fr-CA",{weekday:"short"});
-      DAYS.push({iso, weekday});
+      const weekday = d.toLocaleDateString("fr-CA", { weekday: "short" });
+      DAYS.push({ iso, weekday });
     }
-	// État global
-	let availabilities = {};
 
-	async function loadAvailabilities() {
-  	try {
-    	const res = await fetch(API_BASE);
-    	if (!res.ok) throw new Error('HTTP ' + res.status);
-   	 const data = await res.json();
-   	 availabilities = data.slots || {};
-    	render(); // et pas renderTable()
-  	} catch (err) {
-  	  console.error(err);
-   	 msg.textContent = "Impossible de charger les disponibilités depuis le serveur.";
-	  }
-}
-
-
-// Sauvegarder un clic sur une case
-async function saveAvailability(participant, date, period, available) {
-  const res = await fetch(API_BASE, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ participant, date, period, available })
-  });
-  if (!res.ok) throw new Error("HTTP " + res.status);
-}
-
-    
+    let availabilities = {};
     let currentCommon = null;
 
-    const tbody   = document.querySelector("#cal tbody");
-    const whoSel  = document.getElementById("who");
-    const summary = document.getElementById("summary");
-    const msg     = document.getElementById("msg");
+    const tbody             = document.querySelector("#cal tbody");
+    const whoRole           = document.getElementById("who-role");
+    const guestNameInput    = document.getElementById("guest-name");
+    const legendGuestLabel  = document.getElementById("legend-guest-label");
+    const summary           = document.getElementById("summary");
+    const msg               = document.getElementById("msg");
 
-    function key(date,time){ return `${date}|${time}`; }
+    function key(date, time) { return `${date}|${time}`; }
 
-    function initUserFromQuery(){
-      const params = new URLSearchParams(window.location.search);
-      const u = (params.get("user") || "").toLowerCase();
-      if(u.includes("dom")) whoSel.value = "dom";
-      else if(u.includes("rog")) whoSel.value = "rog";
-      else if(u.includes("jan")) whoSel.value = "jan";
+    // Obtenir la clé technique pour enregistrer dans l'API
+    function getCurrentUserKey() {
+      if (whoRole.value === "dom") return "dom";
+      const raw = guestNameInput.value.trim().toLowerCase();
+      return raw ? raw.replace(/[^a-z0-9_@.-]/g, "_") : "direction";
     }
 
-    function render(){
+    // Obtenir le nom d'affichage de la direction / invité
+    function getGuestDisplayName() {
+      return guestNameInput.value.trim() || "Direction";
+    }
+
+    function updateLegend() {
+      legendGuestLabel.textContent = getGuestDisplayName();
+    }
+
+    function initUserFromQuery() {
+      const params = new URLSearchParams(window.location.search);
+      const u = params.get("user") || "";
+      if (!u) return;
+
+      const lower = u.toLowerCase();
+      if (lower.includes("dom")) {
+        whoRole.value = "dom";
+      } else {
+        whoRole.value = "guest";
+        guestNameInput.value = u;
+      }
+      updateLegend();
+    }
+
+    async function loadAvailabilities() {
+      try {
+        const res = await fetch(API_BASE);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        availabilities = data.slots || {};
+        render();
+      } catch (err) {
+        console.error(err);
+        msg.textContent = "Impossible de charger les disponibilités depuis le serveur.";
+      }
+    }
+
+    async function saveAvailability(participant, date, period, available) {
+      const res = await fetch(API_BASE, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ participant, date, period, available })
+      });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+    }
+
+    function render() {
       tbody.innerHTML = "";
-      const who = whoSel.value;
-      for(const day of DAYS){
+      const currentKey = getCurrentUserKey();
+      const guestKey   = (guestNameInput.value.trim().toLowerCase().replace(/[^a-z0-9_@.-]/g, "_")) || "direction";
+
+      for (const day of DAYS) {
         const tr = document.createElement("tr");
+
         const tdDate = document.createElement("td");
         tdDate.textContent = day.iso;
         tr.appendChild(tdDate);
+
         const tdW = document.createElement("td");
         tdW.textContent = day.weekday;
         tr.appendChild(tdW);
 
-        for(const t of SLOTS){
+        for (const t of SLOTS) {
           const td = document.createElement("td");
           td.className = "slot";
           td.dataset.date = day.iso;
           td.dataset.time = t;
 
-          const k = key(day.iso,t);
-          const s = availabilities[k] || {dom:false,rog:false,jan:false};
+          const k = key(day.iso, t);
+          const s = availabilities[k] || {};
+
+          // Dispos
+          const hasDom   = !!s.dom;
+          // Verifie si la cle exacte est presente OU si n'importe quelle dispo non-dom existe
+          let hasGuest = !!s[guestKey];
+          if (!hasGuest) {
+            for (const [pKey, val] of Object.entries(s)) {
+              if (pKey !== "dom" && val) {
+                hasGuest = true;
+                break;
+              }
+            }
+          }
 
           const content = document.createElement("div");
           content.className = "slot-content";
@@ -384,21 +430,17 @@ async function saveAvailability(participant, date, period, available) {
           dots.className = "slot-dots";
 
           const dDot = document.createElement("span");
-          dDot.className = "dot dot-dom" + (s.dom ? "" : " dot-off");
+          dDot.className = "dot dot-dom" + (hasDom ? "" : " dot-off");
           dots.appendChild(dDot);
 
-          const rDot = document.createElement("span");
-          rDot.className = "dot dot-rog" + (s.rog ? "" : " dot-off");
-          dots.appendChild(rDot);
-
-          const jDot = document.createElement("span");
-          jDot.className = "dot dot-jan" + (s.jan ? "" : " dot-off");
-          dots.appendChild(jDot);
+          const gDot = document.createElement("span");
+          gDot.className = "dot dot-guest" + (hasGuest ? "" : " dot-off");
+          dots.appendChild(gDot);
 
           content.appendChild(dots);
           td.appendChild(content);
 
-          if(s[who]) td.classList.add("slot-me");
+          if (s[currentKey]) td.classList.add("slot-me");
 
           td.onclick = onClickSlot;
           tr.appendChild(td);
@@ -408,71 +450,85 @@ async function saveAvailability(participant, date, period, available) {
       highlightCommon();
     }
 
-    function onClickSlot(e){
-  	const td   = e.currentTarget;
-  	const date = td.dataset.date;
- 	 const time = td.dataset.time;
-  	const who  = whoSel.value;
-  	const k = key(date,time);
+    function onClickSlot(e) {
+      const td   = e.currentTarget;
+      const date = td.dataset.date;
+      const time = td.dataset.time;
+      const currentKey = getCurrentUserKey();
+      const k = key(date, time);
 
-  	if(!availabilities[k]) availabilities[k] = {dom:false,rog:false,jan:false};
-  	const newVal = !availabilities[k][who];
-  	availabilities[k][who] = newVal;
+      if (!availabilities[k]) availabilities[k] = {};
+      const newVal = !availabilities[k][currentKey];
+      availabilities[k][currentKey] = newVal;
 
-  	render();
+      render();
 
-  // Enregistrer sur le backend Render
-  	saveAvailability(who, date, time, newVal).catch(err => {
-   	 console.error(err);
- 	   msg.textContent = "Erreur de sauvegarde sur le serveur.";
-	  });
-	   }
+      saveAvailability(currentKey, date, time, newVal).catch(err => {
+        console.error(err);
+        msg.textContent = "Erreur de sauvegarde sur le serveur.";
+      });
+    }
 
+    function computeCommon() {
+      currentCommon = null;
+      const guestKey = (guestNameInput.value.trim().toLowerCase().replace(/[^a-z0-9_@.-]/g, "_")) || "direction";
 
-    function computeCommon(){
-  currentCommon = null;
-  outer:
-  for(const day of DAYS){
-    for(const t of SLOTS){
-      const k = key(day.iso,t);
-      const s = availabilities[k] || {dom:false,rog:false,jan:false};
-      if(s.dom && s.rog && s.jan){
-        currentCommon = {date:day.iso, time:t};
-        break outer; // -> 1re occurrence commune seulement
+      outer:
+      for (const day of DAYS) {
+        for (const t of SLOTS) {
+          const k = key(day.iso, t);
+          const s = availabilities[k] || {};
+
+          const hasDom = !!s.dom;
+          let hasGuest = !!s[guestKey];
+          if (!hasGuest) {
+            for (const [pKey, val] of Object.entries(s)) {
+              if (pKey !== "dom" && val) {
+                hasGuest = true;
+                break;
+              }
+            }
+          }
+
+          if (hasDom && hasGuest) {
+            currentCommon = { date: day.iso, time: t };
+            break outer;
+          }
+        }
       }
-    }
-  }
-  if(!currentCommon){
-    summary.value = "Aucune plage commune trouvée sur les deux prochaines semaines.";
-    msg.textContent = "";
-  } else {
-    const d = new Date(currentCommon.date+"T00:00:00");
-    const long = d.toLocaleDateString("fr-CA",{weekday:"long",day:"numeric",month:"long"});
-    const phrase = `Rencontre pour le projet de Doctorat Dominique Loyer, le ${long} ${currentCommon.time} via visioconférence sur Zoom https://uqam.zoom.us/my/loyerdominique. Merci de le noter vos agendas.`;
-summary.value = phrase;
-    msg.textContent = `Plage commune retenue : ${currentCommon.date} à ${currentCommon.time}.`;
-  }
-  highlightCommon();
-}
 
-function highlightCommon(){
-  document.querySelectorAll(".slot").forEach(td => {
-    td.classList.remove("slot-common");
-    if(currentCommon &&
-       td.dataset.date === currentCommon.date &&
-       td.dataset.time === currentCommon.time){
-      td.classList.add("slot-common");
+      if (!currentCommon) {
+        summary.value = "Aucune plage commune trouvée sur les deux prochaines semaines.";
+        msg.textContent = "";
+      } else {
+        const d = new Date(currentCommon.date + "T00:00:00");
+        const long = d.toLocaleDateString("fr-CA", { weekday: "long", day: "numeric", month: "long" });
+        const guestName = getGuestDisplayName();
+        const phrase = `Rencontre pour le projet de Doctorat Dominique Loyer avec ${guestName}, le ${long} à ${currentCommon.time} via visioconférence.\nLien : à convenir (Google Meet / Zoom / Teams).`;
+        summary.value = phrase;
+        msg.textContent = `Plage commune retenue : ${currentCommon.date} à ${currentCommon.time}.`;
+      }
+      highlightCommon();
     }
-  });
-}
 
-    function copyText(){
+    function highlightCommon() {
+      document.querySelectorAll(".slot").forEach(td => {
+        td.classList.remove("slot-common");
+        if (currentCommon &&
+            td.dataset.date === currentCommon.date &&
+            td.dataset.time === currentCommon.time) {
+          td.classList.add("slot-common");
+        }
+      });
+    }
+
+    function copyText() {
       const txt = summary.value || "";
-      if(!txt.trim()) return;
-      if(navigator.clipboard && navigator.clipboard.writeText){
-        navigator.clipboard.writeText(txt).then(()=>{
+      if (!txt.trim()) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).then(() => {
           msg.textContent = "Texte copié dans le presse-papiers.";
-        }).catch(()=>{
+        }).catch(() => {
           msg.textContent = "Sélectionnez le texte et utilisez Ctrl+C.";
         });
       } else {
@@ -482,79 +538,89 @@ function highlightCommon(){
       }
     }
 
-    function downloadICS(){
-  if(!currentCommon){
-    alert("Aucune plage commune calculée.");
-    return;
-  }
-  const date = currentCommon.date; // YYYY-MM-DD
-  const time = currentCommon.time; // HH:MM
-  const start = date.replace(/-/g,"")+"T"+time.replace(":","")+"00";
+    function downloadICS() {
+      if (!currentCommon) {
+        alert("Aucune plage commune calculée.");
+        return;
+      }
+      const date = currentCommon.date;
+      const time = currentCommon.time;
+      const start = date.replace(/-/g, "") + "T" + time.replace(":", "") + "00";
 
-  const hour = parseInt(time.split(":")[0],10)+1;
-  const endTime = (hour<10?"0"+hour:hour)+time.slice(2);
-  const end = date.replace(/-/g,"")+"T"+endTime.replace(":","")+"00";
+      const hour = parseInt(time.split(":")[0], 10) + 1;
+      const endTime = (hour < 10 ? "0" + hour : hour) + time.slice(2);
+      const end = date.replace(/-/g, "") + "T" + endTime.replace(":", "") + "00";
+      const guestName = getGuestDisplayName();
 
-const ics =
-  "BEGIN:VCALENDAR\r\n"+
-  "VERSION:2.0\r\n"+
-  "PRODID:-//DominiqueLoyer//ThesisMeeting//FR\r\n"+
-  "BEGIN:VTIMEZONE\r\n"+
-  "TZID:America/New_York\r\n"+
-  "BEGIN:DAYLIGHT\r\n"+
-  "TZOFFSETFROM:-0500\r\n"+
-  "TZOFFSETTO:-0400\r\n"+
-  "TZNAME:EDT\r\n"+
-  "DTSTART:19700308T020000\r\n"+
-  "RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU\r\n"+
-  "END:DAYLIGHT\r\n"+
-  "BEGIN:STANDARD\r\n"+
-  "TZOFFSETFROM:-0400\r\n"+
-  "TZOFFSETTO:-0500\r\n"+
-  "TZNAME:EST\r\n"+
-  "DTSTART:19701101T020000\r\n"+
-  "RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU\r\n"+
-  "END:STANDARD\r\n"+
-  "END:VTIMEZONE\r\n"+
-  "BEGIN:VEVENT\r\n"+
-  "UID:"+Date.now()+"@dominiqueloyer\r\n"+
-  "DTSTAMP:"+new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}Z$/,'Z')+"\r\n"+
-  "DTSTART;TZID=America/New_York:"+start+"\r\n"+
-  "DTEND;TZID=America/New_York:"+end+"\r\n"+
-  "SUMMARY:Rencontre de thèse - Dominique Loyer\r\n"+
-  "DESCRIPTION:Rencontre pour le projet de Doctorat à Dominique Loyer via visioconférence sur Zoom (https://uqam.zoom.us/my/loyerdominique).\r\n"+
-  "END:VEVENT\r\n"+
-  "END:VCALENDAR\r\n";
+      const ics =
+        "BEGIN:VCALENDAR\r\n" +
+        "VERSION:2.0\r\n" +
+        "PRODID:-//DominiqueLoyer//ThesisMeeting//FR\r\n" +
+        "BEGIN:VTIMEZONE\r\n" +
+        "TZID:America/New_York\r\n" +
+        "BEGIN:DAYLIGHT\r\n" +
+        "TZOFFSETFROM:-0500\r\n" +
+        "TZOFFSETTO:-0400\r\n" +
+        "TZNAME:EDT\r\n" +
+        "DTSTART:19700308T020000\r\n" +
+        "RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU\r\n" +
+        "END:DAYLIGHT\r\n" +
+        "BEGIN:STANDARD\r\n" +
+        "TZOFFSETFROM:-0400\r\n" +
+        "TZOFFSETTO:-0500\r\n" +
+        "TZNAME:EST\r\n" +
+        "DTSTART:19701101T020000\r\n" +
+        "RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU\r\n" +
+        "END:STANDARD\r\n" +
+        "END:VTIMEZONE\r\n" +
+        "BEGIN:VEVENT\r\n" +
+        "UID:" + Date.now() + "@dominiqueloyer\r\n" +
+        "DTSTAMP:" + new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z') + "\r\n" +
+        "DTSTART;TZID=America/New_York:" + start + "\r\n" +
+        "DTEND;TZID=America/New_York:" + end + "\r\n" +
+        "SUMMARY:Rencontre de thèse - Dominique Loyer & " + guestName + "\r\n" +
+        "DESCRIPTION:Rencontre pour le projet de Doctorat Dominique Loyer avec " + guestName + " via visioconférence.\r\n" +
+        "END:VEVENT\r\n" +
+        "END:VCALENDAR\r\n";
 
-
-  const blob = new Blob([ics], {type:"text/calendar;charset=utf-8"});
-  const url  = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "rencontre-these.ics";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
+      const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+      const url  = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "rencontre-these.ics";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
 
     document.getElementById("btn-common").onclick = computeCommon;
     document.getElementById("btn-copy").onclick   = copyText;
     document.getElementById("btn-ics").onclick    = downloadICS;
-  whoSel.onchange = function() {
-  const userMap = { dom: "Dominique", rog: "Roger", jan: "Janie" };
-  const userName = userMap[whoSel.value];
-  // Met à jour l'URL sans recharger la page
-  const url = new URL(window.location.href);
-  url.searchParams.set("user", userName);
-  history.replaceState(null, "", url.toString());
-  render();
-};
 
+    whoRole.onchange = function() {
+      updateUrl();
+      render();
+    };
+
+    guestNameInput.oninput = function() {
+      updateLegend();
+      updateUrl();
+      render();
+    };
+
+    function updateUrl() {
+      const url = new URL(window.location.href);
+      if (whoRole.value === "dom") {
+        url.searchParams.set("user", "Dominique");
+      } else {
+        url.searchParams.set("user", getGuestDisplayName());
+      }
+      history.replaceState(null, "", url.toString());
+    }
 
     initUserFromQuery();
-loadAvailabilities();
+    loadAvailabilities();
   </script>
 </body>
 </html>
