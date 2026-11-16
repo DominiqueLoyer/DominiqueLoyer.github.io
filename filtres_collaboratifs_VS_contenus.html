@@ -1,0 +1,272 @@
+<!-- Palette: Vibrant Tech (Electric Blue #3B82F6, Hot Pink #EC4899, Emerald #10B981, Amber #F59E0B, Dark Slate #1E293B) -->
+<!-- CONFIRMATION: NEITHER Mermaid JS NOR SVG were used anywhere in the output within the HTML comments. -->
+<!-- PLAN: 
+1. Introduction & Citation response. 
+2. Key Metrics (Inform). 
+3. Content-Based Flow (Organize - pure HTML/CSS). 
+4. Algorithm Strengths Comparison (Compare - Radar Chart). 
+5. Matrix Factorization Latent Space Simulation (Relationships - Scatter Plot). 
+-->
+<!-- CHART CHOICES:
+- Radar Chart -> Goal: Compare -> Chart.js Radar used to compare multi-dimensional profiles of algorithms. NO SVG.
+- Scatter Plot -> Goal: Relationships -> Chart.js Scatter used to simulate latent space embeddings. NO SVG.
+-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyse des Systèmes de Recommandation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { background-color: #F8FAFC; color: #1E293B; font-family: 'Segoe UI', system-ui, sans-serif; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        .glass-card { background: rgba(255, 255, 255, 0.95); border-radius: 1rem; padding: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); border-top: 4px solid #3B82F6; }
+        .glass-card-pink { border-top-color: #EC4899; }
+        .glass-card-emerald { border-top-color: #10B981; }
+        .stat-value { font-size: 3rem; font-weight: 800; line-height: 1; }
+        .diagram-node { background: #1E293B; color: white; padding: 0.75rem 1rem; border-radius: 0.5rem; font-weight: 600; text-align: center; }
+        .diagram-arrow { text-align: center; font-size: 1.5rem; color: #94A3B8; margin: 0.25rem 0; font-weight: bold; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="font-bold text-xl tracking-tight text-blue-600">RecSys Analytics</div>
+                <div class="text-sm font-medium text-slate-500">Filtrage de Contenu vs Collaboratif</div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+        
+        <header class="text-center max-w-3xl mx-auto mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">L'Architecture des Recommandations</h1>
+            <p class="text-lg text-slate-600">Une analyse comparative des approches basées sur le contenu (Pariser, 2011) et du filtrage collaboratif par factorisation de matrices (Koren et al., 2009) pour la recherche en NLP et Machine Learning.</p>
+        </header>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="glass-card flex flex-col justify-center items-center text-center">
+                <p class="text-slate-500 font-semibold uppercase tracking-wider mb-2">Impact Netflix</p>
+                <div class="stat-value text-blue-500 mb-2">80%</div>
+                <p class="text-sm text-slate-600">Des contenus visionnés proviennent du moteur de recommandation, réduisant drastiquement le taux de désabonnement.</p>
+            </div>
+            <div class="glass-card glass-card-pink flex flex-col justify-center items-center text-center">
+                <p class="text-slate-500 font-semibold uppercase tracking-wider mb-2">Impact Amazon</p>
+                <div class="stat-value text-pink-500 mb-2">35%</div>
+                <p class="text-sm text-slate-600">Du chiffre d'affaires total généré directement par les algorithmes de filtrage collaboratif basés sur les items.</p>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            
+            <div class="space-y-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 mb-3">1. Filtrage Basé sur le Contenu</h2>
+                    <p class="text-slate-600 leading-relaxed">
+                        Cette méthode utilise les métadonnées (attributs NLP, tags, catégories) pour recommander des items similaires à ceux qu'un utilisateur a déjà aimés. Pariser (2011) a mis en lumière que bien que cette méthode soit indépendante des autres utilisateurs, elle tend à enfermer l'utilisateur dans une <em>"Bulle de Filtres"</em> en réduisant la sérendipité.
+                    </p>
+                </div>
+
+                <div class="bg-slate-100 rounded-xl p-6 border border-slate-200">
+                    <h3 class="text-sm font-bold text-slate-500 uppercase mb-4 text-center">Flux de Traitement NLP</h3>
+                    
+                    <div class="flex flex-col items-center justify-center space-y-2">
+                        <div class="flex w-full justify-around">
+                            <div class="diagram-node w-2/5 bg-blue-600">Profil Utilisateur (Mots-clés lus)</div>
+                            <div class="diagram-node w-2/5 bg-pink-500">Méta-données Item (TF-IDF / BERT)</div>
+                        </div>
+                        <div class="flex w-full justify-around">
+                            <div class="diagram-arrow w-2/5">&#8595;</div>
+                            <div class="diagram-arrow w-2/5">&#8595;</div>
+                        </div>
+                        <div class="diagram-node w-3/4 bg-emerald-500 text-white">Calcul de Similarité (Cosinus)</div>
+                        <div class="diagram-arrow">&#8595;</div>
+                        <div class="diagram-node w-1/2 bg-amber-500 text-white">Recommandation</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card glass-card-emerald">
+                <h2 class="text-2xl font-bold text-slate-900 mb-2">Comparaison des Performances</h2>
+                <p class="text-sm text-slate-600 mb-6">Évaluation des modèles sur différentes métriques clés. Notez le déficit de sérendipité du modèle de contenu.</p>
+                <div class="chart-container">
+                    <canvas id="radarChart"></canvas>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="glass-card mt-12">
+            <div class="mb-6 max-w-3xl">
+                <h2 class="text-2xl font-bold text-slate-900 mb-3">2. Factorisation de Matrices (Filtrage Collaboratif)</h2>
+                <p class="text-slate-600 leading-relaxed">
+                    Popularisée par Koren et al. (2009), cette technique décompose la grande matrice clairsemée Utilisateur-Item en vecteurs de dimensions inférieures (facteurs latents). Utilisateurs et items sont projetés dans le même espace mathématique, permettant de découvrir des relations implicites que les métadonnées n'auraient pas capturées.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                <div class="lg:col-span-2 chart-container">
+                    <canvas id="scatterChart"></canvas>
+                </div>
+                <div class="bg-slate-50 rounded-lg p-5 border border-slate-200">
+                    <h3 class="font-bold text-slate-800 mb-3 text-lg">Visualisation de l'Espace Latent</h3>
+                    <ul class="space-y-4 text-sm text-slate-600">
+                        <li class="flex items-start">
+                            <span class="text-blue-500 font-bold mr-2 text-lg">&#9679;</span>
+                            <span><strong>Utilisateurs :</strong> Placés selon leurs goûts dérivés (ex: attirance pour l'action vs la romance).</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-pink-500 font-bold mr-2 text-lg">&#9650;</span>
+                            <span><strong>Items (Films/Articles) :</strong> Placés selon leurs caractéristiques implicites apprises par l'algorithme.</span>
+                        </li>
+                        <li class="flex items-start border-t border-slate-200 pt-3">
+                            <span class="text-emerald-500 font-bold mr-2">&#10003;</span>
+                            <span><strong>La Magie du MF :</strong> La proximité spatiale entre un point Utilisateur et un point Item prédit directement une forte affinité (produit scalaire élevé).</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center mt-12">
+        <p class="text-sm">Généré pour l'analyse des systèmes de recommandation. Sources : Koren et al. (2009), Pariser (2011).</p>
+    </footer>
+
+    <script>
+        function wrapLabel(label) {
+            if (label.length <= 16) return label;
+            let words = label.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + words[i].length + 1 <= 16) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const rawRadarLabels = ['Précision Technique', 'Problème de Démarrage à froid', 'Sérendipité et Nouveauté', 'Indépendance au Domaine', 'Coût de Calcul'];
+        const processedRadarLabels = rawRadarLabels.map(wrapLabel);
+
+        const radarCtx = document.getElementById('radarChart').getContext('2d');
+        new Chart(radarCtx, {
+            type: 'radar',
+            data: {
+                labels: processedRadarLabels,
+                datasets: [{
+                    label: 'Basé sur le Contenu',
+                    data: [8, 9, 3, 4, 7],
+                    backgroundColor: 'rgba(236, 72, 153, 0.2)',
+                    borderColor: '#EC4899',
+                    pointBackgroundColor: '#EC4899',
+                    borderWidth: 2
+                }, {
+                    label: 'Factorisation (MF)',
+                    data: [9, 2, 8, 9, 4],
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    borderColor: '#3B82F6',
+                    pointBackgroundColor: '#3B82F6',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                        grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                        pointLabels: {
+                            font: { family: "'Segoe UI', sans-serif", size: 11, weight: '600' },
+                            color: '#475569'
+                        },
+                        ticks: { display: false, min: 0, max: 10 }
+                    }
+                },
+                plugins: {
+                    legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                    return label.join(' ');
+                                } else {
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const scatterCtx = document.getElementById('scatterChart').getContext('2d');
+        new Chart(scatterCtx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Utilisateurs',
+                    data: [
+                        {x: -0.8, y: 0.6}, {x: 0.5, y: 0.9}, {x: -0.2, y: -0.7}, 
+                        {x: 0.8, y: -0.5}, {x: 0.1, y: 0.2}, {x: -0.9, y: -0.2}
+                    ],
+                    backgroundColor: '#3B82F6',
+                    pointRadius: 8,
+                    pointHoverRadius: 10
+                }, {
+                    label: 'Items (Films/Articles)',
+                    data: [
+                        {x: -0.7, y: 0.7}, {x: 0.6, y: 0.8}, {x: -0.3, y: -0.8}, 
+                        {x: 0.7, y: -0.6}, {x: 0.2, y: 0.3}, {x: 0.9, y: 0.1},
+                        {x: -0.5, y: 0.1}, {x: 0.0, y: -0.9}
+                    ],
+                    backgroundColor: '#EC4899',
+                    pointStyle: 'triangle',
+                    pointRadius: 9,
+                    pointHoverRadius: 11
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Facteur Latent 1 (ex: Action vs Romance)', color: '#64748B', font: { weight: 'bold'} },
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    },
+                    y: {
+                        title: { display: true, text: 'Facteur Latent 2 (ex: Sérieux vs Comique)', color: '#64748B', font: { weight: 'bold'} },
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    }
+                },
+                plugins: {
+                    legend: { position: 'top', labels: { usePointStyle: true } },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ' (' + context.parsed.x.toFixed(2) + ', ' + context.parsed.y.toFixed(2) + ')';
+                            },
+                            title: function(tooltipItems) {
+                                return 'Espace Latent';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

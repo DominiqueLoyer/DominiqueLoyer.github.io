@@ -116,7 +116,12 @@
     .dropdown-content { display: none; position: absolute; top: 100%; left: 0; background: var(--bg-card2); border: 1px solid var(--border-dim); min-width: 200px; z-index: 100; }
     .dropdown-content a { border-right: none !important; border-bottom: 1px solid var(--border-dim); }
     .dropdown:hover .dropdown-content { display: block; }
-    main { max-width: 900px; margin: 0 auto; padding: 1rem 1rem 4rem; }
+     main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 1rem 4rem;
+}
+
     .section-title { font-size: 1rem; font-weight: bold; color: var(--green); text-shadow: 0 0 8px var(--green); border-bottom: 1px solid var(--border-dim); padding-bottom: 0.3rem; margin-top: 2rem; margin-bottom: 1rem; letter-spacing: 0.1em; }
     .section-title::before { content: ">> "; color: var(--green-dim); }
     .citation-card { background: var(--bg-card); border: 1px solid var(--border-dim); border-left: 3px solid var(--green-dim); padding: 0.75rem 1rem; margin-bottom: 0.9rem; border-radius: 2px; transition: border-color 0.2s, box-shadow 0.2s; }
@@ -133,7 +138,24 @@
     .bibtex-toggle:hover { background: var(--green-dark); color: var(--green); }
     .bibtex-block { display: none; margin-top: 0.5rem; background: #060f06; border: 1px solid var(--border-dim); padding: 0.6rem 0.8rem; font-size: 0.72rem; line-height: 1.5; color: #33aa55; white-space: pre; overflow-x: auto; border-radius: 2px; }
     .bibtex-block.open { display: block; }
-    footer { background: var(--bg-card); border-top: 1px solid var(--border-dim); color: var(--green-dim); padding: 0.4rem 1rem; position: fixed; width: 100%; bottom: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.7rem; }
+footer {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-dim);
+  color: var(--green-dim);
+  padding: 0.4rem 1rem;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start !important;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  text-align: left;
+}
     footer a { color: var(--green-dim); text-decoration: none; }
     footer a:hover { color: var(--green); text-decoration: underline; }
     footer img { vertical-align: middle; }
@@ -146,6 +168,14 @@
       .dropdown-content { position: relative; }
       footer { position: relative; }
     }
+    .shields-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start !important;
+  gap: 0.4rem;
+}
+
   </style>
   <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
@@ -1053,8 +1083,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 </script>
 
-        
-</footer>
 
 <!-- SCRIPT -->
 <script>
@@ -1064,6 +1092,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     btn.textContent = pre.classList.contains('open') ? '\u2716 Fermer' : '\u{1F3F7} BibTeX';
   }
 </script>
-
+</center>
+  <!-- FOOTER -->
+<footer>
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0">
+    <img alt="Creative Commons License" style="border-width:0; height:14px;" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/>
+  </a>
+  <a href="mailto:votreconsultant&#64;gmail.com">(ↄ) MMXXVI Dominique S. Loyer &#9993;</a>
+  <span class="footer-divider">|</span>
+  <div class="shields-row">
+    <a href="https://orcid.org/0009-0003-9713-7109" target="_blank" rel="me noopener noreferrer">
+      <img src="https://img.shields.io/badge/ORCID-0009--0003--9713--7109-green.svg" alt="ORCID"/>
+    </a>
+    <a href="https://scholar.google.com/citations?user=JmRd6U0AAAAJ" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/Google%20Scholar-Profile-blue" alt="Google Scholar"/>
+    </a>
+    <a href="https://www.researchgate.net/profile/Dominique-Loyer" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/ResearchGate-Profile-00CCBB" alt="ResearchGate"/>
+    </a>
+    <a href="https://dominiqueloyer.github.io" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/Website-dominiqueloyer.github.io-orange" alt="Website"/>
+    </a>
+    <a href="https://syscred.uqam.ca" target="_blank" rel="noopener noreferrer">
+  <img src="https://img.shields.io/badge/sysCRED-syscred.uqam.ca-7B2D8B" alt="sysCRED"/>
+</a>
+    <a href="https://plateforme-isc.uqam.ca" target="_blank" rel="noopener noreferrer">
+  <img src="https://img.shields.io/badge/Plateforme%20ISC-plateforme--isc.uqam.ca-yellow" alt="Plateforme ISC"/>
+</a>
+<a href="https://dominiqueloyer.github.io/meteo-montreal-widget.html" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/M%C3%A9t%C3%A9o--Moto-Montr%C3%A9al%20Live-1f6feb" alt="Météo-Moto"/>
+    </a>
+        <a href="https://dominiqueloyer.github.io/dominique-loyer-skills.html" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/CV%20%2F%20RESUME-black" alt="CV / RESUME"/>
+    </a>
+  </div>
+</footer>
+  
 </body>
 </html>
